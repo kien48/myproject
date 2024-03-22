@@ -35,7 +35,7 @@
                                 <input type="password" class="form-control" placeholder="Nhập mật khẩu" name="pass">
                             </div>
                             <div class="d-flex justify-content-center mt-2">
-                                <a class="btn btn-warning text-white" href="dangky.html"
+                                <a class="btn btn-warning text-white" href="{{route('form-register')}}"
                                    style="margin-right: 10px;">Đăng ký</a>
                                 <button type="submit" name="submit" class="btn btn-primary w-100">Đăng nhập</button>
                             </div>

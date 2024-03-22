@@ -9,6 +9,12 @@ class User extends BaseModel
         $this->setQuery($sql);
         return $this->loadRow([$email, $pass]);
     }
+    public function insertUser($id,$user,$email,$pass,$phone,$address,$role,$created_ad)
+    {
+        $sql = "INSERT INTO $this->table VALUES (?,?,?,?,?,?,?,?)";
+        $this->setQuery($sql);
+        return $this->execute([$id,$user,$email,$pass,$phone,$address,$role,$created_ad]);
+    }
 
 
 }

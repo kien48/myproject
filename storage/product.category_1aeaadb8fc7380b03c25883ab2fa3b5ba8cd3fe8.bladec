@@ -10,7 +10,9 @@
 </head>
 
 <body>
-
+<div class="loading-overlay">
+ <div class="loading-spinner"></div>
+</div>
 <nav class="navbar navbar-expand-sm fixed-top  shadow fw-bold" style="backdrop-filter: blur(5px);">
  <div class="container">
  <div class="d-flex align-items-center">

@@ -25,6 +25,8 @@ $router->post('add-comment/{id}', [App\Controllers\Client\ProductController::cla
 $router->get('form-login', [App\Controllers\Client\LoginController::class, "formLogin"]);
 $router->post('login', [App\Controllers\Client\LoginController::class, "login"]);
 $router->get('logout', [App\Controllers\Client\LoginController::class, "logout"]);
+$router->get('form-register', [App\Controllers\Client\LoginController::class, "formRegister"]);
+$router->post('register', [App\Controllers\Client\LoginController::class, "register"]);
 
 // Sử dụng group() để nhóm các route cho phía admin và tự động thêm tiền tố "/admin/" cho các route bên trong nhóm này
 $router->group(['prefix' => 'admin'], function($router) {

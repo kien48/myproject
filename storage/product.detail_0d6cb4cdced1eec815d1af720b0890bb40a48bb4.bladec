@@ -9,7 +9,9 @@
 </head>
 
 <body>
-
+<div class="loading-overlay">
+ <div class="loading-spinner"></div>
+</div>
 <nav class="navbar navbar-expand-sm fixed-top  shadow fw-bold" style="backdrop-filter: blur(5px);">
  <div class="container">
  <div class="d-flex align-items-center">
@@ -405,39 +407,7 @@
  </div>
 </footer>
 <?php $_shouldextend[1]=1; ?>
-<script>
- function kiemtrasoluong(input) {
- var num = parseInt(input.value);
- if (num < 1 || isNaN(num)) {
- input.value = 1;
- alert("Số lượng nhập ít nhất là 1");
- } else if (num > 10) {
- input.value = 9;
- alert("Số lượng không thể lớn hơn 10");
- }
- }
 
- function plus(button) {
- var input = button.previousElementSibling;
- var num = parseInt(input.value) + 1;
- if (num <= 10) {
- input.value = num;
- } else {
- alert("Số lượng không thể lớn hơn 10");
- }
- }
-
- function minus(button) {
- var input = button.nextElementSibling;
- var num = parseInt(input.value) - 1;
- if (num >= 1) {
- input.value = num;
- } else {
- alert("Số lượng không thể nhỏ hơn 1");
- }
- }
-
-</script>
 
 </body>
 
