@@ -1,0 +1,7 @@
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection("content"); ?>
+ <div class="container mt-3">
+ <h3 class="text-center">Chào mừng bạn đến với trang admin</h3>
+ </div>
+<?php $this->stopSection(); ?>
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('layout.main'); } ?>

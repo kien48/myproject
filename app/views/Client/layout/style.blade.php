@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="{{ BASE_URL.'public/lib/bootstrap.min.css' }}">
