@@ -1,1 +1,53 @@
-<?php
+@extends('layout.main')
+@section("content")
+    <div class="container mt-3">
+        <h3 class="text-center">Thêm mới mã giảm giá</h3>
+        @if(isset($_SESSION['errors']) && isset($_GET['msg']))
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    @foreach($_SESSION['errors'] as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if(isset($_SESSION['success']) && isset($_GET['msg']))
+            <div class="alert alert-success" role="alert">
+                <span>{{$_SESSION['success']}}</span>
+            </div>
+        @endif
+        <form method="post" action="{{route('admin/discount/post')}}" enctype="multipart/form-data">
+            <div class="row">
+{{--                <div class="col-md-12">--}}
+{{--                    <span class="form-label">Mã code</span>--}}
+{{--                    <input type="hi" class="form-control" name="code">--}}
+{{--                </div>--}}
+                <div class="col-md-12">
+                    <span class="form-label">Phần trăm giảm giá:</span>
+                    <input type="number" class="form-control" name="percent">
+                </div>
+                <div class="col-md-12">
+                    <span class="form-label">Ngày bắt đầu:</span>
+                    <input type="date" class="form-control" name="start_day">
+                </div>
+                <div class="col-md-12">
+                    <span class="form-label">Ngày hết hạn:</span>
+                    <input type="date" class="form-control" name="expiration">
+                </div>
+                <div class="col-md-12">
+                    <span class="form-label">Số lượng:</span>
+                    <input type="number" class="form-control" name="quantity">
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <a href="{{route('admin/list-discount')}}" class="btn btn-outline-secondary" style="margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i> Danh
+                    sách</a>
+                <button type="submit" name="add" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i> Tạo mới</button>
+
+            </div>
+        </form>
+    </div>
+@endsection
+
+

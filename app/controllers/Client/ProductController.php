@@ -25,11 +25,19 @@ class ProductController extends BaseController{
             $this->comment->insertComment(NULL,$id_user,$content,$date,$id_pro,$star);
             header('Location: ' . BASE_URL . 'detail/'.$id);
         }
+        $total = $this->product->numberOfProductSales($id);
         $rating = $this->comment->productStatistics($id);
         $product = $this->product->detailProduct($id);
         $id_ct = $product->id_ct;
         $productCL = $this->product->listProductCl($id_ct,$id);
-        return $this->renderClient("product.detail", compact('product', 'productCL','soLuong','listComment','rating'));
+        return $this->renderClient("product.detail", compact('product', 'productCL','soLuong','listComment','rating','total'));
+    }
+
+
+
+    public function listTopProduct(){
+        $listTop = $this->product->topProducts();
+        return $this->renderClient("product.top",compact('listTop'));
     }
 
 

@@ -8,6 +8,15 @@ class BaseModel
     protected $sql = '';
     protected $sta = NULL;
 
+    // Phương thức để thiết lập đối tượng PDO
+    public function setPdo($pdo) {
+        $this->pdo = $pdo;
+    }
+
+    // Phương thức để lấy đối tượng PDO
+    public function getPdo() {
+        return $this->pdo;
+    }
     public function __construct()
     {
         //set connect
@@ -35,6 +44,7 @@ class BaseModel
     public function setQuery($sql) {
         $this->sql = $sql;
     }
+
 
     //Function execute the query
     // hàm này sẽ làm hàm chạy câu truy vấn

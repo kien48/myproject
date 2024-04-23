@@ -22,8 +22,12 @@
                     <span class="form-label">Tên:</span>
                     <input type="text" class="form-control" name="name">
                 </div>
-                <div class="col-md-12">
-                    <span class="form-label">Giá:</span>
+                <div class="col-md-6">
+                    <span class="form-label">Giá nhập:</span>
+                    <input type="text" class="form-control" name="price">
+                </div>
+                <div class="col-md-6">
+                    <span class="form-label">Giá bán:</span>
                     <input type="text" class="form-control" name="price">
                 </div>
                 <div class="col-md-6">
@@ -47,11 +51,11 @@
                 </div>
                 <div class="col-md-6">
                     <span class="form-label">Mô tả:</span>
-                    <textarea name="description" id="" cols="10" rows="5" class="form-control"></textarea>
+                    <textarea name="description" id="description" cols="10" rows="5" class="form-control"></textarea>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-3">
-                <a href="{{route('admin/list-product')}}" class="btn btn-outline-secondary" style="margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i> Danh
+                <a href="{{route('admin/list-product/1')}}" class="btn btn-outline-secondary" style="margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i> Danh
                     sách</a>
                 <button type="submit" name="add" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i> Tạo mới</button>
 

@@ -37,6 +37,14 @@ class Product extends BaseModel {
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
+
+    public function listProductPages($vitri,$bghi)
+    {
+        $sql = "SELECT * FROM $this->table ORDER BY id DESC LIMIT $vitri,$bghi";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
     public function detailProduct($id)
     {
         $sql = "SELECT p.*, c.name AS category_name FROM {$this->table} p
@@ -59,7 +67,7 @@ class Product extends BaseModel {
     }
     public function listProductCl($id_ct,$id)
     {
-        $sql = "SELECT * FROM {$this->table} WHERE id_ct = ? AND id != ?";
+        $sql = "SELECT * FROM {$this->table} WHERE id_ct = ? AND id != ? LIMIT 0,4";
         $this->setQuery($sql);
         return $this->loadAllRows([$id_ct,$id]);
     }
@@ -69,4 +77,77 @@ class Product extends BaseModel {
         $this->setQuery($sql);
         return $this->loadAllRows([$id_ct]);
     }
+
+    public function numberOfProductSales($id)
+    {
+        $sql = "SELECT
+  p.id AS id_product,
+  p.name AS product_name,
+  SUM(id.quantity) AS total_sold
+FROM
+  invoice_details id
+  INNER JOIN products p ON id.id_product = p.id
+  INNER JOIN invoices inv ON inv.id = id.invoice_id  -- Link to invoices table
+WHERE
+  inv.status = 3  -- Filter by invoice status (replace 3 with your actual value)
+  AND id.id_product = ?  -- Filter by product ID (replace ? with parameter)
+GROUP BY
+  id_product, product_name
+ORDER BY
+  total_sold DESC ;
+";
+        $this->setQuery($sql);
+        return $this->loadRow([$id]);
+    }
+
+    public function listProductsBestSeller()
+    {
+        $sql = "SELECT
+  p.id AS id_product,
+  p.name AS product_name,
+  p.price,
+  p.image,
+  SUM(id.quantity) AS total_sold
+FROM
+  invoice_details id
+  INNER JOIN products p ON id.id_product = p.id
+  INNER JOIN invoices inv ON inv.id = id.invoice_id  -- Liên kết với bảng invoices
+WHERE
+  inv.status = 3  -- Chỉ lấy dữ liệu với trạng thái hóa đơn là 3
+GROUP BY
+  id_product, product_name, p.price, p.image
+ORDER BY
+  total_sold DESC
+LIMIT
+  0, 4;
+
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows([]);
+    }
+
+
+    public function topProducts()
+    {
+        $sql = "SELECT
+  p.id AS id_product,
+  p.name AS product_name,
+  p.price,
+  p.image,
+  SUM(id.quantity) AS total_sold
+FROM
+  invoice_details id
+  INNER JOIN products p ON id.id_product = p.id
+  INNER JOIN invoices inv ON inv.id = id.invoice_id  -- Liên kết với bảng invoices
+WHERE
+  inv.status = 3  -- Chỉ lấy dữ liệu với trạng thái hóa đơn là 3
+GROUP BY
+  id_product, product_name, p.price, p.image
+ORDER BY
+  total_sold DESC
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
 }

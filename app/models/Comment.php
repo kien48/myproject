@@ -34,6 +34,13 @@ class Comment extends BaseModel {
         return $this->loadRow([$id_pro]);
     }
 
+    public function listAll()
+    {
+        $sql = "SELECT * FROM $this->table WHERE 1 ORDER BY ID DESC";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
 
 
 }

@@ -25,6 +25,7 @@ class LoginController extends BaseController
             if($check) {
                 // Lưu thông tin người dùng vào session
                 $_SESSION['user'] = $check;
+
                 flash('success', 'Đăng nhập thành công', 'form-login');
             } else {
                 flash('errors', 'Đăng nhập thất bại do sai email hoặc mật khẩu', 'form-login');
@@ -71,10 +72,17 @@ class LoginController extends BaseController
                 $error[] = "Vui lòng điền đúng định dạng email";
             }
 
+            if(strlen($pass) <= 6) {
+                $error[] = "Vui lòng điền mật khẩu trên 6 ký tự";
+            }
+            if(strlen($name) <= 4) {
+                $error[] = "Vui lòng điền tên trên 4 ký tự";
+            }
+
             // Kiểm tra xem có lỗi không trước khi thêm vào cơ sở dữ liệu
             if(empty($error)){
                 $date = date('Y-m-d H:i:s');
-                $check = $this->user->insertUser(NULL,$name,$email,$pass,$phone,$address,1,$date);
+                $check = $this->user->insertUser(NULL,$name,$email,$pass,$phone,$address,1,$date,0);
                 if($check){
                     flash('success', 'Đăng ký thành công', 'form-register');
                 } else {
@@ -86,5 +94,49 @@ class LoginController extends BaseController
         }
     }
 
+    public function inbox()
+    {
+        $checkBox = $this->user->checkBox($_SESSION['user']->id);
+        $list = $this->user->listMessage(4, $_SESSION['user']->id);
+
+        if (!empty($checkBox)) {
+            $idCheckBox = $checkBox[0]->id;
+            foreach ($list as $message) {
+                if ($message->conversation_id === $idCheckBox && $message->sender_id === 4) {
+                    $message_id = $message->conversation_id;
+                    $this->user->updateStatus($message_id, 4);
+               unset($_SESSION['tinNhanAdmin']);
+                }
+            }
+        }
+        $list = $this->user->listMessage(4, $_SESSION['user']->id);
+        return $this->renderClient("login.inbox", compact('list', 'checkBox'));
+
+    }
+
+
+    public function addBox()
+    {
+        if(isset($_POST['submit'])){
+            $id_user = $_POST['id_user'];
+          $check =  $this->user->insertInbox(NULL,4,$id_user);
+          if($check){
+              flash('success', 'Đăng ký thành công', 'inbox');
+          }
+        }
+
+    }
+
+    public function send()
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh'); // Thiết lập múi giờ Hà Nội
+        if(isset($_POST['submit'])){
+            $date = date('Y-m-d H:i:s');
+           $check = $this->user->send(NULL,$_POST['conversation_id'],$_POST['id_user'],$_POST['text'],$date,1);
+            if($check){
+                flash('success', 'Đăng ký thành công', 'inbox');
+            }
+        }
+    }
 
 }

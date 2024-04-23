@@ -1,0 +1,8 @@
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection("content"); ?>
+ <h1 class="h3 text-center mt-2 mb-2">Trang danh sách các sản phẩm trong đơn hàng</h1>
+<?php $this->stopSection(); ?>
+
+
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

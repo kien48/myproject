@@ -13,10 +13,15 @@ class ProductController extends BaseController
         $this->category = new Category();
     }
 
-    public function list()
+    public function list($pageNumber)
     {
-        $products = $this->product->listProduct();
-        return $this->renderAdmin("product.list", compact('products'));
+        $bghi = 5;
+        $vitri = ($pageNumber - 1) * $bghi;
+        $products = $this->product->listProductPages($vitri,$bghi);
+        $listAll = $this->product->listProduct();
+        $tong = count($listAll);
+        $sotrang = ceil($tong/$bghi);
+        return $this->renderAdmin("product.list", compact('products','sotrang'));
     }
 
     public function formAdd()

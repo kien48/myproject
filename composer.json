@@ -13,6 +13,8 @@
     ],
     "require": {
         "eftec/bladeone": "^4.12",
-        "phroute/phroute": "^2.2"
+        "phroute/phroute": "^2.2",
+        "illuminate/events": "^11.0",
+        "illuminate/http": "^11.0"
     }
 }

@@ -25,16 +25,6 @@
                                 <!-- Giá bán -->
                                 <div class="fw-bolder text-danger">{{number_format($search->price)}} vnđ</div>
                             </div>
-                            <form action="{{route('add-cart')}}" method="post">
-                                <input type="hidden" name="id" value="{{$search->id}}">
-                                <input type="hidden" name="name" value="{{$search->name}}">
-                                <input type="hidden" name="price" value="{{$search->price}}">
-                                <input type="hidden" name="image" value="{{$search->image}}">
-                                <input type="hidden" name="category" value="{{$search->category_name}}">
-                                <button name="them" onclick="return alert('thêm vào giỏ thành công')"  class="btn btn-warning w-100 rounded-pill fw-bold text-white"><i
-                                            class="fa-solid fa-cart-plus"></i> Thêm vào giỏ</button>
-                            </form>
-                            <!-- KV button tương tác -->
 
                         </div>
                     </div>

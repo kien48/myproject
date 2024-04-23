@@ -31,23 +31,23 @@
                     <form method="post" action="{{route('register')}}">
                         <div class="form-group">
                             <label >Họ tên:</label>
-                            <input type="text" class="form-control" placeholder="Nhập họ tên" name="name" required>
+                            <input type="text" class="form-control" placeholder="Nhập họ tên" name="name" >
                         </div>
                         <div class="form-group">
                             <label >Số điện thoại:</label>
-                            <input type="number" class="form-control" placeholder="Nhập Số điện thoại" name="phone" required>
+                            <input type="number" class="form-control" placeholder="Nhập Số điện thoại" name="phone" >
                         </div>
                         <div class="form-group">
                             <label >Email:</label>
-                            <input type="text" class="form-control" placeholder="Nhập email" name="email" required>
+                            <input type="text" class="form-control" placeholder="Nhập email" name="email" >
                         </div>
                         <div class="form-group">
                             <label >Địa chỉ:</label>
-                            <input type="text" class="form-control" placeholder="Nhập địa chỉ" name="address" required>
+                            <input type="text" class="form-control" placeholder="Nhập địa chỉ" name="address" >
                         </div>
                         <div class="form-group">
                             <label for="password">Mật khẩu:</label>
-                            <input type="password" class="form-control" placeholder="Nhập mật khẩu" name="pass" required>
+                            <input type="password" class="form-control" placeholder="Nhập mật khẩu" name="pass" >
                         </div>
                         <div class="d-flex justify-content-center mt-2">
                             <a class="btn btn-warning text-white" href="{{route('form-login')}}"

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Yody</title>
+ <?php echo $this->runChild('layout.style'); ?>
+
+</head>
+
+<body>
+<div class="loading-overlay">
+ <div class="loading-spinner"></div>
+</div>
+<nav class="navbar navbar-expand-sm fixed-top  shadow fw-bold" style="backdrop-filter: blur(5px);">
+ <div class="container">
+ <div class="d-flex align-items-center">
+ <!-- Logo -->
+ <ul class="navbar-nav ">
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('/')??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <img src="../../<?php echo \htmlentities($_SESSION['listSettings'][0]->logo??'', ENT_QUOTES, 'UTF-8', false); ?>" alt="">
+ </a>
+ </li>
+ </ul>
+
+ <!-- Menu -->
+ <ul class="navbar-nav ms-5">
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('menu/'."1")??'', ENT_QUOTES, 'UTF-8', false); ?>">Nam</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('menu/'."2")??'', ENT_QUOTES, 'UTF-8', false); ?>">Nữ</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('menu/'."4")??'', ENT_QUOTES, 'UTF-8', false); ?>">Trẻ em</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('menu/'."3")??'', ENT_QUOTES, 'UTF-8', false); ?>">Đồng phục</a>
+ </li>
+ <?php if(isset($_SESSION['user'])): ?>
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('menu/'."3")??'', ENT_QUOTES, 'UTF-8', false); ?>">Mã giảm giá</a>
+ </li>
+ <?php endif; ?>
+ <li class="nav-item">
+ <a class="nav-link" href="<?php echo \htmlentities(route('post/1')??'', ENT_QUOTES, 'UTF-8', false); ?>">Bài viết</a>
+ </li>
+ </ul>
+ </div>
+
+
+ <!-- Đăng nhập đăng ký giỏ hàng tìm kiếm-->
+ <ul class="navbar-nav d-flex align-items-center">
+ <li class="nav-item ms-3">
+ <form class="d-flex align-items-center border rounded-pill shadow-sm bg-light px-3 py-2 me-2"
+ action="<?php echo \htmlentities(route('search')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="get">
+ <input class="form-control-plaintext border-0 me-2" name="keyword" type="text" placeholder="Bạn tìm gì ..."
+ aria-label="Search" >
+ <button type="submit"  class="btn btn-warning rounded-pill px-3">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ </button>
+ </form>
+ </li>
+ <li class="nav-item ms-3">
+ <a class="nav-link" href="<?php echo \htmlentities(route('list-cart')??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <button class="btn position-relative">
+ <i class="fa-solid fa-cart-plus"></i> <span
+ class="badge bg-warning rounded-pill position-absolute"
+ style="top:-5px; right: -8px;">
+ <?php 
+ if(isset($_SESSION['giohang'])){
+ echo count($_SESSION['giohang']);
+ }
+ ?>
+ </span>
+ </button>
+ </a>
+ </li>
+ <?php if(isset($_SESSION['user'])): ?>
+ <li class="nav-item ms-3">
+ <a class="nav-link" href="<?php echo \htmlentities(route('form-login')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-regular fa-user"></i> <?php echo \htmlentities($_SESSION['user']->username??'', ENT_QUOTES, 'UTF-8', false); ?></a>
+ </li>
+ <?php else: ?>
+ <li class="nav-item ms-3">
+ <a class="nav-link" href="<?php echo \htmlentities(route('form-login')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-regular fa-user"></i> Đăng nhập</a>
+ </li>
+ <div class="text-black">
+ <span class="ms-1 m-1">/</span>
+ </div>
+ <li class="nav-item">
+ <a class="nav-link " href="<?php echo \htmlentities(route('form-register')??'', ENT_QUOTES, 'UTF-8', false); ?>">Đăng ký</a>
+ </li>
+ <?php endif; ?>
+ </ul>
+ </div>
+
+</nav>
+
+<main>
+ <div class="container" style="min-height: calc(100vh - 412px);margin-top: 90px;">
+
+ <div class="container my-5">
+ <div class="row justify-content-center">
+ <div class="col-md-8">
+ <div class="text-center">
+ <h1 class="error-code h1 text-warning display-1 mt-5">404</h1>
+ <p class="error-message h3 lead mb-5 mt-2">Page Not Found</p>
+ <a href="<?php echo \htmlentities(route('/')??'', ENT_QUOTES, 'UTF-8', false); ?>" class="btn btn-outline-danger">Back to Home</a>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ </div>
+
+
+</main>
+
+<footer>
+ <div class="container-fluid border-top text-center pt-3 pb-3 mt-4 text-white"
+ style="background-color: #002655;">
+ <div class="container mt-3">
+ <div class="row">
+ <div class="col-4 mt-5">
+ <h7>“<?php echo \htmlentities($_SESSION['listSettings'][0]->sayings??'', ENT_QUOTES, 'UTF-8', false); ?>"
+ </h7>
+ <br>
+ <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_fb??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-brands fa-facebook"></i></a>
+ <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_tiktok??'', ENT_QUOTES, 'UTF-8', false); ?>" class="text-white ms-3"><i class="fa-brands fa-tiktok"></i></a>
+ <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_yt??'', ENT_QUOTES, 'UTF-8', false); ?>" class="text-danger ms-3"><i class="fa-brands fa-youtube"></i></a>
+ </div>
+ <div class="col-4">
+ <h5>Về YODY</h5>
+ <h7>
+ <ul class="nav flex-column">
+ <li class="nav-item">
+ <a class="text-white nav-link" href="#">Giới thiệu</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link text-white" href="#">Liên hệ</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link text-white" href="#">Tuyển dụng</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link text-white" href="#">Đăng ký đối tác</a>
+ </li>
+ </ul>
+ </h7>
+ </div>
+ <div class="col-4">
+ <h5><?php echo \htmlentities($_SESSION['listSettings'][0]->company_name??'', ENT_QUOTES, 'UTF-8', false); ?></h5>
+ <a href="" class="nav-link"><i class="fa-solid fa-map"></i> Công ty cổ phần Thời trang YODY <br>
+ Số điện thoại: <?php echo \htmlentities($_SESSION['listSettings'][0]->phone??'', ENT_QUOTES, 'UTF-8', false); ?> <br>
+ Địa chỉ: <?php echo \htmlentities($_SESSION['listSettings'][0]->address??'', ENT_QUOTES, 'UTF-8', false); ?></a>
+ <img src="../../public/img/logo_bct.webp" alt="">
+ </div>
+ </div>
+ <hr>
+ <h7>Bản quyền thuộc về kiên</h7>
+ </div>
+ </div>
+</footer>
+<?php $_shouldextend[1]=1; ?>
+</body>
+
+</html>
+
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.js"); } ?>

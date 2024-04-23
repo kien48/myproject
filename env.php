@@ -24,3 +24,5 @@ function flash($key,$msg,$route)  {
     }
     header('location:'.BASE_URL.$route.'?msg='.$key);die;
 }
+
+

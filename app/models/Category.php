@@ -9,4 +9,10 @@ class Category extends BaseModel
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
+    public function oneCategory($id)
+    {
+        $sql = "SELECT * FROM $this->table where id = ?";
+        $this->setQuery($sql);
+        return $this->loadRow([$id]);
+    }
 }
