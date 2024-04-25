@@ -2,7 +2,7 @@
 <?php $this->startSection("content"); ?>
  <div class="row">
  <div class="d-flex justify-content-between mb-3">
- <h1 class="h5 text-black-50"><?php echo \htmlentities($product->category_name??'', ENT_QUOTES, 'UTF-8', false); ?> / <?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?></h1>
+ <h1 class="h5 text-black-50"><?php echo \htmlentities($product->name_ct??'', ENT_QUOTES, 'UTF-8', false); ?> / <?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?></h1>
  </div>
  <div class="col-md-4">
  <div class="bg-light d-flex align-items-center" style="height: 560px;">
@@ -44,54 +44,76 @@
 
  </div>
 
- <div>
- <h1 class="h4">Màu sắc:</h1>
- <div class="d-flex">
- <div class="form-check">
- <input type="radio" class="form-check-input" id="color_radio1" name="color_radio"
- value="color_option1" checked>Xanh
- <label class="form-check-label" for="color_radio1"></label>
- </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="color_radio2" name="color_radio"
- value="color_option2">Đỏ
- <label class="form-check-label" for="color_radio2"></label>
- </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="color_radio2" name="color_radio"
- value="color_option2">Tím
- <label class="form-check-label" for="color_radio2"></label>
- </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="color_radio2" name="color_radio"
- value="color_option2">Vàng
- <label class="form-check-label" for="color_radio2"></label>
- </div>
- </div>
- </div>
+
+ <?php if(count($bienThe)>=1): ?>
+ <form action="<?php echo \htmlentities(route('add-cart')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="post">
  <div>
  <h1 class="h4">Kích cỡ:</h1>
  <div class="d-flex">
- <div class="form-check">
- <input type="radio" class="form-check-input" id="size_radio1" name="size_radio"
- value="size_option1" checked>M
- <label class="form-check-label" for="size_radio1"></label>
+ <?php 
+ $uniqueSizes = [];
+ ?>
+
+ <?php $__currentLoopData = $bienThe; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $size): $loop = $this->incrementLoopIndices();  ?>
+ <?php if(!in_array($size->size, $uniqueSizes)): ?>
+ <div class="form-check ms-4">
+ <input type="radio" class="form-check-input size_radio" id="size_radio_<?php echo \htmlentities($loop->index??'', ENT_QUOTES, 'UTF-8', false); ?>" name="size_radio[]"
+ value="<?php echo \htmlentities($size->size??'', ENT_QUOTES, 'UTF-8', false); ?>" >
+ <label class="form-check-label" for="size_radio_<?php echo \htmlentities($loop->index??'', ENT_QUOTES, 'UTF-8', false); ?>"><?php echo \htmlentities($size->size??'', ENT_QUOTES, 'UTF-8', false); ?></label>
  </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="size_radio2" name="size_radio"
- value="size_option2">L
- <label class="form-check-label" for="size_radio2"></label>
- </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="size_radio3" name="size_radio"
- value="size_option3">XL
- <label class="form-check-label" for="size_radio3"></label>
- </div>
+ <?php 
+ $uniqueSizes[] = $size->size;
+ ?>
+ <?php endif; ?>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
  </div>
  </div>
 
  <div>
- <form action="<?php echo \htmlentities(route('add-cart')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="post">
+ <h1 class="h4">Màu sắc:</h1>
+ <div class="d-flex" id="color_options">
+ <!-- Màu sắc sẽ được thêm vào đây -->
+ </div>
+ </div>
+
+ <script>
+ // Lắng nghe sự kiện khi click vào kích cỡ
+ document.querySelectorAll('.size_radio').forEach(function(radio) {
+ radio.addEventListener('click', function() {
+ var selectedSize = this.value;
+ var colorsHtml = '';
+
+ // Tìm các màu sắc và số lượng tương ứng với kích cỡ được chọn
+ <?php $__currentLoopData = $bienThe; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $color): $loop = $this->incrementLoopIndices();  ?>
+ <?php 
+ $class = "";
+ $sl = "";
+ if($color->quantity == 0){
+ $sl = "Sản phẩm tạm hết hàng";
+ $class = "disabled";
+ } else {
+ $sl = $color->quantity;
+ }
+ ?>
+ if ("<?php echo \htmlentities($color->size??'', ENT_QUOTES, 'UTF-8', false); ?>" === selectedSize) {
+ colorsHtml += '<div class="form-check ms-4">' +
+ '<input type="radio" class="form-check-input"  <?php echo \htmlentities($class??'', ENT_QUOTES, 'UTF-8', false); ?> id="color_radio<?php echo \htmlentities($color->id??'', ENT_QUOTES, 'UTF-8', false); ?>" name="color_radio[]" value="<?php echo \htmlentities($color->color??'', ENT_QUOTES, 'UTF-8', false); ?>" >' +
+ '<label class="form-check-label " for="color_radio<?php echo \htmlentities($color->id??'', ENT_QUOTES, 'UTF-8', false); ?>"><?php echo \htmlentities($color->color??'', ENT_QUOTES, 'UTF-8', false); ?> - Số lượng: <?php echo \htmlentities($sl??'', ENT_QUOTES, 'UTF-8', false); ?></label>' +
+ '</div>';
+ }
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+
+ // Thêm HTML màu sắc vào phần tử có id là 'color_options'
+ document.getElementById('color_options').innerHTML = colorsHtml;
+ });
+ });
+ </script>
+
+
+ <div>
+
  <h1 class="h4">Số lượng:</h1>
  <div class="d-flex">
  <div class="input-group">
@@ -107,7 +129,7 @@
  <input type="hidden" name="name" value="<?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <input type="hidden" name="price" value="<?php echo \htmlentities($product->price??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <input type="hidden" name="image" value="<?php echo \htmlentities($product->image??'', ENT_QUOTES, 'UTF-8', false); ?>">
- <input type="hidden" name="category" value="<?php echo \htmlentities($product->category_name??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <input type="hidden" name="category" value="<?php echo \htmlentities($product->name_ct??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <button type="button" class="btn btn-warning w-100 col-12 mt-3" data-bs-toggle="modal" data-bs-target="#myModal">
  <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
  hàng
@@ -137,6 +159,9 @@
  </div>
  </div>
 
+ <?php else: ?>
+ Sản phẩm đang cập nhật số lượng và màu sắc bạn vui lòng chờ
+ <?php endif; ?>
  </div>
  </div>
 
@@ -216,27 +241,57 @@
  <?php endif; ?>
  <button class="btn btn-primary" type="submit" name="send">Gửi</button>
  </form>
+
+
  <?php $__currentLoopData = $listComment; $this->addLoop($__currentLoopData);$this->getFirstLoop();
  foreach($__currentLoopData as $list): $loop = $this->incrementLoopIndices();  ?>
  <div class="card mt-3">
  <div class="card-body">
  <div class="d-flex justify-content-between">
- <h5 class="card-title"><?php if($list->username): ?>
+ <h5 class="card-title">
+ <?php if($list->username): ?>
  <?php echo \htmlentities($list->username??'', ENT_QUOTES, 'UTF-8', false); ?>
 
  <?php else: ?>
  Người ẩn danh
  <?php endif; ?>
  </h5>
- <h4 class="text-warning"><?php if($list->star != 0): ?>
- <?php echo \htmlentities($list->star??'', ENT_QUOTES, 'UTF-8', false); ?> sao
- <?php endif; ?></h4>
+ <h4 class="text-warning">
+ <?php if($list->star != 0): ?>
+ <?php echo \htmlentities($list->star??'', ENT_QUOTES, 'UTF-8', false); ?> <i class="fa-solid fa-star"></i>
+ <?php endif; ?>
+ </h4>
  </div>
  <p class="card-text"><?php echo \htmlentities($list->content??'', ENT_QUOTES, 'UTF-8', false); ?></p>
  </div>
-
  </div>
+
+
+ <?php if(isset($feedback)): ?>
+ <?php $__currentLoopData = $feedback; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $item): $loop = $this->incrementLoopIndices();  ?>
+ <?php if(count($item)>=1): ?>
+ <?php if($item[0]->id_comment == $list->id): ?>
+ <div class="text-end "><i class="fa-solid fa-turn-down"></i></div>
+ <div class="d-flex justify-content-end mb-4">
+ <div class="card bg-warning" style="width: 400px">
+ <div class="card-body">
+ <div class="d-flex justify-content-between">
+ <h5 class="card-title">
+ admin
+ </h5>
+ </div>
+ <p class="card-text"><?php echo \htmlentities($item[0]->text??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ </div>
+ </div>
+ </div>
+ <?php endif; ?>
+ <?php endif; ?>
  <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ <?php endif; ?>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+
+
 
  </div>
 

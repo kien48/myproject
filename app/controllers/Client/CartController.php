@@ -35,26 +35,42 @@ class cartController extends BaseController
             $category = $_POST['category'];
             $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
             $check_sp = 0;
+            $keyID = uniqid();
 
-            if (count($_SESSION['giohang']) > 0) {
-                foreach ($_SESSION['giohang'] as $key => $value) {
-                    if ($key == $id) {
-                        $check_sp = 1;
-                        $_SESSION['giohang'][$id]["quantity"] += $quantity;
-                        break;
+            // Kiểm tra xem size và color đã được chọn chưa
+            if(isset($_POST['size_radio']) && isset($_POST['color_radio'])) {
+                $size_radio = $_POST['size_radio'];
+                $color_radio = $_POST['color_radio'];
+                if (count($_SESSION['giohang']) > 0) {
+                    foreach ($_SESSION['giohang'] as $cart_id => $item) {
+                        // Kiểm tra sản phẩm có trong giỏ hàng với cùng id, size và color
+                        if ($item['id'] == $id && $item['size'] == $size_radio && $item['color'] == $color_radio) {
+                            $check_sp = 1; // Đánh dấu sản phẩm đã tồn tại trong giỏ hàng
+                            $_SESSION['giohang'][$cart_id]["quantity"] += $quantity; // Tăng số lượng sản phẩm
+                            break;
+                        }
                     }
                 }
+
+                if ($check_sp == 0) {
+                    // Không cần tạo mảng mới ở đây, chỉ cần gán trực tiếp
+                    $_SESSION['giohang'][] = ["keyID"=> $keyID ,"id" => $id, "name" => $name, "price" => $price, "image" => $image, "category" => $category, "quantity" => $quantity, "size" => $size_radio, "color" => $color_radio];
+                }
+            } else {
+                // Nếu size hoặc color chưa được chọn, hiển thị thông báo
+                echo '<script>alert("Vui lòng chọn kích thước và màu sắc!");</script>';
+                // Sau khi hiển thị thông báo, dừng việc thêm vào giỏ hàng
+                echo '<script>window.history.back();</script>';
+                return;
             }
 
-            if ($check_sp == 0) {
-                // Không cần tạo mảng mới ở đây, chỉ cần gán trực tiếp
-                $_SESSION['giohang'][$id] = ["id" => $id, "name" => $name, "price" => $price, "image" => $image, "category" => $category, "quantity" => $quantity];
-            }
-
-            // Chuyển hướng người dùng đến trang giỏ hàng
-            header('Location: ' . BASE_URL . 'list-cart');
+            // Chuyển hướng về trang trước
+            header("Location: {$_SERVER['HTTP_REFERER']}");
+            exit();
         }
     }
+
+
     public function delete()
     {
 
@@ -94,7 +110,8 @@ class cartController extends BaseController
             $this->discount->applySuccess($matchedId); // Áp dụng giảm giá chỉ khi người dùng chọn "submit"
             if($id_order){
                 foreach ($_SESSION['giohang'] as $item) {
-                    $this->cart->orderDetail(NULL, $id_order,$item['id'], $item['name'], $item['quantity'], $item['price'], $item['price'] * $item['quantity']);
+                    $this->cart->orderDetail(NULL, $id_order,$item['id'], $item['name'], $item['quantity'], $item['price'], $item['price'] * $item['quantity'],$item['size'][0],$item['color'][0]);
+                    $this->cart->updateQuantity($item['quantity'],$item['id'],$item['color'][0],$item['size'][0]);
                 }
                 unset($_SESSION['total']);
                 unset($_SESSION['giohang']);
@@ -164,28 +181,40 @@ class cartController extends BaseController
     public function updateQuantityProductCart()
     {
         $status = 0; // Khởi tạo biến status
-        // Kiểm tra xem có dữ liệu gửi lên không
-        if(isset($_POST['quantitynew']) && isset($_POST['id_product'])) {
+
+        // Kiểm tra xem có dữ liệu số lượng mới và key được gửi lên không
+        if(isset($_POST['quantitynew']) && isset($_POST['key'])) {
             // Lặp qua mỗi sản phẩm được gửi lên từ form
-            foreach($_POST['id_product'] as $index => $id) {
-                // Kiểm tra xem sản phẩm có tồn tại trong giỏ hàng không
-                if(isset($_SESSION['giohang'][$id])) {
-                    // Cập nhật số lượng mới cho sản phẩm
-                    $quantityNew = $_POST['quantitynew'][$index];
-                    $_SESSION['giohang'][$id]['quantity'] = $quantityNew;
-                    $status = 1; // Cập nhật biến status thành 1 khi cập nhật số lượng thành công
-                } else {
+            foreach($_POST['key'] as $index => $keyID) {
+                $found = false; // Biến để kiểm tra xem sản phẩm có tồn tại trong giỏ hàng không
+
+                // Lặp qua mỗi sản phẩm trong giỏ hàng để tìm sản phẩm cần cập nhật số lượng
+                foreach ($_SESSION['giohang'] as $cartIndex => &$cart){
+                    // Kiểm tra nếu keyID của sản phẩm trong giỏ hàng trùng với keyID gửi từ form
+                    if($cart['keyID'] == $keyID) {
+                        // Cập nhật số lượng mới cho sản phẩm
+                        $quantityNew = $_POST['quantitynew'][$index];
+                        $cart['quantity'] = $quantityNew;
+                        $status = 1; // Cập nhật biến status thành 1 khi cập nhật số lượng thành công
+                        $found = true; // Đánh dấu là đã tìm thấy sản phẩm
+                        break; // Thoát khỏi vòng lặp khi tìm thấy sản phẩm
+                    }
+                }
+
+                // Kiểm tra nếu không tìm thấy sản phẩm trong giỏ hàng
+                if(!$found) {
                     // Sản phẩm không tồn tại trong giỏ hàng
                     // Xử lý thông báo lỗi hoặc thực hiện các hành động khác tùy theo yêu cầu
                     // Ví dụ:
                     // header('Location: ' . BASE_URL . 'error-page');
                     // hoặc
                     // echo "Sản phẩm không tồn tại trong giỏ hàng.";
+                    $status = 0; // Cập nhật biến status thành 0 khi có lỗi xảy ra
                 }
             }
 
             // Sau khi cập nhật xong, chuyển hướng người dùng đến trang giỏ hàng hoặc trang khác
-            return $this->renderClient("cart.list", compact('status')); // Trả về trạng thái sau khi cập nhật
+            header('Location: ' . BASE_URL . 'list-cart');
             exit; // Chắc chắn kết thúc chương trình sau khi chuyển hướng
         } else {
             // Nếu không có dữ liệu gửi lên hoặc thiếu dữ liệu, cập nhật biến status và chuyển hướng đến trang lỗi
@@ -194,8 +223,6 @@ class cartController extends BaseController
             exit; // Chắc chắn kết thúc chương trình sau khi chuyển hướng
         }
     }
-
-
 
 
 

@@ -23,7 +23,6 @@ class homeController extends BaseController{
         $this->user->updateRank();
         $listSettings = $this->setting->listSettings();
         $_SESSION['listSettings'] = $listSettings;
-        $products = $this->product->listProduct();
         $kids = $this->product->listProductKids(4);
         $new = $this->product->productNew();
         $bestSeller = $this->product->listProductsBestSeller();

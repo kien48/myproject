@@ -2,7 +2,7 @@
 @section("content")
     <div class="row">
         <div class="d-flex justify-content-between mb-3">
-            <h1 class="h5 text-black-50">{{$product->category_name}} / {{$product->name}}</h1>
+            <h1 class="h5 text-black-50">{{$product->name_ct}} / {{$product->name}}</h1>
         </div>
         <div class="col-md-4">
             <div class="bg-light d-flex align-items-center" style="height: 560px;">
@@ -43,99 +43,122 @@
 
                 </div>
 
-                <div>
-                    <h1 class="h4">Màu sắc:</h1>
-                    <div class="d-flex">
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="color_radio1" name="color_radio"
-                                   value="color_option1" checked>Xanh
-                            <label class="form-check-label" for="color_radio1"></label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="color_radio2" name="color_radio"
-                                   value="color_option2">Đỏ
-                            <label class="form-check-label" for="color_radio2"></label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="color_radio2" name="color_radio"
-                                   value="color_option2">Tím
-                            <label class="form-check-label" for="color_radio2"></label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="color_radio2" name="color_radio"
-                                   value="color_option2">Vàng
-                            <label class="form-check-label" for="color_radio2"></label>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h1 class="h4">Kích cỡ:</h1>
-                    <div class="d-flex">
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="size_radio1" name="size_radio"
-                                   value="size_option1" checked>M
-                            <label class="form-check-label" for="size_radio1"></label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="size_radio2" name="size_radio"
-                                   value="size_option2">L
-                            <label class="form-check-label" for="size_radio2"></label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" id="size_radio3" name="size_radio"
-                                   value="size_option3">XL
-                            <label class="form-check-label" for="size_radio3"></label>
-                        </div>
-                    </div>
-                </div>
 
-                <div>
+            @if(count($bienThe)>=1)
                     <form action="{{route('add-cart')}}" method="post">
-                    <h1 class="h4">Số lượng:</h1>
-                    <div class="d-flex">
-                        <div class="input-group">
-                            <button onclick="minus(this)" type="button" class="btn btn-outline-secondary btn-sm">-</button>
-                            <input onkeyup="kiemtrasoluong(this)" value="{{$soLuong}}" type="text" class="form-control form-control-sm" name="quantity" min="1" max="50" style="max-width: 35px">
-                            <button onclick="plus(this)" type="button" class="btn btn-outline-secondary btn-sm">+</button>
+                    <div>
+                        <h1 class="h4">Kích cỡ:</h1>
+                        <div class="d-flex">
+                            @php
+                                $uniqueSizes = [];
+                            @endphp
+
+                            @foreach($bienThe as $size)
+                                @if(!in_array($size->size, $uniqueSizes))
+                                    <div class="form-check ms-4">
+                                        <input type="radio" class="form-check-input size_radio" id="size_radio_{{$loop->index}}" name="size_radio[]"
+                                               value="{{$size->size}}" >
+                                        <label class="form-check-label" for="size_radio_{{$loop->index}}">{{$size->size}}</label>
+                                    </div>
+                                    @php
+                                        $uniqueSizes[] = $size->size;
+                                    @endphp
+                                @endif
+                            @endforeach
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="hidden" name="id" value="{{$product->id}}">
-                        <input type="hidden" name="name" value="{{$product->name}}">
-                        <input type="hidden" name="price" value="{{$product->price}}">
-                        <input type="hidden" name="image" value="{{$product->image}}">
-                        <input type="hidden" name="category" value="{{$product->category_name}}">
-                        <button type="button" class="btn btn-warning w-100 col-12 mt-3" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
-                            hàng
-                        </button>
-                        <!-- The Modal -->
-                        <div class="modal" id="myModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
 
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Bạn có chắc chắn muốn thêm vào giỏ hàng không ?</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" name="them" class="btn btn-warning" data-bs-dismiss="modal">Thêm</button>
-                                    </div>
+                    <div>
+                        <h1 class="h4">Màu sắc:</h1>
+                        <div class="d-flex" id="color_options">
+                            <!-- Màu sắc sẽ được thêm vào đây -->
+                        </div>
+                    </div>
 
+                    <script>
+                        // Lắng nghe sự kiện khi click vào kích cỡ
+                        document.querySelectorAll('.size_radio').forEach(function(radio) {
+                            radio.addEventListener('click', function() {
+                                var selectedSize = this.value;
+                                var colorsHtml = '';
+
+                                // Tìm các màu sắc và số lượng tương ứng với kích cỡ được chọn
+                                @foreach($bienThe as $color)
+                                        @php
+                                            $class = "";
+                                            $sl = "";
+                                            if($color->quantity == 0){
+                                                $sl = "Sản phẩm tạm hết hàng";
+                                                $class = "disabled";
+                                            } else {
+                                                $sl = $color->quantity;
+                                            }
+                                        @endphp
+                                if ("{{$color->size}}" === selectedSize) {
+                                    colorsHtml += '<div class="form-check ms-4">' +
+                                        '<input type="radio" class="form-check-input"  {{$class}} id="color_radio{{$color->id}}" name="color_radio[]" value="{{$color->color}}" >' +
+                                        '<label class="form-check-label " for="color_radio{{$color->id}}">{{$color->color}} - Số lượng: {{$sl}}</label>' +
+                                        '</div>';
+                                }
+                                @endforeach
+
+                                // Thêm HTML màu sắc vào phần tử có id là 'color_options'
+                                document.getElementById('color_options').innerHTML = colorsHtml;
+                            });
+                        });
+                    </script>
+
+
+                    <div>
+
+                            <h1 class="h4">Số lượng:</h1>
+                            <div class="d-flex">
+                                <div class="input-group">
+                                    <button onclick="minus(this)" type="button" class="btn btn-outline-secondary btn-sm">-</button>
+                                    <input onkeyup="kiemtrasoluong(this)" value="{{$soLuong}}" type="text" class="form-control form-control-sm" name="quantity" min="1" max="50" style="max-width: 35px">
+                                    <button onclick="plus(this)" type="button" class="btn btn-outline-secondary btn-sm">+</button>
                                 </div>
                             </div>
-                        </div>
-
-
-                        </form>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" name="id" value="{{$product->id}}">
+                            <input type="hidden" name="name" value="{{$product->name}}">
+                            <input type="hidden" name="price" value="{{$product->price}}">
+                            <input type="hidden" name="image" value="{{$product->image}}">
+                            <input type="hidden" name="category" value="{{$product->name_ct}}">
+                            <button type="button" class="btn btn-warning w-100 col-12 mt-3" data-bs-toggle="modal" data-bs-target="#myModal">
+                                <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+                                hàng
+                            </button>
+                            <!-- The Modal -->
+                            <div class="modal" id="myModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
 
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Bạn có chắc chắn muốn thêm vào giỏ hàng không ?</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="them" class="btn btn-warning" data-bs-dismiss="modal">Thêm</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+
+            @else
+                Sản phẩm đang cập nhật số lượng và màu sắc bạn vui lòng chờ
+                @endif
             </div>
         </div>
 
@@ -215,25 +238,54 @@
                                 @endif
                                 <button class="btn btn-primary" type="submit" name="send">Gửi</button>
                             </form>
-                            @foreach($listComment as $list)
+
+
+                            @foreach ($listComment as $list)
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
-                                            <h5 class="card-title">@if ($list->username)
+                                            <h5 class="card-title">
+                                                @if ($list->username)
                                                     {{$list->username}}
                                                 @else
-                                                   Người ẩn danh
+                                                    Người ẩn danh
                                                 @endif
                                             </h5>
-                                            <h4 class="text-warning">@if ($list->star != 0)
-                                                    {{$list->star}} sao
-                                                @endif </h4>
+                                            <h4 class="text-warning">
+                                                @if ($list->star != 0)
+                                                    {{$list->star}} <i class="fa-solid fa-star"></i>
+                                                @endif
+                                            </h4>
                                         </div>
                                         <p class="card-text">{{$list->content}}</p>
                                     </div>
-
                                 </div>
+
+
+                                @if (isset($feedback))
+                                    @foreach ($feedback as $item)
+                                        @if(count($item)>=1)
+                                            @if ($item[0]->id_comment == $list->id)
+                                                <div class="text-end "><i class="fa-solid fa-turn-down"></i></div>
+                                                <div class="d-flex justify-content-end mb-4">
+                                                    <div class="card bg-warning" style="width: 400px">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <h5 class="card-title">
+                                                                    admin
+                                                                </h5>
+                                                            </div>
+                                                            <p class="card-text">{{$item[0]->text}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
                             @endforeach
+
+
 
                         </div>
 

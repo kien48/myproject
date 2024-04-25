@@ -30,7 +30,12 @@ class ProductController extends BaseController{
         $product = $this->product->detailProduct($id);
         $id_ct = $product->id_ct;
         $productCL = $this->product->listProductCl($id_ct,$id);
-        return $this->renderClient("product.detail", compact('product', 'productCL','soLuong','listComment','rating','total'));
+        $feedback = [];
+        foreach ($listComment as $value) {
+            $feedback[] = $this->comment->feedBack($value->id);
+        }
+        $bienThe = $this->product->bienThe($id);
+        return $this->renderClient("product.detail", compact('product', 'productCL','soLuong','listComment','rating','total','feedback','bienThe'));
     }
 
 

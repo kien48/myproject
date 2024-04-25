@@ -4,9 +4,9 @@ const DBNAME = "yody";
 const DBUSER = "root";
 const DBPASS = "";
 const DBCHARSET = "utf8";
-const DBHOST = "127.0.0.1";
+const DBHOST = "localhost:3300";
 //
-const BASE_URL = "http://localhost/php2/myproject/";
+const BASE_URL = "http://localhost:90/myproject/";
 
 function route($url) {
     return BASE_URL.$url;

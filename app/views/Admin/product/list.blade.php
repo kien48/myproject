@@ -27,6 +27,7 @@
                     <th>Giá</th>
                     <th>Ảnh</th>
                     <th>Danh mục</th>
+                    <th>Biến thể</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -43,7 +44,9 @@
                         </div>
                     </td>
                     <td>{{$pro->id_ct}}</td>
+                    <td>{{$pro->status}}</td>
                     <td class="text-nowrap" style="width: 1px;">
+                        <a href="detail.html"><button class="btn btn-outline-secondary"><i class="fa-solid fa-viruses"></i> Biến thể</button></a>
                         <a href="detail.html"><button class="btn btn-outline-primary"><i class="fa-solid fa-eye"></i> Chi
                                 tiết</button></a>
                         <a href="update.html"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>

@@ -14,12 +14,12 @@ class Cart extends BaseModel
         return $lastId;
     }
 
-    public function orderDetail($id, $invoice_id,$id_product, $product_name, $quantity, $price, $total)
+    public function orderDetail($id, $invoice_id,$id_product, $product_name, $quantity, $price, $total,$size,$color)
     {
-        $sql = "INSERT INTO invoice_details (id, invoice_id,id_product, product_name, quantity, price, total) 
-                VALUES (?, ?,?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO invoice_details (id, invoice_id,id_product, product_name, quantity, price, total, size, color) 
+                VALUES (?, ?,?, ?, ?, ?, ?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id, $invoice_id,$id_product, $product_name, $quantity, $price, $total]);
+        return $this->execute([$id, $invoice_id,$id_product, $product_name, $quantity, $price, $total,$size,$color]);
     }
     public function listOrder($id_user)
     {
@@ -30,19 +30,31 @@ class Cart extends BaseModel
 
     public function totalToday()
     {
-        $sql = "SELECT *, SUM(total_amount) AS total_today FROM $this->table 
-                WHERE DATE(created_at) = CURDATE() AND status = 3
-               
-";
+        $sql = "SELECT SUM(total_amount) AS total_today 
+            FROM $this->table
+            WHERE DATE(created_at) = CURDATE() AND status = 3
+            GROUP BY DATE(created_at), status";
+
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
+
 
     public function listAllOrder()
     {
         $sql = "SELECT * FROM $this->table where 1 order by id desc";
         $this->setQuery($sql);
         return $this->loadAllRows();
+    }
+
+
+    public function updateQuantity($quantity,$idpro,$color,$size)
+    {
+        $sql = "UPDATE `variant`
+                SET `quantity` = `quantity` - ?
+                WHERE `idpro` = ? AND `color` = ? AND `size` = ?;";
+        $this->setQuery($sql);
+        return $this->execute([$quantity,$idpro,$color,$size]);
     }
 
 

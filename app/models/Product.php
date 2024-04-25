@@ -6,7 +6,7 @@ class Product extends BaseModel {
     public function productNew()
     {
         $sql = "SELECT p.*, c.name AS category_name FROM {$this->table} p
-        INNER JOIN categories c ON p.id_ct = c.id 
+        INNER JOIN categories c ON p.id_ct = c.id WHERE status = 1
         ORDER BY p.id DESC LIMIT 4";
         $this->setQuery($sql);
         return $this->loadAllRows();
@@ -16,7 +16,7 @@ class Product extends BaseModel {
         // Sử dụng dấu `%` trong câu truy vấn để tìm kiếm các từ khóa trong tên sản phẩm
         $searchKeyword = '%' . $keyword . '%';
 
-        $sql = "SELECT * FROM $this->table WHERE name LIKE ?";
+        $sql = "SELECT * FROM $this->table WHERE name LIKE ? AND status = 1";
         $this->setQuery($sql);
 
         // Truyền giá trị của biến $searchKeyword vào mảng truyền vào hàm loadAllRows([$searchKeyword])
@@ -26,29 +26,32 @@ class Product extends BaseModel {
 
     public function listProductForCategory($id_ct)
     {
-        $sql = "SELECT * FROM $this->table WHERE id_ct = ?";
+        $sql = "SELECT * FROM $this->table WHERE id_ct = ? AND status = 1";
         $this->setQuery($sql);
         return $this->loadAllRows([$id_ct]);
     }
 
     public function listProduct()
     {
-        $sql = "SELECT * FROM $this->table ";
+        $sql = "SELECT * FROM `products` WHERE 1 ";
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
 
     public function listProductPages($vitri,$bghi)
     {
-        $sql = "SELECT * FROM $this->table ORDER BY id DESC LIMIT $vitri,$bghi";
+        $sql = "SELECT * FROM $this->table ORDER BY id DESC LIMIT $vitri,$bghi ";
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
 
     public function detailProduct($id)
     {
-        $sql = "SELECT p.*, c.name AS category_name FROM {$this->table} p
-        INNER JOIN categories c ON p.id_ct = c.id   WHERE p.id =?";
+        $sql = "SELECT p.*, c.name as name_ct
+            FROM products p 
+            INNER JOIN categories c ON p.id_ct = c.id
+            WHERE p.id = ?";
+
         $this->setQuery($sql);
         return $this->loadRow([$id]);
     }
@@ -67,13 +70,13 @@ class Product extends BaseModel {
     }
     public function listProductCl($id_ct,$id)
     {
-        $sql = "SELECT * FROM {$this->table} WHERE id_ct = ? AND id != ? LIMIT 0,4";
+        $sql = "SELECT * FROM {$this->table} WHERE status = 1 AND id_ct = ? AND id != ? LIMIT 0,4";
         $this->setQuery($sql);
         return $this->loadAllRows([$id_ct,$id]);
     }
     public function listProductKids($id_ct)
     {
-        $sql = "SELECT * FROM $this->table WHERE id_ct = ? LIMIT 0,4";
+        $sql = "SELECT * FROM $this->table WHERE status =1 AND id_ct = ? LIMIT 0,4";
         $this->setQuery($sql);
         return $this->loadAllRows([$id_ct]);
     }
@@ -150,4 +153,11 @@ ORDER BY
         return $this->loadAllRows();
     }
 
+
+    public function bienThe($id_pro)
+    {
+        $sql = "SELECT * FROM `variant` WHERE idpro = ?";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id_pro]);
+    }
 }

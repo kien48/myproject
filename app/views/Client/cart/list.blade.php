@@ -2,7 +2,7 @@
 @section("content")
     @if(!empty($_SESSION['giohang']))
         <div class="row ">
-            <div class="col-md-7 bg-light-subtle rounded-2 mt-4" style="margin-right: 0px;">
+            <div class="col-md-8 bg-light-subtle rounded-2 mt-4" style="margin-right: 0px;">
                 <h1 class="h4">Giỏ hàng</h1>
                 <div class="table-responsive">
                     <table class="table text-center">
@@ -11,6 +11,8 @@
                         <th>Tên</th>
                         <th>Ảnh</th>
                         <th>Số lượng</th>
+                        <th>Màu sắc</th>
+                        <th>Kích cỡ</th>
                         <th>Đơn giá</th>
                         <th>Tổng tiền</th>
                         <th>Thao tác</th>
@@ -30,7 +32,6 @@
                                 $money = $price * $quantity;
                                 // Cập nhật tổng tiền
                                 $total += $money;
-
                             @endphp
                             <tr>
                                 <td>{{$count++}}</td>
@@ -47,13 +48,19 @@
                                             <input name="quantitynew[]" onkeyup="kiemtrasoluong(this)" type="number" class="form-control text-center " style="max-width: 70px"
                                                    value="{{$quantity}}" min="1">
                                             <input name="id_product[]" type="hidden" value="{{$id}}">
+                                            <input name="key[]" type="hidden" value="{{$keyID}}">
+                                            <input name="color[]" type="hidden" value="{{$color[0]}}">
+                                            <input name="size[]" type="hidden" value="{{$size[0]}}">
                                         </div>
 
                                 </td>
+                                <td>{{$color[0]}}</td>
+                                <td>{{$size[0]}}</td>
+
                                 <td>{{number_format($price)}} đ</td>
                                 <td>{{number_format($money)}} đ</td>
                                 <td>
-                                    <a href="{{route('delete-cart-product/'.$id)}}" onclick="return confirm('xóa sản phẩm {{$name}} nhé')" class="btn btn-outline-danger border-0"><i
+                                    <a href="{{route('delete-cart-product/'.$key)}}" onclick="return confirm('xóa sản phẩm {{$name}} nhé')" class="btn btn-outline-danger border-0"><i
                                                 class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
@@ -76,18 +83,28 @@
                     </table>
                 </div>
             </div>
-            <div class="col-md-1"></div>
             <div class="col-md-4 bg-light-subtle rounded-2 mt-4">
                 <div class="d-flex justify-content-between">
                     <h1 class="h4">Tổng tiền đơn hàng:</h1>
                     <h1 class="h4">{{number_format($total)}} đ</h1>
                     @php
                         $_SESSION['total'] =$total;
+                        $freeShip = 1000000;
+                        $percent = $_SESSION['total']/$freeShip * 100;
                     @endphp
+                </div>
+                @if($_SESSION['total'] < 1000000)
+                    <h6>Còn {{  number_format($freeShip -$_SESSION['total'])}}đ là được freeship nha</h6>
+                    @else
+                    <h6>Bạn đã được freeship</h6>
+                @endif
+                <div class="progress mt-2">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{$percent}}%"></div>
                 </div>
                 <div class="mt-2">
                     <a href="{{route('order')}}"><button class="w-100 btn btn-warning"><i class="fa-solid fa-money-bill-1-wave"></i> Thanh toán
                             ngay</button></a>
+
                 </div>
                 <div>
                     <h6 class="fw-normal mt-5"><i class="fa-solid fa-tag"></i> Sử dụng mã giảm giá ở bước

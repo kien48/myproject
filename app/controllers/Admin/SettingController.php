@@ -28,12 +28,17 @@ class SettingController extends BaseController
                 $company_name = $_POST['company_name'];
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
-                $logo = $_SESSION['listSettings'][0]->logo;
-
+                $logo = $_POST['logo'];
+                $banner1 =$_SESSION['listSettings'][0]->banner1;
+                $banner2 = $_SESSION['listSettings'][0]->banner2;
+                $banner3 = $_SESSION['listSettings'][0]->banner3;
+                $link_bn_1 = $_POST['link_bn_1'];
+                $link_bn_2 = $_POST['link_bn_2'];
+                $link_bn_3 = $_POST['link_bn_3'];
                 // Kiểm tra xem có banner trong session không
                 if(isset($_SESSION['listSettings'][0]->banner)){
                     $banner = $_SESSION['listSettings'][0]->banner;
-                    $check = $this->settings->updateSettings($logo,$sayings,$banner,$link_fb,$link_yt,$link_tiktok,$company_name,$phone,$address);
+                    $check = $this->settings->updateSettings($logo,$sayings,$banner,$link_fb,$link_yt,$link_tiktok,$company_name,$phone,$address,$banner1,$banner2,$banner3,$link_bn_1,$link_bn_2,$link_bn_3);
                     unset($_SESSION['listSettings']);
                     if ($check) {
                         $_SESSION['listSettings'] = $check;

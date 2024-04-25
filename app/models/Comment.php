@@ -36,7 +36,20 @@ class Comment extends BaseModel {
 
     public function listAll()
     {
-        $sql = "SELECT * FROM $this->table WHERE 1 ORDER BY ID DESC";
+        $sql = "SELECT * FROM comments WHERE 1 ORDER BY ID DESC";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
+    public function feedBack($id_comment)
+    {
+        $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = ".$id_comment;
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+    public function checkFeedBack($id_comment)
+    {
+        $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = ".$id_comment;
         $this->setQuery($sql);
         return $this->loadAllRows();
     }

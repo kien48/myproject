@@ -50,6 +50,9 @@ $router->get('inbox', [App\Controllers\Client\LoginController::class, "inbox"]);
 $router->post('add-box', [App\Controllers\Client\LoginController::class, "addBox"]);
 $router->post('send', [App\Controllers\Client\LoginController::class, "send"]);
 
+$router->post('list-cm/{id}', [App\Controllers\Client\ProductController::class, "listCM"]);
+
+
 $router->filter('admin', function() use ($router) {
 
     if (!isset($_SESSION['admin']) || empty($_SESSION['admin'])) {

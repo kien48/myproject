@@ -17,13 +17,57 @@
                     <tr>
                         <td>Logo</td>
                         <td>
-                            <input type="file" class="form-control" name="logo">
+                            <input type="text" class="form-control" name="logo" value="{{$_SESSION['listSettings'][0]->logo}}">
                             <div class="border text-center " style="height: 70px">
-                                <img src="../{{$_SESSION['listSettings'][0]->logo}}" alt="" height="50px" class="mt-2">
+                                <img src="{{$_SESSION['listSettings'][0]->logo}}" alt="" height="50px" class="mt-2">
                             </div>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>Banner 1</td>
+                        <td>
+                            <input type="file" class="form-control" name="banner1">
+                            <div class="border text-center " style="height: 70px">
+                                <img src="../{{$_SESSION['listSettings'][0]->banner1}}" alt="" height="50px" class="mt-2">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Link banner 1 (lấy ID bài viết)</td>
+                        <td>
+                            <input type="text" class="form-control" name="link_bn_1" value="{{$_SESSION['listSettings'][0]->link_bn_1}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Banner 2</td>
+                        <td>
+                            <input type="file" class="form-control" name="banner2">
+                            <div class="border text-center " style="height: 70px">
+                                <img src="../{{$_SESSION['listSettings'][0]->banner2}}" alt="" height="50px" class="mt-2">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Link banner 2 (lấy ID bài viết)</td>
+                        <td>
+                            <input type="text" class="form-control" name="link_bn_2" value="{{$_SESSION['listSettings'][0]->link_bn_2}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Banner 3</td>
+                        <td>
+                            <input type="file" class="form-control" name="banner3">
+                            <div class="border text-center " style="height: 70px">
+                                <img src="../{{$_SESSION['listSettings'][0]->banner3}}" alt="" height="50px" class="mt-2">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Link banner 3 (lấy ID bài viết)</td>
+                        <td>
+                            <input type="text" class="form-control" name="link_bn_3" value="{{$_SESSION['listSettings'][0]->link_bn_3}}">
+                        </td>
+                    </tr>
                     <tr>
                         <td>Câu nói</td>
                         <td>

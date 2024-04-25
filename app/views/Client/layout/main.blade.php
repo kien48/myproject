@@ -12,7 +12,7 @@
 <div class="loading-overlay">
     <div class="loading-spinner"></div>
 </div>
-<nav class="navbar navbar-expand-sm fixed-top shadow fw-bold" style="backdrop-filter: blur(5px);">
+<nav class="navbar navbar-expand-sm fixed-top shadow fw-bold" style="backdrop-filter: blur(10px);">
     <div class="container">
         <a class="navbar-brand" href="{{ route('/') }}">
             <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/05/Logo-Yody.png" alt="Logo" height="50px">
@@ -39,7 +39,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('post/1') }}">Bài viết</a>
                 </li>
+                   <li class="nav-item">
+                       <a class="nav-link" href="{{ route('post/1') }}">Nghe nhạc</a>
+                   </li>
             </ul>
+
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
                     <form class="d-flex align-items-center border rounded-pill shadow-sm bg-light px-3 py-2 me-2"

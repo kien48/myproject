@@ -17,7 +17,12 @@
                 <h1 class="h3">Đơn vị vận chuyển</h1>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="size_radio2" name="ship" value="Giao hàng nhanh" checked required><i class="fa-solid fa-truck-fast"></i> Giao hàng nhanh (+30k)
+                <input type="radio" class="form-check-input" id="size_radio2" name="ship" value="Giao hàng nhanh" checked required><i class="fa-solid fa-truck-fast"></i>
+                @if($_SESSION['total'] < 1000000)
+                    Giao hàng nhanh (+30k)
+                    @else
+                    Giao hàng nhanh (freeship)
+                @endif
                 <label class="form-check-label" for="size_radio2"></label>
             </div>
             <div>
@@ -55,6 +60,8 @@
                             <p class="text-black-50">Số lượng: {{ $quantity }}</p>
                         </td>
                         <td>{{ number_format($money) }} đ</td>
+                        <td>{{$size[0] }}</td>
+                        <td>{{ $color[0] }}</td>
                     </tr>
                 </table>
             @endforeach
@@ -80,8 +87,13 @@
             <div class="d-flex justify-content-between mt-3 mb-3">
                 <h1 class="h4">Tổng cộng:</h1>
                 @if(!isset($totalCompleted))
-                    <h1 class="h4">{{ number_format($total + 30000) }} đ</h1>
-                    <input type="hidden" name="total" value="{{ $total + 30000 }}">
+                    @php if ($total >= 1000000){
+                            $tong = $total;
+                         }else{
+                              $tong = $total + 30000;
+                         } @endphp
+                    <h1 class="h4">{{ number_format($tong) }} đ</h1>
+                    <input type="hidden" name="total" value="{{$tong }}">
                 @else
                     <h1 class="h4">{{ number_format($totalCompleted ) }} đ</h1>
                     <input type="hidden" name="totalCompleted" value="{{ $totalCompleted}}">

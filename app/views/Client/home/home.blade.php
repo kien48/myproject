@@ -13,15 +13,18 @@
         <!-- The slideshow/carousel -->
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="public/img/YODY-web-1.png" class="d-block w-100" alt="Banner 1">
+                <a href="{{route('post/detail/'.$_SESSION['listSettings'][0]->link_bn_1)}}"><img src="{{ $_SESSION['listSettings'][0]->banner1 }}" class="d-block w-100" alt="Banner 1"></a>
+            </div>
+
+            <div class="carousel-item">
+                <a href="{{route('post/detail/'.$_SESSION['listSettings'][0]->link_bn_2)}}"><img src="{{ $_SESSION['listSettings'][0]->banner2 }}" class="d-block w-100" alt="Banner 2"></a>
             </div>
             <div class="carousel-item">
-                <img src="public/img/1920x600-1-0ef01878-cc15-4665-b233-54ae41a5f1a0.webp" class="d-block w-100" alt="Banner 2">
-            </div>
-            <div class="carousel-item">
-                <img src="public/img/banner-new-bst-mobile.webp" class="d-block w-100" alt="Banner 3">
+                <a href="{{route('post/detail/'.$_SESSION['listSettings'][0]->link_bn_3)}}"> <img src="{{ $_SESSION['listSettings'][0]->banner3 }}" class="d-block w-100" alt="Banner 3"></a>
             </div>
         </div>
+
+
 
         <!-- Left and right controls/icons -->
         <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
@@ -31,7 +34,6 @@
             <span class="carousel-control-next-icon"></span>
         </button>
     </div>
-
 
     <!-- Sản phẩm mới nhất -->
     <div class="container mt-4">
@@ -121,13 +123,12 @@
                         <div class="d-flex justify-content-center">
                             <div class="fw-bolder text-danger">{{number_format($kid->price)}} vnđ</div>
                         </div>
-                        <form action="{{route('add-cart')}}" method="post">
-                            <!-- Form tương tác -->
-                        </form>
                     </div>
                 </div>
         </div>
         @endforeach
     </div>
     </div>
+
+
 @endsection

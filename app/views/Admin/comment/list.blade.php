@@ -21,9 +21,9 @@
                     <tr>
                         <th>{{$value->id}}</th>
                         <td>{{$value->id_user}}</td>
-                        <td>{{substr($value->content,0,20)}}</td>
-                        <td>{{$value->created_at}}</td>
+                        <td><p data-bs-toggle="tooltip" title="{{$value->content}}!">{{$value->content}}</p></td>
                         <td>{{$value->id_pro}}</td>
+                        <td>{{$value->created_at}}</td>
                         <td>{{$value->star}} <i class="fa-solid fa-star"></i></td>
 
                         <td class="text-nowrap" style="width: 1px;">
@@ -35,4 +35,7 @@
             </table>
         </div>
     </div>
+
+
+
 @endsection
