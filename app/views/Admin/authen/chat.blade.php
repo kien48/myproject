@@ -41,13 +41,13 @@
     </style>
 
     <div class="container mt-5">
-        <h1 class="mb-4">Trang tin nhắn</h1>
+        <h1 class="mb-4">Trang hỗ trợ</h1>
         <div class="row">
             <div class="col-md-12">
                 <!-- Khu vực hiển thị tin nhắn -->
                 <div class="card">
                     <div class="card-header">
-                        Tin nhắn với Admin
+                        Tin nhắn với người dùng
                     </div>
                     @if(isset($checkBox) && count($checkBox) > 0)
                         <div class="card-body message-container">
@@ -64,7 +64,7 @@
                                     <div class="message sent-message">
                                         <h5>Admin</h5><p>{{ $message->content }}</p>
 
-                                        <span class="timestamp1">{{ date("h:i A", strtotime($message->date)) }}</span>
+                                        <span class="timestamp1">{{ $message->date}}</span>
                                         <h6>
                                             @if(isset($message->status) && $message->status == 0)
                                                 đã xem
@@ -78,7 +78,7 @@
                                     <div class="message  received-message ">
                                         <h5>{{ $message->username }}</h5>
                                         <p>{{ $message->content }}</p>
-                                        <span class="timestamp">{{ date("h:i A", strtotime($message->date)) }}</span>
+                                        <span class="timestamp">{{ $message->date }}</span>
                                         <h6>
                                             @if(isset($message->status) && $message->status == 0)
                                                 đã xem

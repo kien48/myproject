@@ -23,18 +23,21 @@ if(isset($_SESSION['darkMode'])){
 </div>
 
 <header >
+
  <nav class="navbar navbar-expand-sm bg-warning shadow" >
+
  <div class="container-fluid bg-warning ">
  <!-- Links -->
  <ul class="navbar-nav">
- <li class="nav-item d-flex " style="margin-left: 60px">
- <i class="fa-solid fa-cart-flatbed h3"></i>
+ <li class="nav-item d-flex " >
+ <h3>Trang quản trị</h3>
  </li>
  </ul>
  <!-- Links -->
  <ul class="navbar-nav">
  <li class="nav-item">
- <a class="nav-link" href="<?php echo \htmlentities(route('admin/list-conversation')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-message"></i></a>
+ <a class="nav-link" href="<?php echo \htmlentities(route('admin/list-conversation')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-message"></i><?php if(isset($_SESSION['$dem'])): ?><?php echo \htmlentities(count($_SESSION['$dem'])??'', ENT_QUOTES, 'UTF-8', false); ?><?php else: ?><?php echo \htmlentities(0??'', ENT_QUOTES, 'UTF-8', false); ?><?php endif; ?>
+ </a>
  </li>
  <li class="nav-item">
  <a class="nav-link" href="#">Xin chào <?php echo \htmlentities($_SESSION['admin']->username??'', ENT_QUOTES, 'UTF-8', false); ?></a>
@@ -59,16 +62,16 @@ if(isset($_SESSION['darkMode'])){
  <a class="nav-link" href="<?php echo \htmlentities(route('admin/list-product/1')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-shirt"></i>  Sản phẩm</a>
  </li>
  <li class="nav-item ni">
- <a class="nav-link" href="<?php echo \htmlentities(route('admin/order')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-file-invoice-dollar"></i> Đơn hàng</a>
+ <a class="nav-link" href="<?php echo \htmlentities(route('admin/order/1')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-file-invoice-dollar"></i> Đơn hàng</a>
  </li>
  <li class="nav-item ni">
  <a class="nav-link" href="<?php echo \htmlentities(route('admin/list-discount/1')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-diagram-predecessor"></i> Mã giảm giá</a>
  </li>
  <li class="nav-item ni ">
- <a class="nav-link" href="<?php echo \htmlentities(route('admin/users')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-user"></i> Tài khoản</a>
+ <a class="nav-link" href="<?php echo \htmlentities(route('admin/users/1')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-user"></i> Tài khoản</a>
  </li>
  <li class="nav-item ni ">
- <a class="nav-link" href="<?php echo \htmlentities(route('admin/comment')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-message"></i> Bình luận</a>
+ <a class="nav-link" href="<?php echo \htmlentities(route('admin/comment/1')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-message"></i> Bình luận</a>
  </li>
  <li class="nav-item ni ">
  <a class="nav-link" href="<?php echo \htmlentities(route('admin/post/list/1')??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-solid fa-blog"></i> Bài viết</a>

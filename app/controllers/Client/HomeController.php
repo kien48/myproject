@@ -1,60 +1,89 @@
 <?php
 namespace App\Controllers\Client;
+
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Settings;
 use App\Models\User;
 
-class homeController extends BaseController{
+class homeController extends BaseController
+{
     protected $product;
     protected $category;
     protected $setting;
     protected $user;
+
     public function __construct()
     {
         $this->product = new Product();
         $this->category = new Category();
         $this->setting = new Settings();
         $this->user = new User();
+
+        // Lấy và lưu cài đặt trong phiên khi khởi tạo controller
+        $listSettings = $this->setting->listSettings();
+        $_SESSION['listSettings'] = $listSettings;
+
+        $listCT = $this->category->listCategory();
+        $_SESSION['category'] = $listCT;
+// Thiết lập cookie hết hạn sau 1 phút
+        setcookie('session_expire', time() + 60, time() + 60);
+
+// Kiểm tra xem cookie đã được thiết lập chưa
+        if (isset($_COOKIE['session_expire'])) {
+            // Kiểm tra nếu thời gian hiện tại lớn hơn thời gian hết hạn của cookie
+            if (time() > $_COOKIE['session_expire']) {
+                // Xóa biến session
+                unset($_SESSION['user']);
+                // Hủy session
+                session_destroy();
+                // Hết hạn cookie
+                setcookie('session_expire', '', time() - 3600);
+            }
+        }
+
+
+
     }
 
     public function index()
     {
-        $this->user->updateRank();
-        $listSettings = $this->setting->listSettings();
-        $_SESSION['listSettings'] = $listSettings;
+
+
+        // Lấy danh sách sản phẩm cho trẻ em, sản phẩm mới và sản phẩm bán chạy
         $kids = $this->product->listProductKids(4);
         $new = $this->product->productNew();
         $bestSeller = $this->product->listProductsBestSeller();
-        $listCT = $this->category->listCategory();
-        $_SESSION['category'] = $listCT;
-        return $this->renderClient("home.home",compact("new","kids",'bestSeller'));
+        $bienThe = $this->product->listBienThe();
+        return $this->renderClient("home.home", compact("new", "kids", 'bestSeller','bienThe'));
     }
 
-
-    public function seacrh()
+    public function search()
     {
-       if(isset($_GET['keyword'])){
-           $keyword = $_GET['keyword'];
-
-           // Thực hiện tìm kiếm sản phẩm dựa trên từ khóa
-           $searchResults = $this->product->searchProduct($keyword);
-           return $this->renderClient("product.search",compact("searchResults","keyword"));
-       }
+        if (isset($_GET['keyword'])) {
+            $keyword = $_GET['keyword'];
+            // Thực hiện tìm kiếm sản phẩm dựa trên từ khóa
+            $searchResults = $this->product->searchProduct($keyword);
+            $bienThe = $this->product->listBienThe();
+            return $this->renderClient("product.search", compact("searchResults", "keyword",'bienThe'));
+        }
     }
+
     public function menu($id_ct)
     {
+        // Lấy thông tin của một danh mục và danh sách sản phẩm trong danh mục đó
         $oneCT = $this->category->oneCategory($id_ct);
         $menu = $this->product->listProductForCategory($id_ct);
-        return $this->renderClient("product.category",compact("menu",'oneCT'));
+        $bienThe = $this->product->listBienThe();
+        if (!$oneCT) {
+            return $this->renderClient('home.404');
+            exit();
+        }
+        return $this->renderClient("product.category", compact("menu", 'oneCT','bienThe'));
     }
 
     public function errorPage()
     {
         return $this->renderClient("home.404");
     }
-
-
-
-
 }

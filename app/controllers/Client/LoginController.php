@@ -1,17 +1,40 @@
 <?php
 namespace App\Controllers\Client;
+use App\Models\Category;
+use App\Models\Settings;
 use App\Models\User;
 class LoginController extends BaseController
 {
     protected $user;
+    protected $category;
+    protected $setting;
     public function __construct()
     {
         $this->user = new User();
+        $this->category = new Category();
+        $this->setting = new Settings();
+
+        // Lấy và lưu cài đặt trong phiên khi khởi tạo controller
+        $listSettings = $this->setting->listSettings();
+        $_SESSION['listSettings'] = $listSettings;
+
+        $listCT = $this->category->listCategory();
+        $_SESSION['category'] = $listCT;
+
+        if(isset($_SESSION['user'])){
+            $oneUser = $this->user->listOneUser($_SESSION['user']->id);
+            $_SESSION['user'] = $oneUser;
+        }
+
     }
+
 
     public function formLogin()
     {
-        return $this->renderClient("login.login");
+        if(isset($_SESSION['user'])){
+            $demUser = $this->user->demUser($_SESSION['user']->id);
+        }
+        return $this->renderClient("login.login",compact('demUser'));
     }
     public function login()
     {
@@ -28,11 +51,15 @@ class LoginController extends BaseController
 
                 flash('success', 'Đăng nhập thành công', 'form-login');
             } else {
-                flash('errors', 'Đăng nhập thất bại do sai email hoặc mật khẩu', 'form-login');
+                flash('errors', 'Đăng nhập thất bại do sai email hoặc mật khẩu hoặc đã bị khóa', 'form-login');
             }
         }
-
     }
+
+
+
+
+
 
     public function logout()
     {
@@ -82,7 +109,7 @@ class LoginController extends BaseController
             // Kiểm tra xem có lỗi không trước khi thêm vào cơ sở dữ liệu
             if(empty($error)){
                 $date = date('Y-m-d H:i:s');
-                $check = $this->user->insertUser(NULL,$name,$email,$pass,$phone,$address,1,$date,0);
+                $check = $this->user->insertUser(NULL,$name,$email,$pass,$phone,$address,1,$date,0,0);
                 if($check){
                     flash('success', 'Đăng ký thành công', 'form-register');
                 } else {
@@ -137,6 +164,11 @@ class LoginController extends BaseController
                 flash('success', 'Đăng ký thành công', 'inbox');
             }
         }
+    }
+
+    public function update()
+    {
+        return $this->renderClient("login.update");
     }
 
 }

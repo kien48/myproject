@@ -13,7 +13,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-3 mt-3 border bg-warning" style="height: 200px">
                 <h2 class="text-center mt-2">Tổng tiền tuần này </h2>
-                <h1 class="text-center mt-5">{{ isset($totalToday[0]->total_week) ? number_format($totalToday[0]->total_week) : '0' }}
+                <h1 class="text-center mt-5">{{ isset($total_week[0]->total_week) ? number_format($total_week[0]->total_week) : '0' }}
                     <i class="fa-solid fa-dong-sign"></i></h1>
             </div>
             <div class="col-md-1"></div>
@@ -42,4 +42,5 @@
             </div>
         </div>
     </div>
+
 @endsection

@@ -18,9 +18,7 @@
                 margin-bottom: 10px;
             }
         }
-
     </style>
-
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -32,53 +30,59 @@
                                 <span>{{$_SESSION['success']}}</span>
                             </div>
                         @endif
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <p>Xin chào <strong>{{$_SESSION['user']->username}}</strong></p>
-                                    </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <p>Xin chào <strong>{{$_SESSION['user']->username}}</strong></p>
+                                </div>
 
-                                    @php
+                                @php
                                     $rank = "";
                                     if($_SESSION['user']->rank == 0){
                                         $rank = "Đồng";
                                     }else if($_SESSION['user']->rank == 1){
                                         $rank = "Bạc";
-                                    }
-                                    else if($_SESSION['user']->rank == 2){
+                                    }else if($_SESSION['user']->rank == 2){
                                         $rank = "Vàng";
                                     }else if($_SESSION['user']->rank == 3){
                                         $rank = "Kim Cương";
                                     }
-
-                                    @endphp
-                                    <div class="col-md-12 text-center">
-                                        <p>Thành viên hạng : <strong>{{$rank}}</strong></p>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-md-12">
-                                        <a href="{{route("inbox")}}" class="btn btn-danger mb-2 btn-block w-100 position-relative">
-                                            Hộp thư
-                                        </a>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <a href="{{route("list-order")}}" class="btn btn-primary mb-2 btn-block  w-100">Đơn hàng đã mua</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a href="{{route("list-order")}}" class="btn btn-warning mb-2 btn-block  w-100">Cập nhật tài khoản</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a href="{{route("list-order")}}" class="btn btn-warning mb-2 btn-block  w-100">Thay đổi mật khẩu</a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <a href="{{route("logout")}}" class="btn btn-secondary btn-block  w-100">Đăng xuất</a>
-                                    </div>
+                                @endphp
+                                <div class="col-md-12 text-center">
+                                    <p>Thành viên hạng : <strong>{{$rank}}</strong></p>
                                 </div>
                             </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-12">
+                                    <a href="{{ route("inbox") }}" class="btn btn-danger mb-2 btn-block w-100 position-relative">
+                                        Hộp thư
+                                        <span class="badge bg-warning rounded-pill position-absolute" style="top: -5px; right: -8px;">
+            @php
+                if(isset($demUser) && !empty($demUser)){
+                    echo count($demUser);
+                }else{
+                    echo 0;
+                }
+            @endphp
+        </span>
+                                    </a>
+                                </div>
 
 
+                                <div class="col-md-12">
+                                    <a href="{{route("list-order")}}" class="btn btn-primary mb-2 btn-block  w-100">Đơn hàng đã mua</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{route("update")}}" class="btn btn-warning mb-2 btn-block  w-100">Cập nhật tài khoản</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{route("list-order")}}" class="btn btn-warning mb-2 btn-block  w-100">Thay đổi mật khẩu</a>
+                                </div>
+                                <div class="col-md-12">
+                                    <a href="{{route("logout")}}" class="btn btn-secondary btn-block  w-100">Đăng xuất</a>
+                                </div>
+                            </div>
+                        </div>
                     @else
                         <div class="card-header bg-white d-flex justify-content-center">
                             <h3 style="color: #002655;">ĐĂNG </h3>
@@ -105,7 +109,6 @@
                                 <div class="d-flex justify-content-between mt-3">
                                     <a class="btn btn-warning text-white" href="{{route('form-register')}}" style="margin-right: 10px;">Đăng ký</a>
                                     <button type="submit" name="submit" class="btn btn-primary w-100">Đăng nhập</button>
-
                                 </div>
                             </form>
                         </div>

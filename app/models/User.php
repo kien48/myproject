@@ -5,15 +5,15 @@ class User extends BaseModel
     protected $table = "users";
     public function checkLogin($email, $pass)
     {
-        $sql = "SELECT * FROM $this->table WHERE email = ? AND password = ?";
+        $sql = "SELECT * FROM $this->table WHERE email = ? AND password = ? AND status = 0";
         $this->setQuery($sql);
         return $this->loadRow([$email, $pass]);
     }
-    public function insertUser($id,$user,$email,$pass,$phone,$address,$role,$created_ad,$rank)
+    public function insertUser($id,$user,$email,$pass,$phone,$address,$role,$created_ad,$rank,$status)
     {
-        $sql = "INSERT INTO $this->table VALUES (?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO $this->table VALUES (?,?,?,?,?,?,?,?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id,$user,$email,$pass,$phone,$address,$role,$created_ad,$rank]);
+        return $this->execute([$id,$user,$email,$pass,$phone,$address,$role,$created_ad,$rank,$status]);
     }
 
     public function checkLoginAdmin($user, $pass)
@@ -80,16 +80,39 @@ public function checkBox($id_user)
         $this->setQuery($sql);
         return $this->loadAllRows([]);
     }
-
     public function conversations()
     {
-        $sql = "SELECT c.`id`, c.`id_user_admin`, c.`id_user`, u.`username`
-                FROM `conversations` c
-                LEFT JOIN `users` u ON c.`id_user` = u.`id`
-                WHERE 1;";
+        $sql = "SELECT DISTINCT c.id, c.id_user_admin, c.id_user, u.username, m.status
+                FROM conversations c
+                LEFT JOIN users u ON c.id_user = u.id
+                LEFT JOIN messages m ON c.id = m.conversation_id
+                WHERE m.status = 1 AND m.sender_id != 4";
+
         $this->setQuery($sql);
         return $this->loadAllRows([]);
     }
+    public function dem()
+    {
+        $sql = "SELECT  c.id, c.id_user_admin, c.id_user, u.username, m.status
+                FROM conversations c
+                LEFT JOIN users u ON c.id_user = u.id
+                LEFT JOIN messages m ON c.id = m.conversation_id
+                WHERE m.status = 1 AND m.sender_id != 4";
+
+        $this->setQuery($sql);
+        return $this->loadAllRows([]);
+    }
+    public function demUser($id)
+    {
+        $sql = "SELECT c.id, c.id_user_admin, c.id_user, m.status,m.content
+                    FROM conversations c
+LEFT JOIN messages m ON c.id = m.conversation_id
+WHERE m.status = 1 AND c.id_user = $id;";
+
+        $this->setQuery($sql);
+        return $this->loadAllRows([]);
+    }
+
 
     public function send($id,$conversation_id,$sender_id,$content,$date,$status)
     {
@@ -111,16 +134,6 @@ WHERE ? = c.`id` AND m.sender_id = ?;
     }
 
 
-    public function tinChuaDoc($id_user,$conversation_id)
-    {
-        $sql = "SELECT conversation_id, COUNT(*) as total_status_1 
-FROM messages 
-WHERE status = 1 AND sender_id != ?
-GROUP BY conversation_id = ?;
-";
-        $this->setQuery($sql);
-        return $this->loadAllRows([$id_user,$conversation_id]);
-    }
 
 
 
@@ -130,6 +143,33 @@ GROUP BY conversation_id = ?;
 ";
         $this->setQuery($sql);
         return $this->loadAllRows([]);
+    }
+    public function listAllUserPages($vitri,$bghi)
+    {
+        $sql = "SELECT * FROM $this->table WHERE role = 1 ORDER BY id DESC LIMIT $vitri,$bghi";
+        $this->setQuery($sql);
+        return $this->loadAllRows([]);
+    }
+
+    public function khoaTK($id)
+    {
+        $sql = "UPDATE `users` SET `status`=1 WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$id]);
+    }
+    public function moTK($id)
+    {
+        $sql = "UPDATE `users` SET `status`=0 WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$id]);
+    }
+
+    public function listOneUser($id)
+    {
+        $sql = "SELECT * FROM $this->table WHERE id = ?
+";
+        $this->setQuery($sql);
+        return $this->loadRow([$id]);
     }
 
 

@@ -5,8 +5,8 @@
             <div class="col-md-8">
                 <div class="text-center">
                     <h1 class="error-code h1 text-warning display-1 mt-5">404</h1>
-                    <p class="error-message h3 lead mb-5 mt-2">Page Not Found</p>
-                    <a href="{{ route('/') }}" class="btn btn-outline-danger">Back to Home</a>
+                    <p class="error-message h3 lead mb-5 mt-2">Không tìm thấy trang</p>
+                    <a href="{{ route('/') }}" class="btn btn-outline-danger">Về trang chủ</a>
                 </div>
             </div>
         </div>

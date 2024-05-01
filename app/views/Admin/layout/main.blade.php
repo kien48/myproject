@@ -23,18 +23,21 @@ if(isset($_SESSION['darkMode'])){
 </div>
 
 <header >
+
     <nav class="navbar navbar-expand-sm bg-warning shadow" >
+
         <div class="container-fluid bg-warning ">
             <!-- Links -->
             <ul class="navbar-nav">
-                <li class="nav-item d-flex " style="margin-left: 60px">
-                    <i class="fa-solid fa-cart-flatbed h3"></i>
+                <li class="nav-item d-flex " >
+                   <h3>Trang quản trị</h3>
                 </li>
             </ul>
             <!-- Links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin/list-conversation')}}"><i class="fa-solid fa-message"></i></a>
+                    <a class="nav-link" href="{{route('admin/list-conversation')}}"><i class="fa-solid fa-message"></i>@if(isset($_SESSION['$dem'])){{ count($_SESSION['$dem']) }}@else{{ 0 }}@endif
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Xin chào {{$_SESSION['admin']->username}}</a>
@@ -59,16 +62,16 @@ if(isset($_SESSION['darkMode'])){
                 <a class="nav-link" href="{{ route('admin/list-product/1') }}"><i class="fa-solid fa-shirt"></i>  Sản phẩm</a>
             </li>
             <li class="nav-item ni">
-                <a class="nav-link" href="{{ route('admin/order') }}"><i class="fa-solid fa-file-invoice-dollar"></i> Đơn hàng</a>
+                <a class="nav-link" href="{{ route('admin/order/1') }}"><i class="fa-solid fa-file-invoice-dollar"></i> Đơn hàng</a>
             </li>
             <li class="nav-item ni">
                 <a class="nav-link" href="{{route('admin/list-discount/1')}}"><i class="fa-solid fa-diagram-predecessor"></i> Mã giảm giá</a>
             </li>
             <li class="nav-item ni ">
-                <a class="nav-link" href="{{route('admin/users')}}"><i class="fa-solid fa-user"></i> Tài khoản</a>
+                <a class="nav-link" href="{{route('admin/users/1')}}"><i class="fa-solid fa-user"></i> Tài khoản</a>
             </li>
             <li class="nav-item ni ">
-                <a class="nav-link" href="{{route('admin/comment')}}"><i class="fa-solid fa-message"></i> Bình luận</a>
+                <a class="nav-link" href="{{route('admin/comment/1')}}"><i class="fa-solid fa-message"></i> Bình luận</a>
             </li>
             <li class="nav-item ni ">
                 <a class="nav-link" href="{{route('admin/post/list/1')}}"><i class="fa-solid fa-blog"></i> Bài viết</a>

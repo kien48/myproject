@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yody</title>
+    <title>{{ $_SESSION['listSettings'][0]->company_name }}</title>
+    <link rel="icon" type="image/png" href="{{ $_SESSION['listSettings'][0]->logo }}">
     @include('layout.style')
 </head>
 
@@ -12,10 +13,11 @@
 <div class="loading-overlay">
     <div class="loading-spinner"></div>
 </div>
+
 <nav class="navbar navbar-expand-sm fixed-top shadow fw-bold" style="backdrop-filter: blur(10px);">
     <div class="container">
         <a class="navbar-brand" href="{{ route('/') }}">
-            <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/05/Logo-Yody.png" alt="Logo" height="50px">
+            <img src="{{ $_SESSION['listSettings'][0]->logo }}" alt="Logo" height="50px">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -27,15 +29,7 @@
                         <a class="nav-link" href="{{ route('menu/'.$ct->id) }}">{{$ct->name}}</a>
                     </li>
                @endforeach
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{ route('menu/'.'2') }}">Nữ</a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{ route('menu/'.'4') }}">Trẻ em</a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{ route('menu/'.'3') }}">Đồng phục</a>--}}
-{{--                </li>--}}
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('post/1') }}">Bài viết</a>
                 </li>
@@ -64,6 +58,8 @@
                                     @php
                                         if(isset($_SESSION['giohang'])){
                                             echo count($_SESSION['giohang']);
+                                        }else{
+                                            echo 0;
                                         }
                                     @endphp
                                 </span>
@@ -93,12 +89,16 @@
 </nav>
 
 <main>
+    <section class="content">
+        @yield('content1')
+    </section>
     <div class="container" style="min-height: calc(100vh - 412px); margin-top: 90px;">
         <section class="content">
             @yield('content')
         </section>
     </div>
 </main>
+
 
 <footer>
     <div class="container-fluid border-top text-center pt-3 pb-3 mt-4 text-white"
@@ -136,9 +136,9 @@
                     </h7>
                 </div>
                 <div class="col-md-4">
-                    <h5>{{ $_SESSION['listSettings'][0]->company_name }}</h5>
-                    <p><i class="fa-solid fa-map"></i> Công ty cổ phần Thời trang YODY <br>
-                        Số điện thoại: {{ $_SESSION['listSettings'][0]->phone }} <br>
+                    <h5><i class="fa-solid fa-building"></i> {{ $_SESSION['listSettings'][0]->company_name }}</h5>
+                    <p>
+                        <i class="fa-solid fa-phone-volume"></i> Số điện thoại: {{ $_SESSION['listSettings'][0]->phone }} <br>
                         Địa chỉ: {{ $_SESSION['listSettings'][0]->address }}</p>
                     <img src="https://cdn.dangkywebsitevoibocongthuong.com/wp-content/uploads/2018/07/logo-da-thong-bao-website-voi-bo-cong-thuong.webp" alt="" height="40px">
                 </div>
@@ -149,6 +149,8 @@
     </div>
 </footer>
 @extends("layout.js")
+
+
 </body>
 
 </html>

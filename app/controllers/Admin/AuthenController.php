@@ -8,6 +8,8 @@ class AuthenController extends BaseController{
     public function __construct()
     {
         $this->user = new User();
+        $dem = $this->user->dem();
+        $_SESSION['$dem'] = $dem;
     }
 
     public function login()
@@ -59,6 +61,7 @@ class AuthenController extends BaseController{
     {
         $listConversation = $this->user->conversations();
         $listUser = $this->user->listAllUser();
+
         return $this->renderAdmin("authen.inbox",compact('listConversation','listUser'));
 //        header("Location: {$_SERVER['HTTP_REFERER']}");
 //        exit();
@@ -103,8 +106,35 @@ class AuthenController extends BaseController{
         }
     }
 
-    public function list(){
-        $list = $this->user->listAllUser();
-        return $this->renderAdmin("authen.list",compact('list'));
+    public function list($pageNumber){
+        $bghi = 5;
+        $vitri = ($pageNumber - 1) * $bghi;
+        $list = $this->user->listAllUserPages($vitri,$bghi);
+        $listAll = $this->user->listAllUser();
+        $tong = count($listAll);
+        $sotrang = ceil($tong/$bghi);
+        return $this->renderAdmin("authen.list",compact('list','sotrang'));
+    }
+
+    public function lockTK($id)
+    {
+        $check = $this->user->khoaTK($id);
+        if ($check) {
+
+            flash('success', 'Khóa thành công', 'admin/users/1');
+        } else {
+            flash('errors', 'Khóa thất bại', 'admin/users/1');
+        }
+
+     }
+
+    public function moTK($id)
+    {
+        $check = $this->user->moTK($id);
+        if ($check) {
+            flash('success', 'Mở khóa thành công', 'admin/users/1');
+        } else {
+            flash('errors', 'Mở thất bại', 'admin/users/1');
+        }
     }
 }

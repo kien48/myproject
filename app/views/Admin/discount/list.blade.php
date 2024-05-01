@@ -44,29 +44,27 @@
                         <td>{{$value->quantity}}</td>
                         <td>{{$value->status}}</td>
                         <td class="text-nowrap" style="width: 1px;">
-                            <a href="update.html"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
-                            <a onclick="return confirm('xóa nhé')" class="btn btn-outline-danger" href="">
-                                <i class="fa-solid fa-trash"></i> Xóa
-                            </a>
+                            <a href="{{route('admin/discount/form-update/'.$value->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
                         </td>
                     </tr>
                 @endforeach
 
                 </tbody>
             </table>
+            <h6>* Mã sẽ tự động xóa sau khi hết hạn</h6>
             <div class="d-flex justify-content-center">
                 <nav aria-label="...">
                 <ul class="pagination">
                         @if ($number > 1)
-                        <li class="page-item"><a class="page-link" href="{{ route('admin/list-product/'.($number - 1)) }}">Lùi</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ route('admin/list-discount/'.($number - 1)) }}">Lùi</a></li>
                         @endif
 
                         @for($i = 1; $i <= $sotrang; $i++) <li class="page-item {{ ($number ?? 1) == $i ? 'active' : '' }}">
-                            <a class="page-link" href="{{ route('admin/list-product/'.$i) }}">{{ $i }}</a>
+                            <a class="page-link" href="{{ route('admin/list-discount/'.$i) }}">{{ $i }}</a>
                             </li>
                             @endfor
 
-                            @if ($number < $sotrang) <li class="page-item"><a class="page-link" href="{{ route('admin/list-product/'.($number + 1)) }}">Tiến</a></li>
+                            @if ($number < $sotrang) <li class="page-item"><a class="page-link" href="{{ route('admin/list-discount/'.($number + 1)) }}">Tiến</a></li>
                                 @endif
                     </ul>
                 </nav>

@@ -1,18 +1,19 @@
 @extends("layout.main")
 @section("content")
     @if(!empty($_SESSION['giohang']))
+
         <div class="row ">
             <div class="col-md-8 bg-light-subtle rounded-2 mt-4" style="margin-right: 0px;">
                 <h1 class="h4">Giỏ hàng</h1>
                 <div class="table-responsive">
-                    <table class="table text-center">
+                    <table class="table text-center ">
                         <thead>
                         <th>STT</th>
                         <th>Tên</th>
                         <th>Ảnh</th>
                         <th>Số lượng</th>
-                        <th>Màu sắc</th>
-                        <th>Kích cỡ</th>
+                        <th>Màu</th>
+                        <th>Cỡ</th>
                         <th>Đơn giá</th>
                         <th>Tổng tiền</th>
                         <th>Thao tác</th>
@@ -22,20 +23,22 @@
                             $total = 0;
                             $count = 1;
                         @endphp
-                        @foreach($_SESSION['giohang'] as $key=>$pro)
+                        @foreach($_SESSION['giohang'] as $key => $pro)
                             @php
                                 extract($pro);
                                 // Chuyển chuỗi sang số (nếu cần)
                                 $price = (float)$price; // hoặc (int)$price tùy vào kiểu dữ liệu của giá sản phẩm
-                               $quantity = (int)$quantity;
+                                $quantity = (int)$quantity;
                                 // Thực hiện phép nhân
                                 $money = $price * $quantity;
                                 // Cập nhật tổng tiền
                                 $total += $money;
+
                             @endphp
+
                             <tr>
                                 <td>{{$count++}}</td>
-                                <td>{{$pro['name']}}</td>
+                                <td><a href="{{route('detail/'.$id)}}" class="nav-link">{{$pro['name']}}</a></td>
                                 <td>
                                     <div style="width: 40px;height: 40px;"
                                          class="border rounded bg-light d-flex justify-content-center align-items-center">
@@ -45,17 +48,35 @@
                                 <td>
                                     <form method="post" action="{{route('update-quantity-product-cart')}}">
                                         <div class="d-flex">
-                                            <input name="quantitynew[]" onkeyup="kiemtrasoluong(this)" type="number" class="form-control text-center " style="max-width: 70px"
-                                                   value="{{$quantity}}" min="1">
+                                            @php
+                                                $mq = "";
+                                                foreach ($maxQuantity as $max){
+                                                    if($max->idpro == $pro['id'] && $max->size == $pro['size'] && $max->color == $pro['color']){
+                                                        $mq = $max->quantity;
+                                                    }
+
+                                                }
+
+                                                if($quantity > $mq ){
+                                                    $_SESSION['giohang'][$key]['quantity'] = $mq;
+                                                }
+                                            if($_SESSION['giohang'][$key]['quantity'] == 0 ){
+                                                $cl = "disabled";
+                                            }else{
+                                                $cl = "";
+                                            }
+                                            @endphp
+
+                                            <input name="quantitynew[]" onkeyup="kiemtrasoluong(this)" type="number"
+                                                   class="form-control text-center" style="max-width: 90px" value="{{$_SESSION['giohang'][$key]['quantity']}}" min="1" max="{{$mq}}">
                                             <input name="id_product[]" type="hidden" value="{{$id}}">
                                             <input name="key[]" type="hidden" value="{{$keyID}}">
-                                            <input name="color[]" type="hidden" value="{{$color[0]}}">
-                                            <input name="size[]" type="hidden" value="{{$size[0]}}">
+                                            <input name="color[]" type="hidden" value="{{$color}}">
+                                            <input name="size[]" type="hidden" value="{{$size}}">
                                         </div>
-
                                 </td>
-                                <td>{{$color[0]}}</td>
-                                <td>{{$size[0]}}</td>
+                                <td>{{$color}}</td>
+                                <td>{{$size}}</td>
 
                                 <td>{{number_format($price)}} đ</td>
                                 <td>{{number_format($money)}} đ</td>
@@ -65,13 +86,14 @@
                                 </td>
                             </tr>
                         @endforeach
+
                         <tr>
-                            <td colspan="3">
+                            <td colspan="4">
                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal">
                                     <i class="fa-solid fa-trash"></i> Xóa giỏ hàng
                                 </button>
                             </td>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <button name="update_quantity" class="btn btn-outline-warning" type="submit">
                                     <i class="fa-solid fa-wrench"></i> Cập nhật số lượng
                                 </button>
@@ -81,6 +103,10 @@
                         </form>
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4">
+                    <h6 class="text-black-50">* Nếu số lượng sản phẩm trong kho hết thì sản phẩm đó trong giỏ hàng sẽ bị xóa</h6>
+                    <h6 class="text-black-50">* Không thể tăng quá số lượng sản phẩm trong kho </h6>
                 </div>
             </div>
             <div class="col-md-4 bg-light-subtle rounded-2 mt-4">
@@ -99,11 +125,13 @@
                     <h6>Bạn đã được freeship</h6>
                 @endif
                 <div class="progress mt-2">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{$percent}}%"></div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{$percent}}%">{{number_format($_SESSION['total'])}}đ</div>
                 </div>
                 <div class="mt-2">
-                    <a href="{{route('order')}}"><button class="w-100 btn btn-warning"><i class="fa-solid fa-money-bill-1-wave"></i> Thanh toán
-                            ngay</button></a>
+                    <a href="{{route('order')}}"class="w-100 btn btn-warning {{$cl}}">
+                        <button class="w-100 btn btn-warning"><i class="fa-solid fa-money-bill-1-wave"></i> Thanh toán
+                            ngay</button>
+                    </a>
 
                 </div>
                 <div>
@@ -175,6 +203,9 @@
             </div>
         </div>
     </div>
+
+
+
 @endsection
 <script>
     // Kiểm tra giá trị của biến $status khi trang được tải
@@ -183,8 +214,11 @@
 
         // Kiểm tra nếu $status = 1, mở modal
         if (status === 1) {
-            var myModal = new bootstrap.Modal(document.getElementById('myModal1')); // Lấy modal bằng ID
-            myModal.show(); // Hiển thị modal
+            var myModal1 = new bootstrap.Modal(document.getElementById('myModal1')); // Lấy modal bằng ID
+            myModal1.show(); // Hiển thị modal
         }
-    };
+
+    }
+
 </script>
+

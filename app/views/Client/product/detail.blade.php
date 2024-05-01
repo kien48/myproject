@@ -1,5 +1,6 @@
 @extends("layout.main")
 @section("content")
+
     <div class="row">
         <div class="d-flex justify-content-between mb-3">
             <h1 class="h5 text-black-50">{{$product->name_ct}} / {{$product->name}}</h1>
@@ -26,7 +27,10 @@
                             {{$total->total_sold}}
                         @endif
                         | @if($rating->average_rating !=0)
-                            <span class="badge bg-warning"> {{number_format($rating->average_rating)}} sao </span>
+                            <span class="">
+                                @for($i =0;$rating->average_rating > $i; $i++)
+                                    <i class="fa-solid fa-star text-warning"></i> </span>
+                                @endfor
                             <h5 class="ms-1"> | {{$rating->number}} lượt đánh giá </h5>
                         @else
                             <span>Chưa có đánh giá sản phẩm</span>
@@ -38,9 +42,6 @@
                 <div class="d-flex align-items-center">
                     <!-- Giá bán -->
                     <div class="fw-bold text-danger h3">{{number_format($product->price)}}đ</div>
-                    <!-- Giá niêm yết -->
-                    <div class="text-decoration-line-through ms-2">219.000đ</div>
-
                 </div>
 
 
@@ -88,16 +89,29 @@
                                             $class = "";
                                             $sl = "";
                                             if($color->quantity == 0){
-                                                $sl = "Sản phẩm tạm hết hàng";
+                                                $sl = "0";
                                                 $class = "disabled";
                                             } else {
                                                 $sl = $color->quantity;
+                                            }
+                                            if($color->color == "Hồng"){
+                                                $style = "pink";
+                                            }elseif($color->color == "Đen"){
+                                                 $style = "black";
+                                            }elseif($color->color == "Đỏ"){
+                                                 $style = "red";
+                                            }elseif($color->color == "Trắng"){
+                                                 $style = "black";
+                                            }elseif($color->color == "Vàng"){
+                                                 $style = "yellow";
+                                            }elseif($color->color == "Xanh"){
+                                                 $style = "green";
                                             }
                                         @endphp
                                 if ("{{$color->size}}" === selectedSize) {
                                     colorsHtml += '<div class="form-check ms-4">' +
                                         '<input type="radio" class="form-check-input"  {{$class}} id="color_radio{{$color->id}}" name="color_radio[]" value="{{$color->color}}" >' +
-                                        '<label class="form-check-label " for="color_radio{{$color->id}}">{{$color->color}} - Số lượng: {{$sl}}</label>' +
+                                        '<label class="form-check-label " for="color_radio{{$color->id}}" ><h5 style="color:{{$style}}">{{$color->color}}</h5> - Kho còn: {{$sl}}</label> sản phẩm' +
                                         '</div>';
                                 }
                                 @endforeach
@@ -115,7 +129,7 @@
                             <div class="d-flex">
                                 <div class="input-group">
                                     <button onclick="minus(this)" type="button" class="btn btn-outline-secondary btn-sm">-</button>
-                                    <input onkeyup="kiemtrasoluong(this)" value="{{$soLuong}}" type="text" class="form-control form-control-sm" name="quantity" min="1" max="50" style="max-width: 35px">
+                                    <input onkeyup="kiemtrasoluong(this)" value="{{$soLuong}}" type="text" class="form-control form-control-sm" name="quantity" min="1"  style="max-width: 35px">
                                     <button onclick="plus(this)" type="button" class="btn btn-outline-secondary btn-sm">+</button>
                                 </div>
                             </div>
@@ -155,6 +169,24 @@
                             </form>
                         </div>
                     </div>
+        <div class="mt-3">
+            @if(isset($_SESSION['errors']) && isset($_GET['msg']))
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                        @foreach($_SESSION['errors'] as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if(isset($_SESSION['success']) && isset($_GET['msg']))
+                <div class="alert alert-success" role="alert">
+                    <span>{{$_SESSION['success']}}</span>
+                </div>
+            @endif
+
+        </div>
 
             @else
                 Sản phẩm đang cập nhật số lượng và màu sắc bạn vui lòng chờ
@@ -207,6 +239,7 @@
                                 <textarea name="content" id="" cols="30" rows="5" class="form-control me-2" placeholder="Nhập bình luận @if(isset($_SESSION['user']))đi nào {{$_SESSION['user']->username}} @else với tư cách người ẩn danh
                                 @endif
                                 "></textarea>
+
                                 @if(isset($_SESSION['user']))
                                     <div class="ms-auto">
                                         <div class="rating-star d-flex justify-content-center">
@@ -263,9 +296,10 @@
 
 
                                 @if (isset($feedback))
-                                    @foreach ($feedback as $item)
-                                        @if(count($item)>=1)
-                                            @if ($item[0]->id_comment == $list->id)
+                                    @foreach ($feedback as $key=>$value)
+                                        @if(count($value)>=1)
+                                            @if ($value[0]->id_comment == $list->id)
+
                                                 <div class="text-end "><i class="fa-solid fa-turn-down"></i></div>
                                                 <div class="d-flex justify-content-end mb-4">
                                                     <div class="card bg-warning" style="width: 400px">
@@ -275,7 +309,7 @@
                                                                     admin
                                                                 </h5>
                                                             </div>
-                                                            <p class="card-text">{{$item[0]->text}}</p>
+                                                            <p class="card-text">{{$value[0]->text}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -284,7 +318,6 @@
                                     @endforeach
                                 @endif
                             @endforeach
-
 
 
                         </div>
@@ -306,7 +339,7 @@
             <div class="col-md-3">
                 <!-- box hiển thị sản phẩm -->
                 <a href="{{route('detail/'.$pro->id)}}" class="nav-link">
-                    <div class="border mt-3 mb-3 rounded overflow-hidden">
+                    <div class="border mt-3 mb-3 rounded overflow-hidden  bg-light">
                         <!-- Khu vực ảnh -->
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 406px;">
                             <img src="../{{$pro->image}}" alt="" class="mh-100 mw-100">
@@ -320,11 +353,43 @@
                                 <div class="fw-bolder text-danger">{{number_format($pro->price)}} vnđ</div>
                             </div>
                         </div>
+
+            <div class="container text-center mt-2">
+                <div class="row">
+
+                    @foreach($bienThe1 as $item)
+                        @if($item->idpro == $pro->id)
+                            @php
+                                $style = ''; // Khởi tạo biến màu
+                                if($item->color == "Hồng"){
+                                    $style = "pink";
+                                } elseif($item->color == "Đen"){
+                                    $style = "black";
+                                } elseif($item->color == "Đỏ"){
+                                    $style = "red";
+                                } elseif($item->color == "Trắng"){
+                                    $style = "white";
+                                } elseif($item->color == "Vàng"){
+                                    $style = "yellow";
+                                } elseif($item->color == "Xanh"){
+                                    $style = "green";
+                                }
+                            @endphp
+                            <div class="col-2">
+                                <div class="h3" style="color: {{$style}}"  data-bs-toggle="tooltip" title="{{$item->color}}"><i class="fa-solid fa-circle"></i></div>
+                            </div>
+                        @endif
+                    @endforeach
+
+
+                </div>
+            </div>
                     </div>
 
             </div>
         @endforeach
 
     </div>
+
 
 @endsection

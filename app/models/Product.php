@@ -6,23 +6,20 @@ class Product extends BaseModel {
     public function productNew()
     {
         $sql = "SELECT p.*, c.name AS category_name FROM {$this->table} p
-        INNER JOIN categories c ON p.id_ct = c.id WHERE status = 1
-        ORDER BY p.id DESC LIMIT 4";
+        INNER JOIN categories c ON p.id_ct = c.id
+        WHERE status = 1
+        ORDER BY p.id  DESC LIMIT 4";
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
     public function searchProduct($keyword)
     {
-        // Sử dụng dấu `%` trong câu truy vấn để tìm kiếm các từ khóa trong tên sản phẩm
         $searchKeyword = '%' . $keyword . '%';
-
-        $sql = "SELECT * FROM $this->table WHERE name LIKE ? AND status = 1";
+        $sql = "SELECT * FROM $this->table WHERE status = 1 AND name LIKE ?";
         $this->setQuery($sql);
-
-        // Truyền giá trị của biến $searchKeyword vào mảng truyền vào hàm loadAllRows([$searchKeyword])
-        // để sử dụng trong câu SQL
         return $this->loadAllRows([$searchKeyword]);
     }
+
 
     public function listProductForCategory($id_ct)
     {
@@ -38,12 +35,26 @@ class Product extends BaseModel {
         return $this->loadAllRows();
     }
 
-    public function listProductPages($vitri,$bghi)
+
+
+    public function listProductPages($vitri, $bghi, $id = null )
     {
-        $sql = "SELECT * FROM $this->table ORDER BY id DESC LIMIT $vitri,$bghi ";
+        $sql = "SELECT p.*, c.name AS name_ct FROM `$this->table` p
+            INNER JOIN `categories` c ON p.id_ct = c.id";
+
+        if ($id !== null) {
+            $sql .= " WHERE p.id = $id";
+        }else{
+            $sql .= " WHERE 1";
+        }
+
+        $sql .= " ORDER BY p.id DESC LIMIT $vitri, $bghi";
+
         $this->setQuery($sql);
-        return $this->loadAllRows();
+        return $this->loadAllRows([]);
     }
+
+
 
     public function detailProduct($id)
     {
@@ -55,11 +66,11 @@ class Product extends BaseModel {
         $this->setQuery($sql);
         return $this->loadRow([$id]);
     }
-    public function addProduct($id,$name,$price,$image,$image2,$description,$id_ct)
+    public function addProduct($id,$name,$price,$import_price,$image,$image2,$description,$id_ct,$status)
     {
-        $sql = "INSERT INTO  $this->table VALUES (?,?,?,?,?,?,?) ";
+        $sql = "INSERT INTO  $this->table VALUES (?,?,?,?,?,?,?,?,?) ";
         $this->setQuery($sql);
-        return $this->execute([$id,$name,$price,$image,$image2,$description,$id_ct]);
+        return $this->execute([$id,$name,$price,$import_price,$image,$image2,$description,$id_ct,$status]);
     }
 
     public function deleteProduct($id)
@@ -68,6 +79,15 @@ class Product extends BaseModel {
         $this->setQuery($sql);
         return $this->execute([$id]);
     }
+
+    public function updateProduct($id,$name,$price,$import_price,$image,$image2,$description,$id_ct,$status)
+    {
+        $sql = "UPDATE $this->table SET `name`=?,`price`=?,`import_price`=?,`image`=?,
+                      `image2`=?,`description`=?,`id_ct`=?,`status`=? WHERE id= ?";
+        $this->setQuery($sql);
+        return $this->execute([$name,$price,$import_price,$image,$image2,$description,$id_ct,$status,$id]);
+    }
+
     public function listProductCl($id_ct,$id)
     {
         $sql = "SELECT * FROM {$this->table} WHERE status = 1 AND id_ct = ? AND id != ? LIMIT 0,4";
@@ -159,5 +179,60 @@ ORDER BY
         $sql = "SELECT * FROM `variant` WHERE idpro = ?";
         $this->setQuery($sql);
         return $this->loadAllRows([$id_pro]);
+    }
+
+    public function bienTheforID($id)
+    {
+        $sql = "SELECT * FROM `variant` WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id]);
+    }
+
+    public function listBienTheSP($id)
+    {
+        $sql = "SELECT v.*,p.name FROM `variant` v
+                INNER JOIN products p ON v.idpro = p.id
+                WHERE v.idpro = ?";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id]);
+    }
+
+    public function listBienThe()
+    {
+        $sql = "SELECT * FROM `variant` WHERE 1";
+        $this->setQuery($sql);
+        return $this->loadAllRows([]);
+    }
+
+
+    public function insertBienThe($id,$idpro,$color,$size,$quantity)
+    {
+        $sql = "INSERT INTO `variant`(`id`, `idpro`, `color`, `size`, `quantity`) VALUES (?,?,?,?,?)";
+        $this->setQuery($sql);
+        return $this->execute([$id,$idpro,$color,$size,$quantity]);
+    }
+
+    public function updateBienThe($id,$idpro,$color,$size,$quantity)
+    {
+        $sql = "UPDATE `variant` SET `idpro`=?,`color`=?,`size`=?,`quantity`=? WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$idpro,$color,$size,$quantity,$id]);
+    }
+
+    public function updateStatusPro($id)
+    {
+        $sql = "UPDATE `products` SET `status`=1 WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$id]);
+    }
+
+    public function huyProduct($idpro,$color,$size,$quantity)
+    {
+        $sql = "UPDATE `variant` 
+                SET `quantity` = `quantity` + ? 
+                WHERE `idpro`= ? AND `color`= ? AND `size`= ?
+";
+        $this->setQuery($sql);
+        return $this->execute([$quantity,$idpro,$color,$size]);
     }
 }

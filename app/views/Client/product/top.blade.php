@@ -33,7 +33,7 @@
                     @foreach($listTop as $product)
                         <tr>
                             <td>{{$key++}}</td>
-                            <td>{{$product->name}}</td>
+                            <td>{{$product->product_name}}</td>
                             <td>
                                 <img src="{{$product->image}}" alt="{{$product->name}}" style="max-width: 100px;">
                             </td>
@@ -47,4 +47,3 @@
         </div>
     @endif
 @endsection
-

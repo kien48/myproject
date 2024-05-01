@@ -36,10 +36,40 @@
   background: linear-gradient(to right, rgb(116, 116, 194) 0%, rgb(116, 116, 194) 4px,
   transparent 4px, transparent 100%);
 }
-.active{
+.active1{
   background: linear-gradient(to right, rgb(116, 116, 194) 0%, rgb(116, 116, 194) 4px,
   transparent 4px, transparent 100%);
 }
+
+ .carousel-item video {
+   width: 100%;
+   height: auto;
+ }
+.carousel-item video::-webkit-media-controls {
+  display: none !important;
+}
+.carousel-item video::-webkit-media-controls-panel {
+  display: none !important;
+}
+.carousel-item video::-webkit-media-controls-play-button,
+.carousel-item video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-container img {
+  transition: transform 0.3s ease; /* hiệu ứng chuyển đổi */
+}
+
+.image-container:hover img {
+  transform: scale(1.1); /* thay đổi kích thước khi di chuột qua */
+}
+
 
 
   

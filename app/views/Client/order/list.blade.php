@@ -21,7 +21,7 @@
         <table class="table table-striped">
           <thead class="thead-light">
           <tr>
-            <th>STT</th>
+            <th>Mã hóa đơn</th>
             <th>Tên khách hàng</th>
             <th>Số điện thoại</th>
             <th>Địa chỉ</th>
@@ -36,7 +36,6 @@
           </tr>
           </thead>
           <tbody>
-          @php $key = 1 @endphp
           @foreach($listOrder as $order)
             @php
               $class = '';
@@ -64,7 +63,7 @@
               }
             @endphp
             <tr class="table-{{$class}}">
-              <td>{{$key++}}</td>
+              <td>{{$order->id}}</td>
               <td>{{$order->customer_name}}</td>
               <td>{{$order->customer_phone}}</td>
               <td>{{$order->customer_address}}</td>
@@ -76,8 +75,7 @@
               <td>{{$order->percent_discount}}%</td>
               <td>{{$name_status}}</td>
               <td>
-                <a href="{{route('detail-order')}}" class="btn btn-primary btn-sm w-100 mt-1">Chi tiết</a>
-                <a href="{{route('cancel-order', $order->id)}}" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng không?')" class="btn btn-danger btn-sm w-100 mt-1">Hủy đơn</a>
+                <a href="{{route('detail-order/'.$order->id)}}" class="btn btn-primary btn-sm w-100 mt-1">Chi tiết</a>
               </td>
             </tr>
           @endforeach

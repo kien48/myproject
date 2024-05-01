@@ -41,7 +41,7 @@
 
             </div>
             <div class="d-flex justify-content-center mt-3">
-                <a href="{{route('admin/list-discount')}}" class="btn btn-outline-secondary" style="margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i> Danh
+                <a href="{{route('admin/list-discount/1')}}" class="btn btn-outline-secondary" style="margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i> Danh
                     sách</a>
                 <button type="submit" name="add" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i> Tạo mới</button>
 

@@ -29,15 +29,13 @@ class SettingController extends BaseController
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
                 $logo = $_POST['logo'];
-                $banner1 =$_SESSION['listSettings'][0]->banner1;
-                $banner2 = $_SESSION['listSettings'][0]->banner2;
-                $banner3 = $_SESSION['listSettings'][0]->banner3;
+                $banner1 =$_POST['banner1'];
+                $banner2 = $_POST['banner2'];
+                $banner3 = $_POST['banner3'];
                 $link_bn_1 = $_POST['link_bn_1'];
                 $link_bn_2 = $_POST['link_bn_2'];
                 $link_bn_3 = $_POST['link_bn_3'];
-                // Kiểm tra xem có banner trong session không
-                if(isset($_SESSION['listSettings'][0]->banner)){
-                    $banner = $_SESSION['listSettings'][0]->banner;
+                $banner = $_POST['banner'];
                     $check = $this->settings->updateSettings($logo,$sayings,$banner,$link_fb,$link_yt,$link_tiktok,$company_name,$phone,$address,$banner1,$banner2,$banner3,$link_bn_1,$link_bn_2,$link_bn_3);
                     unset($_SESSION['listSettings']);
                     if ($check) {
@@ -46,9 +44,7 @@ class SettingController extends BaseController
                     } else {
                         flash('errors', 'Có lỗi xảy ra khi cập nhật cài đặt', 'admin/settings');
                     }
-                } else {
-                    flash('errors', 'Không tìm thấy banner trong session', 'admin/settings');
-                }
+
             } else {
                 flash('errors', 'Không tìm thấy logo trong session', 'admin/settings');
             }

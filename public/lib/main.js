@@ -11,20 +11,13 @@ function kiemtrasoluong(input) {
     if (num < 1 || isNaN(num)) {
         input.value = 1;
         alert("Số lượng nhập ít nhất là 1");
-    } else if (num > 50) {
-        input.value = 50;
-        alert("Số lượng không thể lớn hơn 50");
     }
 }
 
 function plus(button) {
     var input = button.previousElementSibling;
     var num = parseInt(input.value) + 1;
-    if (num <= 50) {
-        input.value = num ;
-    } else {
-        alert("Số lượng không thể lớn hơn 50");
-    }
+    input.value = num; // Gán giá trị mới cho input
 }
 
 function minus(button) {

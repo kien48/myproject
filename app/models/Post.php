@@ -27,4 +27,19 @@ class Post extends BaseModel
         $this->setQuery($sql);
         return $this->execute([$id,$tilte,$image,$text,$author,$date]);
     }
+
+    public function updatePost($id,$tilte,$image,$text,$author,$date)
+    {
+        $sql = "UPDATE $this->table SET `tilte`=?,
+                  `image`=?,`text`=?,`author`=?,`date`=? WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$tilte,$image,$text,$author,$date,$id]);
+    }
+
+    public function deletePost($id)
+    {
+        $sql = "DELETE FROM $this->table WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$id]);
+    }
 }

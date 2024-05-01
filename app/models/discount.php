@@ -46,6 +46,31 @@ class discount extends BaseModel {
         return $this->execute([$id,$code,$percent,$start_day,$expiration,$quantity,$status]);
     }
 
+    public function oneDiscount($id)
+    {
+        $sql = "SELECT * FROM `discount` WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->loadRow([$id]);
+    }
+
+    public function update($id,$code,$percent,$start_day,$expiration,$quantity,$status)
+    {
+        $sql = "UPDATE `discount` 
+                SET `code`=?, `percent`=?, `start_day`=?, `expiration`=?, `quantity`=?, `status`=?
+                WHERE `id`=?";
+        $this->setQuery($sql);
+        return $this->execute([$code,$percent,$start_day,$expiration,$quantity,$status,$id]);
+    }
+
+    public function delete()
+    {
+        $sql = "DELETE FROM `discount`
+            WHERE `expiration` < NOW()";
+        $this->setQuery($sql);
+        return $this->execute([]);
+    }
+
+
 
 
 }

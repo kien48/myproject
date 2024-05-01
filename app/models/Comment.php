@@ -41,6 +41,16 @@ class Comment extends BaseModel {
         return $this->loadAllRows();
     }
 
+    public function listAllPages($vitri, $bghi)
+    {
+        $sql = "SELECT c.*,u.username,p.name  FROM comments c
+                            INNER JOIN users u ON c.id_user = u.id
+                            INNER JOIN products p ON p.id = c.id_pro
+                            WHERE 1 ORDER BY c.ID DESC LIMIT $vitri, $bghi";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
     public function feedBack($id_comment)
     {
         $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = ".$id_comment;
@@ -52,6 +62,38 @@ class Comment extends BaseModel {
         $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = ".$id_comment;
         $this->setQuery($sql);
         return $this->loadAllRows();
+    }
+
+
+    public function detailFeedback($id)
+    {
+        $sql = "SELECT c.*, u.username, p.name, f.text AS feedback_text, f.date AS feedback_date, f.id_user_admin
+FROM comments c
+INNER JOIN users u ON c.id_user = u.id
+INNER JOIN products p ON p.id = c.id_pro
+INNER JOIN feedback f ON f.id_comment = c.id
+WHERE c.id = ?
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id]);
+    }
+
+    public function listOne($id)
+    {
+        $sql = "SELECT c.*,u.username,p.name  FROM comments c
+                            INNER JOIN users u ON c.id_user = u.id
+                            INNER JOIN products p ON p.id = c.id_pro
+                            WHERE c.id = ?";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id]);
+    }
+
+
+    public function insertFeedback($id,$id_comment,$id_user_admin,$text,$date)
+    {
+        $sql = "INSERT INTO `feedback`(`id`, `id_comment`, `id_user_admin`, `text`, `date`) VALUES (?,?,?,?,?)";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id,$id_comment,$id_user_admin,$text,$date]);
     }
 
 

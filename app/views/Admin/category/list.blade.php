@@ -5,6 +5,20 @@
     <div class="d-flex justify-content-end mb-2">
         <a href="{{route("admin/category/add")}}" class="btn btn-outline-success "><i class="fa-solid fa-plus"></i> Thêm mới danh mục</a>
     </div>
+    @if(isset($_SESSION['errors']) && isset($_GET['msg']))
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                @foreach($_SESSION['errors'] as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    @if(isset($_SESSION['success']) && isset($_GET['msg']))
+        <div class="alert alert-success" role="alert">
+            <span>{{$_SESSION['success']}}</span>
+        </div>
+    @endif
     <div class="table-responsive">
         <table class="table table-bordered text-center">
             <thead>
@@ -20,11 +34,8 @@
                     <th>{{$value->id}}</th>
                     <td>{{$value->name}}</td>
                     <td class="text-nowrap" style="width: 1px;">
-                        <a href="update.html"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                data-bs-target="#myModal"><i class="fa-solid fa-trash"></i>
-                            Xóa
-                        </button>
+                        <a href="{{route('admin/category/update/'.$value->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
+                        <a class="btn btn-outline-danger" href="{{route('admin/category/delete/'.$value->id)}}" onclick="return confirm('xóa danh mục {{$value->name}} nhé?')"><i class="fa-solid fa-trash"></i> Xóa</a>
                     </td>
                 </tr>
             @endforeach

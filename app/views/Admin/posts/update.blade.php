@@ -17,12 +17,13 @@
                 <span>{{$_SESSION['success']}}</span>
             </div>
         @endif
-        <form action="{{route('admin/post/add')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('admin/post/update')}}" method="post" enctype="multipart/form-data">
             <div class="form-group mt-3">
                 <label for="title">Tiêu đề bài viết</label>
                 <textarea name="title" id="title" cols="30" rows="3" class="form-control" name="tilte">
                 {{$listOne->tilte}}
                 </textarea>
+                <input type="hidden" name="id" value="{{$listOne->id}}">
             </div>
             <div class="form-group mt-3">
                 <label for="image">Hình ảnh</label>

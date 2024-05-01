@@ -1,12 +1,25 @@
 <?php
 namespace App\controllers\Client;
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Settings;
 
 class PostController extends BaseController{
     protected $post;
+    protected $category;
+    protected $setting;
     public function __construct()
     {
         $this->post = new Post();
+        $this->category = new Category();
+        $this->setting = new Settings();
+
+        // Lấy và lưu cài đặt trong phiên khi khởi tạo controller
+        $listSettings = $this->setting->listSettings();
+        $_SESSION['listSettings'] = $listSettings;
+
+        $listCT = $this->category->listCategory();
+        $_SESSION['category'] = $listCT;
     }
 
     public function list($pageNumber)
@@ -24,7 +37,7 @@ class PostController extends BaseController{
        function detail($id)
        {
            $listOne = $this->post->listOnePost($id);
-           if(!$listOne ){
+           if(!$listOne){
                return $this->renderClient("home.404");
            }
            return $this->renderClient("posts.detail",compact('listOne'));

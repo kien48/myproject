@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-6">
                     <span class="form-label">Giá nhập:</span>
-                    <input type="text" class="form-control" name="price">
+                    <input type="text" class="form-control" name="import_price">
                 </div>
                 <div class="col-md-6">
                     <span class="form-label">Giá bán:</span>

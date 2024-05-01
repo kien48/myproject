@@ -7,9 +7,9 @@
  <h1 class="h3">Thông tin giao hàng</h1>
  </div>
  <form action="<?php echo \htmlentities(route("add-order")??'', ENT_QUOTES, 'UTF-8', false); ?>" method="post">
- <input type="text" class="form-control mt-2" name="name" placeholder="Họ và tên" value="<?php echo \htmlentities($_SESSION['user']->username??'', ENT_QUOTES, 'UTF-8', false); ?>">
- <input type="text" class="form-control mt-2" name="phone" placeholder="Số điện thoại" value="<?php echo \htmlentities($_SESSION['user']->phone??'', ENT_QUOTES, 'UTF-8', false); ?>">
- <input type="text" class="form-control mt-2" name="address" placeholder="Địa chỉ" value="<?php echo \htmlentities($_SESSION['user']->address??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <input type="text" class="form-control mt-2" name="name" placeholder="Họ và tên" value="<?php echo \htmlentities($_SESSION['user']->username??'', ENT_QUOTES, 'UTF-8', false); ?>" required>
+ <input type="text" class="form-control mt-2" name="phone" placeholder="Số điện thoại" value="<?php echo \htmlentities($_SESSION['user']->phone??'', ENT_QUOTES, 'UTF-8', false); ?>" required>
+ <input type="text" class="form-control mt-2" name="address" placeholder="Địa chỉ" value="<?php echo \htmlentities($_SESSION['user']->address??'', ENT_QUOTES, 'UTF-8', false); ?>" required>
  <textarea name="note" id="" cols="30" rows="10" placeholder="Ghi chú" class="form-control mt-2"></textarea>
  </div>
  <div class="col-md-3">
@@ -25,17 +25,17 @@
  <?php endif; ?>
  <label class="form-check-label" for="size_radio2"></label>
  </div>
- <div>
- <h1 class="h3 mt-3">Thanh toán</h1>
- </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="color_radio1" name="pay" value="color_option1"><i class="fa-regular fa-credit-card"></i> Thanh toán momo
- <label class="form-check-label" for="color_radio1"></label>
- </div>
- <div class="form-check">
- <input type="radio" class="form-check-input" id="color_radio2" name="pay" value="Thanh toán khi nhận (COD)" checked><i class="fa-solid fa-money-bill"></i> Thanh toán khi nhận (COD)
- <label class="form-check-label" for="color_radio2"></label>
- </div>
+<?php /*            <div>*/ ?>
+<?php /*                <h1 class="h3 mt-3">Thanh toán</h1>*/ ?>
+<?php /*            </div>*/ ?>
+<?php /*            <div class="form-check">*/ ?>
+<?php /*                <input type="radio" class="form-check-input" id="color_radio1" name="pay" value="vnpay"><i class="fa-regular fa-credit-card"></i> Thanh toán VNPAY*/ ?>
+<?php /*                <label class="form-check-label" for="color_radio1"></label>*/ ?>
+<?php /*            </div>*/ ?>
+<?php /*            <div class="form-check">*/ ?>
+<?php /*                <input type="radio" class="form-check-input" id="color_radio2" name="pay" value="Thanh toán khi nhận (COD)" checked><i class="fa-solid fa-money-bill"></i> Thanh toán khi nhận (COD)*/ ?>
+<?php /*                <label class="form-check-label" for="color_radio2"></label>*/ ?>
+<?php /*            </div>*/ ?>
  </div>
  <div class="col-md-4">
  <div>
@@ -61,8 +61,8 @@
  <p class="text-black-50">Số lượng: <?php echo \htmlentities($quantity??'', ENT_QUOTES, 'UTF-8', false); ?></p>
  </td>
  <td><?php echo \htmlentities(number_format($money)??'', ENT_QUOTES, 'UTF-8', false); ?> đ</td>
- <td><?php echo \htmlentities($size[0]??'', ENT_QUOTES, 'UTF-8', false); ?></td>
- <td><?php echo \htmlentities($color[0]??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($size??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($color??'', ENT_QUOTES, 'UTF-8', false); ?></td>
  </tr>
  </table>
  <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
@@ -88,30 +88,63 @@
  <div class="d-flex justify-content-between mt-3 mb-3">
  <h1 class="h4">Tổng cộng:</h1>
  <?php if(!isset($totalCompleted)): ?>
- <?php if ($total >= 1000000){
+ <?php 
+ if ($total >= 1000000) {
  $tong = $total;
- }else{
+ } else {
  $tong = $total + 30000;
- }  ?>
+ }
+ ?>
  <h1 class="h4"><?php echo \htmlentities(number_format($tong)??'', ENT_QUOTES, 'UTF-8', false); ?> đ</h1>
  <input type="hidden" name="total" value="<?php echo \htmlentities($tong??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <?php else: ?>
- <h1 class="h4"><?php echo \htmlentities(number_format($totalCompleted )??'', ENT_QUOTES, 'UTF-8', false); ?> đ</h1>
+ <h1 class="h4"><?php echo \htmlentities(number_format($totalCompleted)??'', ENT_QUOTES, 'UTF-8', false); ?> đ</h1>
  <input type="hidden" name="totalCompleted" value="<?php echo \htmlentities($totalCompleted??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <input type="hidden" name="percent_discount" value="<?php echo \htmlentities($matchedPercent??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <input type="hidden" name="id_code" value="<?php echo \htmlentities($matchedId??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <?php endif; ?>
- <input type="hidden" name="percent_discount" value="0">
- <input type="hidden" name="id_code" value="0">
  </div>
+
 
  <div class="d-flex align-items-center justify-content-around">
  <a href="<?php echo \htmlentities(route('list-cart')??'', ENT_QUOTES, 'UTF-8', false); ?>" class="nav-link"><i class="fa-solid fa-angle-left"></i> Quay về giỏ hàng</a>
- <button class="btn btn-warning" style="width: 100px;" name="submit">Đặt hàng</button>
- </div>
- </div>
- </div>
+
+
+ <div class="dropdown">
+ <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+ Phương thức thanh toán
+ </button>
+ <ul class="dropdown-menu w-100 border-0">
+ <button type="submit" class="btn btn-warning w-100 mb-2" name="submit" title="Đặt hàng!"><i class="fa-solid fa-money-bill"></i> COD</button>
  </form>
+ <form method="post" action="<?php echo \htmlentities(route('vnpay')??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <input type="hidden" name="id" id="" value="<?php echo \htmlentities(uniqid()??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <?php if(!isset($totalCompleted)): ?>
+ <?php 
+ if ($total >= 1000000) {
+ $tong = $total;
+ } else {
+ $tong = $total + 30000;
+ }
+ ?>
+ <input type="hidden" name="total" value="<?php echo \htmlentities($tong??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <?php else: ?>
+ <input type="hidden" name="totalCompleted" value="<?php echo \htmlentities($totalCompleted??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <input type="hidden" name="percent_discount" value="<?php echo \htmlentities($matchedPercent??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <input type="hidden" name="id_code" value="<?php echo \htmlentities($matchedId??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <?php endif; ?>
+ <button class="btn btn-info w-100 disabled "  name="redirect" style="position: relative;" data-bs-toggle="tooltip" title="Đang phát triển!">
+ <i class="fa-solid fa-credit-card"></i> Thanh toán VNPAY
+ </button>
+
+ </form>
+ </ul>
+ </div>
+ </div>
+
+ </div>
+ </div>
+
 <?php $this->stopSection(); ?>
 
 <?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

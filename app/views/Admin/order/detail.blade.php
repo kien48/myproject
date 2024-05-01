@@ -1,55 +1,93 @@
-<div class="container mt-3">
-    <h3 class="text-center">Chi tiết đơn hàng</h3>
-    <div class="table-responsive">
-        <table class="table table-bordered text-center">
-            <thead>
-            <tr>
-                <th colspan="4">
-                    Mã đơn hàng :
-                </th>
-                <th>
-                    1
-                </th>
-            </tr>
-            <tr>
-                <th>STT</th>
-                <th>Sản phẩm</th>
-                <th>Giá tiền</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-            </tr>
-            </thead>
-            <tbody>
+@extends("layout.main")
+@section("content")
+    <div class="container mt-4">
+        <h1 class="h3 text-center mb-4">Trang danh sách các sản phẩm trong đơn hàng</h1>
+        @if(isset($_SESSION['errors']) && isset($_GET['msg']))
+            <div class="alert alert-danger" role="alert">
+                <span>{{$_SESSION['errors']}}</span>
+            </div>
+        @endif
 
-            <tr>
-                <th>1</th>
-                <td>ÁO len</td>
-                <td>199.000 vnđ</td>
-                <td>
-                    3
-                </td>
-                <td> 597.000 vnđ</td>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td>ÁO dài tay nam</td>
-                <td>199.000 vnđ</td>
-                <td>
-                    1
-                </td>
-                <td>199.000 vnđ</td>
-            </tr>
-            <tr>
-                <td colspan="4">Tổng tiền : </td>
-                <td class="font-weight-bold">796.000 vnđ</td>
-            </tr>
+        @if(isset($_SESSION['success']) && isset($_GET['msg']))
+            <div class="alert alert-success" role="alert">
+                <span>{{$_SESSION['success']}}</span>
+            </div>
+        @endif
+        <div class="table-responsive">
+            <table class="table table-striped" id="myTable">
 
-            </tbody>
-        </table>
+                <thead class="thead-light">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã hóa đơn</th>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng tiền</th>
+                    <th>Cỡ</th>
+                    <th>Màu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <form action="{{route('huy')}}" method="post">
+                    @php $key = 1 @endphp
+                    @foreach($order as $item)
+                        <tr class="table">
+                            <td>{{$key++}}</td>
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->product_name}}</td>
+                            <td>{{$item->quantity}}</td>
+                            <td>{{number_format($item->price)}}đ</td>
+                            <td>{{number_format($item->total)}}đ</td>
+                            <td>{{$item->size}}</td>
+                            <td>{{$item->color}}</td>
+                        </tr>
+                @endforeach
+                </tbody>
 
+                <tr>
+                    <th>Người mua</th>
+                    <th>Điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày mua</th>
+                    <th>Ghi chú</th>
+                    <th>Tổng tiền</th>
+                </tr>
+                <tr>
+                    <td>{{$item->customer_name}}</td>
+                    <td>{{$item->customer_phone}}</td>
+                    <td>{{$item->customer_address}}</td>
+                    <td>{{$item->created_at}}</td>
+                    <td>{{$item->note}}</td>
+                    <td>{{number_format($item->total_amount)}}đ</td>
+                </tr>
+            </table>
+        </div>
+
+            </form>
+            <div class="text-center mt-3">
+                <a href="{{route('admin/orde/1')}}" class="btn btn-secondary">Danh sách</a>
+                <a href="{{route('admin/order/detail/update/'.$item->id)}}" class="btn btn-warning">Cập nhật trạng thái</a>
+                <a href="" class="btn btn-info">In đơn hàng</a>
+            </div>
     </div>
-    <div class="d-flex justify-content-center mt-3">
-        <a href="list.html" class="btn btn-outline-secondary" style="margin-right: 10px;"><i class="fa-solid fa-arrow-left" ></i> Danh sách</a>
-        <a href="update.html" class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Chỉnh sửa</a>
-    </div>
-</div>
+
+
+    <button onclick="exportToExcel()">Export to Excel</button>
+
+    <script>
+        function exportToExcel() {
+            let htmltable = document.getElementById('myTable');
+            let html = htmltable.outerHTML;
+            let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+            let downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = "table.xls";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+@endsection
+
+
