@@ -34,10 +34,14 @@
                         <td>{{$v->size}}</td>
                         <td>{{$v->quantity}}</td>
                         <td class="text-nowrap" style="width: 1px;">
-                            <a href="{{route('admin/variant-update/'.$v->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
-                            <a onclick="return confirm('xóa nhé')" class="btn btn-outline-danger" href="">
-                                <i class="fa-solid fa-trash"></i> Xóa
-                            </a>
+                            <div class="d-flex">
+                                <a href="{{route('admin/variant-update/'.$v->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Cập nhật</button></a>
+                                <form action="{{route('admin/variant/delete')}}" method="post">
+                                    <input name="id_pro" type="hidden" value="{{$v->idpro}}">
+                                    <input name="id" type="hidden" value="{{$v->id}}">
+                                    <button onclick="return confirm('xóa nhé')"  class="btn btn-outline-danger ms-2" name="delete"> <i class="fa-solid fa-trash"></i> Xóa</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

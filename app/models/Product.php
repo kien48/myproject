@@ -197,11 +197,30 @@ ORDER BY
         return $this->loadAllRows([$id]);
     }
 
+    public function listBienTheSP1($idpro, $id)
+    {
+        $sql = "SELECT v.*, p.name 
+            FROM `variant` v
+            INNER JOIN products p ON v.idpro = p.id
+            WHERE v.idpro = ? AND v.id != ?";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$idpro,$id]);
+    }
+
+
     public function listBienThe()
     {
         $sql = "SELECT * FROM `variant` WHERE 1";
         $this->setQuery($sql);
         return $this->loadAllRows([]);
+    }
+
+
+    public function deleteBienThe($id)
+    {
+        $sql = "DELETE FROM `variant` WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$id]);
     }
 
 
@@ -234,5 +253,55 @@ ORDER BY
 ";
         $this->setQuery($sql);
         return $this->execute([$quantity,$idpro,$color,$size]);
+    }
+
+
+    public function totalProduct()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM $this->table";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
+
+    public function thongKe()
+    {
+        $sql = "SELECT c.id AS id_danh_muc, c.name AS ten_danh_muc, COUNT(p.id) AS so_luong_san_pham
+FROM categories c
+LEFT JOIN products p ON p.id_ct = c.id
+GROUP BY c.id;
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
+    public function ThongKeGia()
+    {
+        $sql = "SELECT 
+    MIN(price) AS gia_thap_nhat, 
+    AVG(price) AS gia_trung_binh, 
+    MAX(price) AS gia_cao_nhat
+FROM $this->table;
+";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
+
+    public function ThongKeSao()
+    {
+        $sql = "SELECT 
+    p.id AS id_san_pham, 
+    p.name AS ten_san_pham, 
+    c.star
+FROM 
+    products p
+LEFT JOIN 
+    comments c ON p.id = c.id_pro
+WHERE
+    c.star BETWEEN 1 AND 5
+GROUP BY 
+    p.id, c.star;
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
     }
 }

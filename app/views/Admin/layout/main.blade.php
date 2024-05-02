@@ -36,7 +36,9 @@ if(isset($_SESSION['darkMode'])){
             <!-- Links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin/list-conversation')}}"><i class="fa-solid fa-message"></i>@if(isset($_SESSION['$dem'])){{ count($_SESSION['$dem']) }}@else{{ 0 }}@endif
+                    <a class="nav-link" href="{{ route('admin/list-conversation') }}">
+                        <i class="fa-solid fa-message"></i>
+                        <span class="badge bg-danger rounded-pill position-absolute" style="top: 6px;right: 170px"> @if(isset($_SESSION['$dem'])){{ count($_SESSION['$dem']) }}@else{{ 0 }}@endif</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -59,16 +61,40 @@ if(isset($_SESSION['darkMode'])){
                 <a class="nav-link" href="{{route('admin/category')}}"> <i class="fa-solid fa-layer-group"></i>  Danh mục</a>
             </li>
             <li class="nav-item ni">
-                <a class="nav-link" href="{{ route('admin/list-product/1') }}"><i class="fa-solid fa-shirt"></i>  Sản phẩm</a>
+                <div class="dropdown">
+                    <button type="button" class=" nav-link btn  dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-shirt"></i>  Sản phẩm
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('admin/list-product/1') }}">Quản lý sản phẩm</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin/product/thong-ke') }}">Thống kê</a></li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item ni">
-                <a class="nav-link" href="{{ route('admin/order/1') }}"><i class="fa-solid fa-file-invoice-dollar"></i> Đơn hàng</a>
+                <div class="dropdown">
+                    <button type="button" class=" nav-link btn  dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> Đơn hàng
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('admin/order/1') }}">Quản lý đơn hàng</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin/order/thong-ke') }}">Thống kê</a></li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item ni">
                 <a class="nav-link" href="{{route('admin/list-discount/1')}}"><i class="fa-solid fa-diagram-predecessor"></i> Mã giảm giá</a>
             </li>
             <li class="nav-item ni ">
-                <a class="nav-link" href="{{route('admin/users/1')}}"><i class="fa-solid fa-user"></i> Tài khoản</a>
+                <div class="dropdown">
+                    <button type="button" class=" nav-link btn  dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-user"></i> Tài khoản
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{route('admin/users/1')}}">Quản lý Tài khoản</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin/user/thong-ke') }}">Thống kê</a></li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item ni ">
                 <a class="nav-link" href="{{route('admin/comment/1')}}"><i class="fa-solid fa-message"></i> Bình luận</a>

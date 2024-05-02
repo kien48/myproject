@@ -133,8 +133,19 @@ WHERE ? = c.`id` AND m.sender_id = ?;
         return $this->execute([$conversation_id,$id_user]);
     }
 
-
-
+    public function updateUser($id,$username,$email,$phone,$address)
+    {
+        $sql = "UPDATE `users` SET `username`=?,`email`=?,
+                   `phone`=?,`address`=? WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$username,$email,$phone,$address,$id]);
+    }
+    public function updatePassUser($id,$pass)
+    {
+        $sql = "UPDATE `users` SET `password`=? WHERE id = ?";
+        $this->setQuery($sql);
+        return $this->execute([$pass,$id]);
+    }
 
 
     public function listAllUser()
@@ -144,6 +155,14 @@ WHERE ? = c.`id` AND m.sender_id = ?;
         $this->setQuery($sql);
         return $this->loadAllRows([]);
     }
+
+    public function listAllUser1($id)
+    {
+        $sql = "SELECT * FROM $this->table WHERE role = 1 AND id != ? ORDER BY id DESC";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$id]);
+    }
+
     public function listAllUserPages($vitri,$bghi)
     {
         $sql = "SELECT * FROM $this->table WHERE role = 1 ORDER BY id DESC LIMIT $vitri,$bghi";
@@ -170,6 +189,14 @@ WHERE ? = c.`id` AND m.sender_id = ?;
 ";
         $this->setQuery($sql);
         return $this->loadRow([$id]);
+    }
+
+
+    public function totalUser()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM $this->table where role = 1";
+        $this->setQuery($sql);
+        return $this->loadRow();
     }
 
 

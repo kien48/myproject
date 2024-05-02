@@ -194,7 +194,7 @@ class ProductController extends BaseController
     {
         if(isset($_POST['add'])){
             $errors = [];
-            $id = $_POST['pro_id'];
+            $id = $_POST['id'];
             $idpro = $_POST['pro_id'];
             $color = $_POST['color'];
             $size = $_POST['size'];
@@ -208,9 +208,14 @@ class ProductController extends BaseController
             if(empty($quantity)){
                 $errors[] = "Vui lòng điền số lượng";
             }
+            $list = $this->product->listBienTheSP1($idpro,$id);
+            foreach ($list as $item) {
+                if($item->color == $color && $item->size == $size){
+                    $errors[] = "Đã có biến thể này";
+                }
+            }
             if(count($errors) <= 0){
                 $check = $this->product->updateBienThe($id, $idpro, $color, $size, $quantity);
-//                $this->product->updateStatusPro($idpro);
                 if($check){
                     flash('success', "Cập nhật thành công", 'admin/variant-update/'.$id);
                 }
@@ -303,6 +308,30 @@ class ProductController extends BaseController
             }
         }
     }
+
+
+    public function thongKe()
+    {
+        $thongKe = $this->product->thongKe();
+        $gia = $this->product->ThongKeGia();
+        $sao = $this->product->ThongKeSao();
+        return $this->renderAdmin('product.thongKe', compact('thongKe','gia','sao'));
+    }
+
+    public function deleteVariant()
+    {
+        if(isset($_POST['delete'])){
+            $id = $_POST['id'];
+            $idpro = $_POST['id_pro'];
+            $check = $this->product->deleteBienThe($id);
+            if ($check) {
+                flash('success', 'Xóa thành công','admin/variant/'.$idpro);
+            } else {
+                flash('errors', 'Có lỗi xảy ra khi xóa sản phẩm','admin/variant/'.$idpro);
+            }
+        }
+    }
+
 
 
 

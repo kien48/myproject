@@ -73,10 +73,10 @@
                                     <a href="{{route("list-order")}}" class="btn btn-primary mb-2 btn-block  w-100">Đơn hàng đã mua</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="{{route("update")}}" class="btn btn-warning mb-2 btn-block  w-100">Cập nhật tài khoản</a>
+                                    <a href="{{route("form-update")}}" class="btn btn-warning mb-2 btn-block  w-100">Cập nhật tài khoản</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="{{route("list-order")}}" class="btn btn-warning mb-2 btn-block  w-100">Thay đổi mật khẩu</a>
+                                    <a href="{{route("form-update/pass")}}" class="btn btn-warning mb-2 btn-block  w-100">Thay đổi mật khẩu</a>
                                 </div>
                                 <div class="col-md-12">
                                     <a href="{{route("logout")}}" class="btn btn-secondary btn-block  w-100">Đăng xuất</a>

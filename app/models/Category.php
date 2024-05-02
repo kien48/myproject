@@ -49,4 +49,11 @@ class Category extends BaseModel
         return $this->loadAllRows([]);
     }
 
+    public function totalCategory()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM $this->table";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
+
 }

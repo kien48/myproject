@@ -2,22 +2,19 @@
 @section("content")
 <div class="container mt-3">
     <h3 class="text-center">Quản lý đơn hàng</h3>
-    <div class="d-flex justify-content-between mb-2">
-        <form method="get" action="{{ route('admin/order/1') }}" class="d-flex align-items-center">
-            <select class="form-select me-2" name="key">
-                <option value="1" {{ (isset($_GET['key']) && $_GET['key'] == '1') ? 'selected' : '' }}>Tất cả</option>
-                <option value="2" {{ (isset($_GET['key']) && $_GET['key'] == '2') ? 'selected' : '' }}>Ngày hôm nay</option>
-                <option value="3" {{ (isset($_GET['key']) && $_GET['key'] == '3') ? 'selected' : '' }}>Tuần này</option>
-                <option value="4" {{ (isset($_GET['key']) && $_GET['key'] == '4') ? 'selected' : '' }}>Tháng này</option>
-            </select>
-            <button class="btn btn-primary" type="submit">OK</button>
+
+    <div class="d-flex justify-content-between mb-3 mt-3">
+        <a href="{{route('admin/order/status/0')}}" class="btn btn-secondary">Đơn hàng chờ xác nhận</a>
+        <a href="{{route('admin/order/status/1')}}" class="btn btn-info">Đơn hàng đang chuẩn bị</a>
+        <a href="{{route('admin/order/status/2')}}" class="btn btn-primary">Đơn hàng đang giao</a>
+        <a href="{{route('admin/order/status/3')}}" class="btn btn-success">Đơn hàng đã giao</a>
+        <a href="{{route('admin/order/status/4')}}" class="btn btn-danger">Đơn hàng đã hủy</a>
+    </div>
+        <form class="d-flex" method="get" action="{{route('admin/order/1')}}">
+            <input class="form-control me-2" type="text" placeholder="Tìm theo ID" name="id">
+            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
         </form>
 
-
-        <a href="{{ route('admin/category/add') }}" class="btn btn-outline-danger ms-4 align-self-center">
-            <i class="fa-solid fa-chart-column me-2"></i> Thống kê đơn hàng
-        </a>
-    </div>
 
     @php
         // Lấy URL hiện tại từ biến siêu toàn cục $_SERVER['REQUEST_URI'] và lưu vào biến $url
@@ -32,7 +29,7 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>ID user</th>
+                <th>Tài khoản</th>
                 <th>Tên người đặt</th>
                 <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
@@ -49,24 +46,37 @@
             <tbody>
             @foreach($list as $value)
                 @php
-
-                if($value->status == 1){
-                    $status = "Đang chuẩn bị hàng";
-                     $class= "info";
-                }elseif($value->status == 2){
-                    $status = "Đang giao";
-                     $class= "primary";
-                }elseif($value->status == 3){
-                    $status = "Đã nhận hàng";
-                     $class= "success";
-                }elseif($value->status == 4){
-                    $status = "Đã hủy";
-                     $class= "danger";
-                }
+                    switch ($value->status) {
+                        case 0:
+                            $status = "Chờ xác nhận";
+                            $class = "secondary";
+                            break;
+                        case 1:
+                            $status = "Đang chuẩn bị hàng";
+                            $class = "info";
+                            break;
+                        case 2:
+                            $status = "Đang giao";
+                            $class = "primary";
+                            break;
+                        case 3:
+                            $status = "Đã nhận hàng";
+                            $class = "success";
+                            break;
+                        case 4:
+                            $status = "Đã hủy";
+                            $class = "danger";
+                            break;
+                        default:
+                            $status = "Trạng thái không xác định";
+                            $class = "default";
+                            break;
+                    }
                 @endphp
+
                 <tr>
                     <th>{{$value->id}}</th>
-                    <th>{{$value->id_user}}</th>
+                    <th>{{ $value->username }}</th>
                     <td>{{$value->customer_name}}</td>
                     <td>{{substr($value->customer_address, 0, 30)}}</td>
                     <td >
@@ -83,15 +93,18 @@
                         <span class="badge bg-{{$class}}">{{$status}}</span>
                     </td>
                     <td class="text-nowap" style="width: 1px">
-                        <a href="{{route('admin/order/detail/'.$value->id)}}"><button class="btn btn-outline-primary"> <i class="fa-solid fa-eye"></i> Chi
-                                tiết</button></a>
-                        <a href="{{route('admin/order/detail/update/'.$value->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
+                        <div class="d-flex">
+                            <a href="{{route('admin/order/detail/'.$value->id)}}"><button class="btn btn-outline-primary"> <i class="fa-solid fa-eye"></i> Chi
+                                    tiết</button></a>
+                            <a href="{{route('admin/order/detail/update/'.$value->id)}}"><button class="btn btn-outline-warning ms-2"><i class="fa-solid fa-wrench"></i> Cập nhật</button></a>
+                        </div>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center">
+        @if(!isset($_GET['id']))
+            <div class="d-flex justify-content-center">
             <div class="d-flex justify-content-center">
                 <nav aria-label="...">
                     <ul class="pagination">
@@ -111,6 +124,7 @@
                 </nav>
             </div>
         </div>
+        @endif
     </div>
 </div>
 @endsection

@@ -55,7 +55,9 @@
         <div class="d-flex justify-content-center mt-3">
             <a href="{{route('admin/order/1')}}" class="btn btn-outline-secondary " style="margin-right: 10px;"><i class="fa-solid fa-arrow-left"></i> Danh
                 sách</a>
-            <button type="submit" class="btn btn-outline-success " name="submit"><i class="fa-solid fa-wrench"></i> Cập nhật</button>
+           @if($order[0]->status != 4)
+                <button type="submit" class="btn btn-outline-success " name="submit"><i class="fa-solid fa-wrench"></i> Cập nhật</button>
+           @endif
 
         </div>
     </form>

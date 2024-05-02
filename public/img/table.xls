@@ -1,0 +1,45 @@
+<table class="table table-striped" id="myTable">
+
+ <thead class="thead-light">
+ <tr>
+ <th>STT</th>
+ <th>Mã hóa đơn</th>
+ <th>Sản phẩm</th>
+ <th>Số lượng</th>
+ <th>Giá</th>
+ <th>Tổng tiền</th>
+ <th>Cỡ</th>
+ <th>Màu</th>
+ </tr>
+ </thead>
+ <tbody>
+ <form action="http://localhost:90/myproject/huy" method="post"></form>
+   <tr class="table">
+ <td>1</td>
+ <td>85</td>
+ <td> Áo Chống Nắng Nữ Chống UV Dáng Suông</td>
+ <td>5</td>
+ <td>650,000đ</td>
+ <td>3,250,000đ</td>
+ <td>XL</td>
+ <td>Hồng</td>
+ </tr>
+  </tbody>
+
+ <tbody><tr>
+ <th>Người mua</th>
+ <th>Điện thoại</th>
+ <th>Địa chỉ</th>
+ <th>Ngày mua</th>
+ <th>Ghi chú</th>
+ <th>Tổng tiền</th>
+ </tr>
+ <tr>
+ <td>Ảo </td>
+ <td>0357788559</td>
+ <td>hà nội</td>
+ <td>2024-04-30 13:52:06</td>
+ <td>khá ok</td>
+ <td>3,250,000đ</td>
+ </tr>
+ </tbody></table>

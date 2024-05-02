@@ -97,5 +97,23 @@ WHERE c.id = ?
     }
 
 
+    public function thongKe()
+    {
+        $sql = "SELECT 
+    c.id_user, 
+    u.username, 
+    COUNT(*) AS total_comments 
+FROM 
+    comments c
+INNER JOIN 
+    users u ON u.id = c.id_user
+GROUP BY 
+    c.id_user, 
+    u.username;";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
+
 
 }

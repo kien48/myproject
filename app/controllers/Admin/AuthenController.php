@@ -1,13 +1,19 @@
 <?php
 namespace App\Controllers\Admin;
 use App\Models\User;
+use App\Models\Cart;
+use App\Models\Comment;
 
 class AuthenController extends BaseController{
 
     public $user;
+    public $cart;
+    public $comment;
     public function __construct()
     {
         $this->user = new User();
+        $this->cart = new Cart();
+        $this->comment = new Comment();
         $dem = $this->user->dem();
         $_SESSION['$dem'] = $dem;
     }
@@ -63,8 +69,7 @@ class AuthenController extends BaseController{
         $listUser = $this->user->listAllUser();
 
         return $this->renderAdmin("authen.inbox",compact('listConversation','listUser'));
-//        header("Location: {$_SERVER['HTTP_REFERER']}");
-//        exit();
+
     }
 
     public function chat($id)
@@ -136,5 +141,14 @@ class AuthenController extends BaseController{
         } else {
             flash('errors', 'Mở thất bại', 'admin/users/1');
         }
+    }
+
+
+    public function thongKe()
+    {
+        $thongKeBL = $this->comment->thongKe();
+        $thongKeMuaHang = $this->cart->thongKeNguoiMua();
+        return $this->renderAdmin("authen.thongKe",compact('thongKeBL','thongKeMuaHang'));
+
     }
 }

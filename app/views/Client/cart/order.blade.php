@@ -25,17 +25,6 @@
                 @endif
                 <label class="form-check-label" for="size_radio2"></label>
             </div>
-{{--            <div>--}}
-{{--                <h1 class="h3 mt-3">Thanh toán</h1>--}}
-{{--            </div>--}}
-{{--            <div class="form-check">--}}
-{{--                <input type="radio" class="form-check-input" id="color_radio1" name="pay" value="vnpay"><i class="fa-regular fa-credit-card"></i> Thanh toán VNPAY--}}
-{{--                <label class="form-check-label" for="color_radio1"></label>--}}
-{{--            </div>--}}
-{{--            <div class="form-check">--}}
-{{--                <input type="radio" class="form-check-input" id="color_radio2" name="pay" value="Thanh toán khi nhận (COD)" checked><i class="fa-solid fa-money-bill"></i> Thanh toán khi nhận (COD)--}}
-{{--                <label class="form-check-label" for="color_radio2"></label>--}}
-{{--            </div>--}}
         </div>
         <div class="col-md-4">
             <div>

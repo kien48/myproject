@@ -133,7 +133,11 @@ class cartController extends BaseController
     }
     public function order()
     {
-        return $this->renderClient("cart.order");
+        if(isset($_SESSION['user'])){
+            return $this->renderClient("cart.order");
+        }else{
+            flash('errors','Bạn phải đăng nhập mới mua hàng được','form-login');
+        }
     }
     public function addOrder()
     {
@@ -144,12 +148,12 @@ class cartController extends BaseController
             $name = $_POST['name'];
             $phone = $_POST['phone'];
             $address = $_POST['address'];
-            $id_user = isset($_SESSION['user']) ? $_SESSION['user']->id : 0;
+            $id_user = $_SESSION['user'];
             $note = $_POST['note'];
             $ship = 'Giao hàng nhanh';
             $date = date('Y-m-d H:i:s');
             $payment = 'Thanh toán COD';
-            $percentDiscount = isset($_POST['percent_discount']) ? $_POST['percent_discount'] : 0;
+            $percent_discount = isset($_POST['percent_discount']) ? intval($_POST['percent_discount']) : 0;
             $matchedId = isset($_POST['id_code']) ? $_POST['id_code'] : 0;
             // Xác định giá trị tổng hoàn thành dựa trên liệu có áp dụng mã giảm giá không
             if(isset($_POST['totalCompleted'])){
@@ -158,7 +162,7 @@ class cartController extends BaseController
                 $totalCompleted = $_POST['total'];
             }
 
-            $id_order = $this->cart->order(NULL, $name, $phone, $address, $id_user, $totalCompleted, $date, $note, $ship, $payment, 1, $percentDiscount,1);
+            $id_order = $this->cart->order(NULL, $name, $phone, $address, $id_user, $totalCompleted, $date, $note, $ship, $payment, 1, $percent_discount,0);
             $this->discount->applySuccess($matchedId); // Áp dụng giảm giá chỉ khi người dùng chọn "submit"
             if($id_order){
                 foreach ($_SESSION['giohang'] as $item) {

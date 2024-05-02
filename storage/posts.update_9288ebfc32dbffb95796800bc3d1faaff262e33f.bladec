@@ -1,0 +1,51 @@
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('content'); ?>
+ <div class="container mt-3">
+ <!-- Page Heading -->
+ <h3 class="text-center mb-3">Trang cập nhật bài viết</h3>
+ <?php if(isset($_SESSION['errors']) && isset($_GET['msg'])): ?>
+ <div class="alert alert-danger" role="alert">
+ <ul>
+ <?php $__currentLoopData = $_SESSION['errors']; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $error): $loop = $this->incrementLoopIndices();  ?>
+ <li><?php echo \htmlentities($error??'', ENT_QUOTES, 'UTF-8', false); ?></li>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </ul>
+ </div>
+ <?php endif; ?>
+ <?php if(isset($_SESSION['success']) && isset($_GET['msg'])): ?>
+ <div class="alert alert-success" role="alert">
+ <span><?php echo \htmlentities($_SESSION['success']??'', ENT_QUOTES, 'UTF-8', false); ?></span>
+ </div>
+ <?php endif; ?>
+ <form action="<?php echo \htmlentities(route('admin/post/update')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="post" enctype="multipart/form-data">
+ <div class="form-group mt-3">
+ <label for="title">Tiêu đề bài viết</label>
+ <textarea name="title" id="title" cols="30" rows="3" class="form-control" name="tilte">
+ <?php echo \htmlentities($listOne->tilte??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ </textarea>
+ <input type="hidden" name="id" value="<?php echo \htmlentities($listOne->id??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ </div>
+ <div class="form-group mt-3">
+ <label for="image">Hình ảnh</label>
+ <input type="file" name="image" id="image" class="form-control">
+ <div class="mt-2 mb-2">
+ <img src="../../../public/img/<?php echo \htmlentities($listOne->image??'', ENT_QUOTES, 'UTF-8', false); ?>" alt="" height="300px">
+ </div>
+ </div>
+ <input type="hidden" name="author" value="<?php echo \htmlentities($_SESSION['admin']->username??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <div class="form-group mt-3">
+ <label for="content">Nội dung bài viết</label>
+ <textarea id="editor" contenteditable="true" class="form-control" name="text"><?php echo \htmlentities($listOne->text??'', ENT_QUOTES, 'UTF-8', false); ?></textarea>
+ </div>
+ <div class="form-group mt-3 text-center">
+ <a href="#" class="btn btn-secondary">Quay lại</a>
+ <button type="submit" class="btn btn-primary" name="submit">Cập nhật</button>
+ </div>
+ </form>
+
+<?php $this->stopSection(); ?>
+
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

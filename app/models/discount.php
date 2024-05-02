@@ -70,6 +70,13 @@ class discount extends BaseModel {
         return $this->execute([]);
     }
 
+    public function totalDiscount()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM $this->table";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
+
 
 
 

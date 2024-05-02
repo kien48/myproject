@@ -37,27 +37,14 @@ class Cart extends BaseModel
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
-    public function totalThisWeek()
+    public function total()
     {
-        $sql = "SELECT SUM(total_amount) AS total_week 
+        $sql = "SELECT SUM(total_amount) AS total_amount 
             FROM $this->table
-            WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1) AND status = 3
-            GROUP BY YEARWEEK(created_at, 1), status";
+            WHERE status = 3";
 
         $this->setQuery($sql);
-        return $this->loadAllRows();
-    }
-
-
-    public function totalThisMonth()
-    {
-        $sql = "SELECT SUM(total_amount) AS total_month 
-            FROM $this->table
-            WHERE MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE()) AND status = 3
-            GROUP BY MONTH(created_at), status";
-
-        $this->setQuery($sql);
-        return $this->loadAllRows();
+        return $this->loadRow();
     }
 
 
@@ -72,11 +59,30 @@ class Cart extends BaseModel
     }
 
 
-    public function listAllOrderPages($vitri,$bghi)
+    public function listAllOrderPages($vitri,$bghi,$id = null)
     {
-        $sql = "SELECT * FROM invoices WHERE 1 ORDER BY id DESC LIMIT $vitri,$bghi ";
+        $sql = "SELECT i.*,u.username FROM invoices i 
+          INNER JOIN users u ON u.id = i.id_user";
+        if ($id !== null) {
+            $sql .= " WHERE i.id = $id";
+        }else{
+            $sql .= " WHERE 1";
+        }
+
+        $sql .= " ORDER BY i.id DESC LIMIT $vitri, $bghi";
+
         $this->setQuery($sql);
         return $this->loadAllRows();
+    }
+
+
+
+    public function listAllOrderStatus($status)
+    {
+        $sql = "SELECT i.*,u.username FROM invoices i 
+          INNER JOIN users u ON u.id = i.id_user WHERE i.status = ?";
+        $this->setQuery($sql);
+        return $this->loadAllRows([$status]);
     }
 
 
@@ -89,13 +95,6 @@ class Cart extends BaseModel
         return $this->execute([$quantity,$idpro,$color,$size]);
     }
 
-    public function detailOrderForOrder($invoice_id)
-    {
-        $sql = "SELECT * FROM `invoice_details`
-                WHERE invoice_id = ?";
-        $this->setQuery($sql);
-        return $this->loadAllRows([$invoice_id]);
-    }
 
     public function huyOrder($id)
     {
@@ -142,6 +141,57 @@ class Cart extends BaseModel
         $this->setQuery($sql);
         return $this->execute([]);
     }
+
+
+    public function totalOrder()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM $this->table WHERE status = 3";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
+
+    public function thongKe()
+    {
+        $sql = "SELECT `status`, COUNT(*) as total_orders 
+FROM $this->table
+GROUP BY `status`;
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
+    public function giaThongKe()
+    {
+        $sql = "SELECT 
+    MIN(total_amount) AS don_thap_nhat, 
+    MAX(total_amount) AS don_cao_nhat, 
+    AVG(total_amount) AS don_trung_binh
+FROM invoices;
+";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
+
+    public function thongKeNguoiMua()
+    {
+        $sql = "SELECT 
+    i.id_user, 
+    u.username, 
+    COUNT(*) AS total_orders, 
+    SUM(CASE WHEN i.status = 3 THEN i.total_amount ELSE 0 END) AS total_amount_status_3,
+    (SELECT COUNT(*) FROM invoices WHERE status = 3 AND id_user = i.id_user) AS total_orders_status_3
+FROM 
+    invoices i
+INNER JOIN 
+    users u ON u.id = i.id_user
+GROUP BY 
+    i.id_user, 
+    u.username;
+";
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
+
 
 
 }

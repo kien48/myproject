@@ -1,0 +1,90 @@
+<?php $_shouldextend[1]=1; ?>
+
+<?php $this->startSection("content"); ?>
+ <div class="container mt-5">
+ <div class="row">
+ <div class="col-md-6">
+ <h4>Feedback</h4>
+ <table class="table table-bordered">
+ <thead>
+ <tr>
+ <th>ID</th>
+ <th>Admin</th>
+ <th>Text</th>
+ <th>Ngày</th>
+ </tr>
+ </thead>
+ <tbody>
+ <?php $__currentLoopData = $list; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $item): $loop = $this->incrementLoopIndices();  ?>
+ <tr>
+ <td><?php echo \htmlentities($item->id??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($item->id_user_admin??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($item->feedback_text??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($item->feedback_date??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ </tr>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </tbody>
+ </table>
+ </div>
+ <div class="col-md-6">
+ <h4>Comments</h4>
+ <table class="table table-bordered">
+ <thead>
+ <tr>
+ <th>ID</th>
+ <th>Tên người dùng</th>
+ <th>Nội dung</th>
+ <th>Sản phẩm</th>
+ <th>Thời gian</th>
+ <th>Sao</th>
+ </tr>
+ </thead>
+ <tbody>
+ <?php $__currentLoopData = $one; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $item): $loop = $this->incrementLoopIndices();  ?>
+ <tr>
+ <td><?php echo \htmlentities($item->id??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($item->username??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td>
+ <p data-toggle="tooltip" title="<?php echo \htmlentities($item->content??'', ENT_QUOTES, 'UTF-8', false); ?>"><?php echo \htmlentities($item->content??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ </td>
+ <td><?php echo \htmlentities($item->name??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><?php echo \htmlentities($item->created_at??'', ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td>
+ <?php if($item->star != 0): ?>
+ <?php echo \htmlentities($item->star??'', ENT_QUOTES, 'UTF-8', false); ?> <i class="fa-solid fa-star"></i>
+ <?php endif; ?>
+ </td>
+ </tr>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ <?php if(!count($list) == 1): ?>
+ <div class="row mt-5">
+ <div class="col-md-12">
+ <h4>Thêm Feedback</h4>
+ <form action="<?php echo \htmlentities(route('admin/comment/feedback/insert')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="POST">
+ <div class="form-group">
+ <label for="text">Text</label>
+ <textarea name="text" id="" cols="15" rows="5" class="form-control" required></textarea>
+ <input type="hidden" class="form-control" id="text" name="id" value="<?php echo \htmlentities($item->id??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <input type="hidden" class="form-control" id="text" name="id_user_admin" value="<?php echo \htmlentities($_SESSION['admin']->id??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ </div>
+ <div class="text-center mt-4">
+ <a class="btn btn-secondary" href="<?php echo \htmlentities(route('admin/comment/1')??'', ENT_QUOTES, 'UTF-8', false); ?>">Danh sách</a>
+ <button type="submit" class="btn btn-primary" name="submit">Gửi</button>
+ </div>
+ </form>
+ </div>
+ </div>
+
+ <?php else: ?>
+ <h4>Bạn đã trả lời rồi</h4>
+ <?php endif; ?>
+ </div>
+<?php $this->stopSection(); ?>
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('layout.main'); } ?>

@@ -47,7 +47,11 @@ $router->post('add-comment/{id}', [App\Controllers\Client\ProductController::cla
 $router->get('form-login', [App\Controllers\Client\LoginController::class, "formLogin"]);
 $router->post('login', [App\Controllers\Client\LoginController::class, "login"]);
 $router->get('logout', [App\Controllers\Client\LoginController::class, "logout"]);
-$router->get('update', [App\Controllers\Client\LoginController::class, "update"]);
+$router->get('form-update', [App\Controllers\Client\LoginController::class, "formUpdate"]);
+$router->post('update', [App\Controllers\Client\LoginController::class, "update"]);
+$router->get('form-update/pass', [App\Controllers\Client\LoginController::class, "formPass"]);
+$router->post('update/pass', [App\Controllers\Client\LoginController::class, "updatePass"]);
+
 $router->get('form-register', [App\Controllers\Client\LoginController::class, "formRegister"]);
 $router->post('register', [App\Controllers\Client\LoginController::class, "register"]);
 
@@ -99,6 +103,7 @@ $router->group(['before' => 'admin'], function($router) {
         $router->post('darkMode', [App\Controllers\Admin\DashboardController::class, "darkMode"]);
 
 // Quản lý sản phẩm
+        $router->get('/product/thong-ke', [App\Controllers\Admin\ProductController::class, "thongKe"]);
         $router->get('/list-product/{pageNumber}', [App\Controllers\Admin\ProductController::class, "list"]);
         $router->post('/list-product-category', [App\Controllers\Admin\ProductController::class, "listCategory"]);
         $router->get('/form-add', [App\Controllers\Admin\ProductController::class, "formAdd"]);
@@ -139,10 +144,13 @@ $router->group(['before' => 'admin'], function($router) {
         $router->get('/category/delete/{id}', [App\Controllers\Admin\CategoryController::class, "deleteCategory"]);
 
 // Quản lý đơn hàng
+        $router->get('/order/status/{status}', [App\Controllers\Admin\OrderController::class, "status"]);
+        $router->get('/order/thong-ke', [App\Controllers\Admin\OrderController::class, "thongKe"]);
         $router->get('/order/{pageNumber}', [App\Controllers\Admin\OrderController::class, "list"]);
         $router->get('/order/detail/{id}', [App\Controllers\Admin\OrderController::class, "detail"]);
         $router->get('/order/detail/update/{id}', [App\Controllers\Admin\OrderController::class, "updatedetail"]);
         $router->post('/order/post', [App\Controllers\Admin\OrderController::class, "postDetail"]);
+
 
 // Quản lý bình luận
         $router->get('/comment/{pageNumber}', [App\Controllers\Admin\CommentController::class, "list"]);
@@ -150,11 +158,13 @@ $router->group(['before' => 'admin'], function($router) {
         $router->post('/comment/feedback/insert', [App\Controllers\Admin\CommentController::class, "insertFeedback"]);
 
 // Quản lý tài khoản người dùng
+        $router->get('/user/thong-ke', [App\Controllers\Admin\AuthenController::class, "thongKe"]);
         $router->get('/users/{pageNumber}', [App\Controllers\Admin\AuthenController::class, "list"]);
         $router->get('/users/lock/{id}', [App\Controllers\Admin\AuthenController::class, "lockTK"]);
         $router->get('/users/mo/{id}', [App\Controllers\Admin\AuthenController::class, "moTK"]);
 
 // Quản lý biến thể sản phẩm
+        $router->post('/variant/delete', [App\Controllers\Admin\ProductController::class, "deleteVariant"]);
         $router->get('/variant/{id}', [App\Controllers\Admin\ProductController::class, "listVariant"]);
         $router->get('/variant-add/{id}', [App\Controllers\Admin\ProductController::class, "formAddVR"]);
         $router->post('/post-variant', [App\Controllers\Admin\ProductController::class, "addVR"]);

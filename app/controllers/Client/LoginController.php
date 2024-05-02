@@ -34,6 +34,7 @@ class LoginController extends BaseController
         if(isset($_SESSION['user'])){
             $demUser = $this->user->demUser($_SESSION['user']->id);
         }
+        $demUser = "";
         return $this->renderClient("login.login",compact('demUser'));
     }
     public function login()
@@ -105,6 +106,15 @@ class LoginController extends BaseController
             if(strlen($name) <= 4) {
                 $error[] = "Vui lòng điền tên trên 4 ký tự";
             }
+            $allUser = $this->user->listAllUser();
+            foreach ($allUser as $user) {
+                if($user->username === $name){
+                    $error[] = "Tên đã được sử dụng";
+                }
+                if($user->email === $email){
+                    $error[] = "Email đã được sử dụng";
+                }
+            }
 
             // Kiểm tra xem có lỗi không trước khi thêm vào cơ sở dữ liệu
             if(empty($error)){
@@ -166,9 +176,103 @@ class LoginController extends BaseController
         }
     }
 
-    public function update()
+    public function formUpdate()
     {
         return $this->renderClient("login.update");
+    }
+
+
+    public function update()
+    {
+        if(isset($_POST['submit'])){
+            $errors = [];
+            $id = $_POST['id'];
+            $name= $_POST['username'];
+            $phone = $_POST['phone'];
+            $email = $_POST['email'];
+            $address = $_POST['address'];
+
+            if(strlen($phone) != 10) {
+                $error[] = "Vui lòng điền số điện thoại gồm 10 số";
+            }
+
+            // Kiểm tra và xử lý địa chỉ email
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error[] = "Vui lòng điền đúng định dạng email";
+            }
+
+            if(strlen($name) <= 4) {
+                $error[] = "Vui lòng điền tên trên 4 ký tự";
+            }
+            $allUser = $this->user->listAllUser1($id);
+            foreach ($allUser as $user) {
+                if($user->username === $name){
+                    $errors[] = "Tên đã được sử dụng";
+                }
+                if($user->email === $email){
+                    $errors[] = "Email đã được sử dụng";
+                }
+            }
+
+            if(empty($errors)){
+                $check = $this->user->updateUser($id,$name,$email,$phone,$address);
+                if($check){
+                    flash('success', 'Cập nhật thành công', 'form-update');
+                } else {
+                    $errors[] = 'Cập nhật thất bại';
+                    flash('errors', $errors , 'form-update');
+                }
+            }else{
+                flash('errors', $errors, 'form-update');
+            }
+        }
+    }
+
+
+    public function formPass()
+    {
+        return $this->renderClient("login.updatePass");
+    }
+
+    public function updatePass()
+    {
+        if(isset($_POST['submit'])){
+            $errors = [];
+            $pass = $_POST['pass'];
+            $id = $_POST['id'];
+            $passNew = $_POST['pass_new'];
+            $passNew1 = $_POST['pass_new_1'];
+            if($pass != $_SESSION['user']->password){
+                $errors[] = "Mật khầu bạn điền không đúng";
+            }
+            if($passNew != $passNew1){
+                $errors[] = "Mật khầu mới bạn điền và nhập lại không trùng nhau";
+            }
+            if(empty($passNew)){
+                $errors[] = "Mật khầu mới bạn không được để trống";
+            }
+            if(empty($pass)){
+                $errors[] = "Mật khầu bạn không được để trống";
+            }
+            if(strlen($passNew) <= 6){
+                $errors[] = "Mật khầu mới bạn phải lớn hơn 6 ký tự";
+            }
+            if($passNew == $passNew1){
+                if(empty($errors)){
+                   $check = $this->user->updatePassUser($id,$pass);
+                    if($check){
+                        flash('success', 'Cập nhật thành công', 'form-update/pass');
+                    } else {
+                        $errors[] = 'Cập nhật thất bại';
+                        flash('errors', $errors , 'form-update/pass');
+                    }
+                }else{
+                    flash('errors', $errors, 'form-update/pass');
+                }
+            }else{
+                flash('errors', $errors, 'form-update/pass');
+            }
+        }
     }
 
 }

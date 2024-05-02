@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport"
+ content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Document</title>
+</head>
+<body>
+<div class="card-body">
+ <?php var_dump($product)  ?>
+ <form class=" mb-3" method="post" action="<?php echo \htmlentities(route('add-comment/'.$product->id)??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <textarea name="content" id="" cols="30" rows="5" class="form-control me-2" placeholder="Nhập bình luận <?php if(isset($_SESSION['user'])): ?>đi nào <?php echo \htmlentities($_SESSION['user']->username??'', ENT_QUOTES, 'UTF-8', false); ?> <?php else: ?>với tư cách người ẩn danh
+ <?php endif; ?>
+ "></textarea>
+ <?php if(isset($_SESSION['user'])): ?>
+ <div class="ms-auto">
+ <div class="rating-star d-flex justify-content-center">
+ <div class="ms-4">
+ <input type="radio" name="option[]" id="option1" value="5">
+ <label for="option1">5 sao</label>
+ </div>
+ <div class="ms-4">
+ <input type="radio" name="option[]" id="option2" value="4">
+ <label for="option2">4 sao</label>
+ </div>
+
+ <div class="ms-4">
+ <input type="radio" name="option[]" id="option3" value="3">
+ <label for="option3">3 sao</label>
+ </div>
+
+ <div class="ms-4">
+ <input type="radio" name="option[]" id="option4" value="2">
+ <label for="option4">2 sao</label>
+ </div>
+
+ <div class="ms-4">
+ <input type="radio" name="option[]" id="option5" value="1">
+ <label for="option5">1 sao</label>
+ </div>
+ </div>
+ </div>
+ <?php endif; ?>
+ <button class="btn btn-primary" type="submit" name="send">Gửi</button>
+ </form>
+ <?php $__currentLoopData = $listComment; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $list): $loop = $this->incrementLoopIndices();  ?>
+ <div class="card mt-3">
+ <div class="card-body">
+ <div class="d-flex justify-content-between">
+ <h5 class="card-title"><?php if($list->username): ?>
+ <?php echo \htmlentities($list->username??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ <?php else: ?>
+ Người ẩn danh
+ <?php endif; ?>
+ </h5>
+ <h4 class="text-warning"><?php if($list->star != 0): ?>
+ <?php echo \htmlentities($list->star??'', ENT_QUOTES, 'UTF-8', false); ?> sao
+ <?php endif; ?></h4>
+ </div>
+ <p class="card-text"><?php echo \htmlentities($list->content??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ </div>
+
+ </div>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ <div class="text-end">
+ <i class="fa-solid fa-turn-down"></i>
+ </div>
+ <div class="card mt-3 bg-warning w-50 text-end">
+ <div class="card-body">
+ <div class="d-flex justify-content-between align-items-center">
+ <h5 class="card-title">admin</h5>
+ </div>
+ <p class="card-text">ok bạn</p>
+ </div>
+ </div>
+
+
+
+</div>
+</body>
+</html>

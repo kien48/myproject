@@ -71,23 +71,6 @@
                 <a href="" class="btn btn-info">In đơn hàng</a>
             </div>
     </div>
-
-
-    <button onclick="exportToExcel()">Export to Excel</button>
-
-    <script>
-        function exportToExcel() {
-            let htmltable = document.getElementById('myTable');
-            let html = htmltable.outerHTML;
-            let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
-            let downloadLink = document.createElement("a");
-            downloadLink.href = url;
-            downloadLink.download = "table.xls";
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        }
-    </script>
 @endsection
 
 

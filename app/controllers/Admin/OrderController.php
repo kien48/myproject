@@ -18,7 +18,12 @@ class OrderController extends BaseController
     public function list($pageNumber){
         $bghi = 2;
         $vitri = ($pageNumber - 1) * $bghi;
-        $list = $this->cart->listAllOrderPages($vitri,$bghi);
+        if(isset($_GET['id'])){
+            $id = $_GET['id'];
+            $list = $this->cart->listAllOrderPages($vitri,$bghi,$id);
+        }else{
+            $list = $this->cart->listAllOrderPages($vitri,$bghi);
+        }
         $listAll = $this->cart->listAllOrder();
         $tong = count($listAll);
         $sotrang = ceil($tong/$bghi);
@@ -48,6 +53,32 @@ class OrderController extends BaseController
                flash('errors','Cập nhật lỗi', 'admin/order/detail/update/'.$id);
            }
        }
+    }
+
+    public function thongKe()
+    {
+        $thongKe = $this->cart->thongKe();
+        $gia = $this->cart->giaThongKe();
+        return $this->renderAdmin("order.thongKe",compact('thongKe','gia'));
+    }
+
+    public function status($status)
+    {
+        if($status == 0){
+            $list = $this->cart->listAllOrderStatus(0);
+        }elseif($status == 1){
+            $list = $this->cart->listAllOrderStatus(1);
+        }
+        elseif($status == 2){
+            $list = $this->cart->listAllOrderStatus(2);
+        }
+        elseif($status == 3){
+            $list = $this->cart->listAllOrderStatus(3);
+        }
+        elseif($status == 4){
+            $list = $this->cart->listAllOrderStatus(4);
+        }
+        return $this->renderAdmin("order.listStatus",compact('list','status'));
     }
 
 

@@ -42,4 +42,11 @@ class Post extends BaseModel
         $this->setQuery($sql);
         return $this->execute([$id]);
     }
+
+    public function totalPost()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM $this->table";
+        $this->setQuery($sql);
+        return $this->loadRow();
+    }
 }

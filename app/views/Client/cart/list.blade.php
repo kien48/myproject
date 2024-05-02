@@ -128,7 +128,7 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{$percent}}%">{{number_format($_SESSION['total'])}}đ</div>
                 </div>
                 <div class="mt-2">
-                    <a href="{{route('order')}}"class="w-100 btn btn-warning {{$cl}}">
+                    <a href="{{route('order')}}" class="w-100 btn btn-warning {{$cl}}">
                         <button class="w-100 btn btn-warning"><i class="fa-solid fa-money-bill-1-wave"></i> Thanh toán
                             ngay</button>
                     </a>

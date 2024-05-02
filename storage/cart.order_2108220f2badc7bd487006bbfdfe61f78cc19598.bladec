@@ -25,17 +25,6 @@
  <?php endif; ?>
  <label class="form-check-label" for="size_radio2"></label>
  </div>
-<?php /*            <div>*/ ?>
-<?php /*                <h1 class="h3 mt-3">Thanh toán</h1>*/ ?>
-<?php /*            </div>*/ ?>
-<?php /*            <div class="form-check">*/ ?>
-<?php /*                <input type="radio" class="form-check-input" id="color_radio1" name="pay" value="vnpay"><i class="fa-regular fa-credit-card"></i> Thanh toán VNPAY*/ ?>
-<?php /*                <label class="form-check-label" for="color_radio1"></label>*/ ?>
-<?php /*            </div>*/ ?>
-<?php /*            <div class="form-check">*/ ?>
-<?php /*                <input type="radio" class="form-check-input" id="color_radio2" name="pay" value="Thanh toán khi nhận (COD)" checked><i class="fa-solid fa-money-bill"></i> Thanh toán khi nhận (COD)*/ ?>
-<?php /*                <label class="form-check-label" for="color_radio2"></label>*/ ?>
-<?php /*            </div>*/ ?>
  </div>
  <div class="col-md-4">
  <div>

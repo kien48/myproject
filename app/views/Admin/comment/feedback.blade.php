@@ -60,22 +60,27 @@
                 </table>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <h4>Thêm Feedback</h4>
-                <form action="{{ route('admin/comment/feedback/insert') }}" method="POST">
-                    <div class="form-group">
-                        <label for="text">Text</label>
-                        <textarea name="text" id="" cols="15" rows="5" class="form-control" required></textarea>
-                        <input type="hidden" class="form-control" id="text" name="id" value="{{$item->id}}">
-                        <input type="hidden" class="form-control" id="text" name="id_user_admin" value="{{$_SESSION['admin']->id}}">
-                    </div>
-                    <div class="text-center mt-4">
-                        <a class="btn btn-secondary" href="{{route('admin/comment/1')}}">Danh sách</a>
-                        <button type="submit" class="btn btn-primary" name="submit">Gửi</button>
-                    </div>
-                </form>
+       @if(!count($list) == 1)
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h4>Thêm Feedback</h4>
+                    <form action="{{ route('admin/comment/feedback/insert') }}" method="POST">
+                        <div class="form-group">
+                            <label for="text">Text</label>
+                            <textarea name="text" id="" cols="15" rows="5" class="form-control" required></textarea>
+                            <input type="hidden" class="form-control" id="text" name="id" value="{{$item->id}}">
+                            <input type="hidden" class="form-control" id="text" name="id_user_admin" value="{{$_SESSION['admin']->id}}">
+                        </div>
+                        <div class="text-center mt-4">
+                            <a class="btn btn-secondary" href="{{route('admin/comment/1')}}">Danh sách</a>
+                            <button type="submit" class="btn btn-primary" name="submit">Gửi</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+
+           @else
+            <h4>Bạn đã trả lời rồi</h4>
+       @endif
     </div>
 @endsection
