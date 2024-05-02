@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 class Category extends BaseModel
 {
     protected $table = "categories";
@@ -16,18 +18,18 @@ class Category extends BaseModel
         return $this->loadRow([$id]);
     }
 
-    public function insertCategory($id,$name)
+    public function insertCategory($id, $name)
     {
         $sql = "INSERT INTO $this->table VALUES (?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id,$name]);
+        return $this->execute([$id, $name]);
     }
 
-    public function updateCategory($id,$name)
+    public function updateCategory($id, $name)
     {
         $sql = "UPDATE $this->table SET `name`=? WHERE  `id`= ?";
         $this->setQuery($sql);
-        return $this->execute([$name,$id]);
+        return $this->execute([$name, $id]);
     }
 
     public function deleteCategory($id)
@@ -55,5 +57,4 @@ class Category extends BaseModel
         $this->setQuery($sql);
         return $this->loadRow();
     }
-
 }

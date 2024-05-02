@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers\Client;
 
 use App\Models\Product;
@@ -26,7 +27,6 @@ class homeController extends BaseController
 
         $listCT = $this->category->listCategory();
         $_SESSION['category'] = $listCT;
-
     }
 
     public function index()
@@ -38,7 +38,7 @@ class homeController extends BaseController
         $new = $this->product->productNew();
         $bestSeller = $this->product->listProductsBestSeller();
         $bienThe = $this->product->listBienThe();
-        return $this->renderClient("home.home", compact("new", "kids", 'bestSeller','bienThe'));
+        return $this->renderClient("home.home", compact("new", "kids", 'bestSeller', 'bienThe'));
     }
 
     public function search()
@@ -48,7 +48,7 @@ class homeController extends BaseController
             // Thực hiện tìm kiếm sản phẩm dựa trên từ khóa
             $searchResults = $this->product->searchProduct($keyword);
             $bienThe = $this->product->listBienThe();
-            return $this->renderClient("product.search", compact("searchResults", "keyword",'bienThe'));
+            return $this->renderClient("product.search", compact("searchResults", "keyword", 'bienThe'));
         }
     }
 
@@ -62,7 +62,7 @@ class homeController extends BaseController
             return $this->renderClient('home.404');
             exit();
         }
-        return $this->renderClient("product.category", compact("menu", 'oneCT','bienThe'));
+        return $this->renderClient("product.category", compact("menu", 'oneCT', 'bienThe'));
     }
 
     public function errorPage()

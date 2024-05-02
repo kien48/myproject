@@ -5,21 +5,21 @@ namespace App\Models;
 class Cart extends BaseModel
 {
     protected $table = "invoices";
-    public function order($id,$name, $phone, $address, $id_user, $total, $created_at, $note, $ship, $payment, $status,$percentDiscount,$payment_status)
+    public function order($id, $name, $phone, $address, $id_user, $total, $created_at, $note, $ship, $payment, $status, $percentDiscount, $payment_status)
     {
         $sql = "INSERT INTO $this->table  VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
         $this->setQuery($sql);
-        $re = $this->execute([$id,$name, $phone, $address, $id_user, $total, $created_at, $note, $ship, $payment, $status,$percentDiscount,$payment_status]);
+        $re = $this->execute([$id, $name, $phone, $address, $id_user, $total, $created_at, $note, $ship, $payment, $status, $percentDiscount, $payment_status]);
         $lastId = $this->getPdo()->lastInsertId();
         return $lastId;
     }
 
-    public function orderDetail($id, $invoice_id,$id_product, $product_name, $quantity, $price, $total,$size,$color)
+    public function orderDetail($id, $invoice_id, $id_product, $product_name, $quantity, $price, $total, $size, $color)
     {
         $sql = "INSERT INTO invoice_details (id, invoice_id,id_product, product_name, quantity, price, total, size, color) 
                 VALUES (?, ?,?, ?, ?, ?, ?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id, $invoice_id,$id_product, $product_name, $quantity, $price, $total,$size,$color]);
+        return $this->execute([$id, $invoice_id, $id_product, $product_name, $quantity, $price, $total, $size, $color]);
     }
     public function listOrder($id_user)
     {
@@ -59,13 +59,13 @@ class Cart extends BaseModel
     }
 
 
-    public function listAllOrderPages($vitri,$bghi,$id = null)
+    public function listAllOrderPages($vitri, $bghi, $id = null)
     {
         $sql = "SELECT i.*,u.username FROM invoices i 
           INNER JOIN users u ON u.id = i.id_user";
         if ($id !== null) {
             $sql .= " WHERE i.id = $id";
-        }else{
+        } else {
             $sql .= " WHERE 1";
         }
 
@@ -86,13 +86,13 @@ class Cart extends BaseModel
     }
 
 
-    public function updateQuantity($quantity,$idpro,$color,$size)
+    public function updateQuantity($quantity, $idpro, $color, $size)
     {
         $sql = "UPDATE `variant`
                 SET `quantity` = `quantity` - ?
                 WHERE `idpro` = ? AND `color` = ? AND `size` = ?;";
         $this->setQuery($sql);
-        return $this->execute([$quantity,$idpro,$color,$size]);
+        return $this->execute([$quantity, $idpro, $color, $size]);
     }
 
 
@@ -128,11 +128,11 @@ class Cart extends BaseModel
         return $this->loadAllRows([$id]);
     }
 
-    public function update($id,$status)
+    public function update($id, $status)
     {
         $sql = "UPDATE `invoices` SET `status`= ? WHERE id = ?";
         $this->setQuery($sql);
-        return $this->execute([$status,$id]);
+        return $this->execute([$status, $id]);
     }
 
     public function updatePaymentStatus()
@@ -191,7 +191,4 @@ GROUP BY
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
-
-
-
 }

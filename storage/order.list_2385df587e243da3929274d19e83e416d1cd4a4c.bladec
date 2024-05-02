@@ -2,8 +2,8 @@
 
 <?php $this->startSection("content"); ?>
 
- <?php if(empty($listOrder)): ?>
- <div class="container my-5">
+<?php if(empty($listOrder)): ?>
+<div class="container my-5">
  <div class="row justify-content-center">
  <div class="col-md-8">
  <div class="text-center">
@@ -13,9 +13,9 @@
  </div>
  </div>
  </div>
- </div>
- <?php else: ?>
- <div class="container mt-4">
+</div>
+<?php else: ?>
+<div class="container mt-4">
  <h1 class="h3 text-center mb-4">Danh sách đơn hàng</h1>
  <div class="table-responsive">
  <table class="table table-striped">
@@ -87,8 +87,7 @@
  </tbody>
  </table>
  </div>
- </div>
- <?php endif; ?>
+</div>
+<?php endif; ?>
 <?php $this->stopSection(); ?>
-
 <?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

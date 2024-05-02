@@ -87,28 +87,28 @@
                             @php
                             $class = "";
                             $sl = "";
-                            if ($color - > quantity == 0) {
+                            if ($color -> quantity == 0) {
                                 $sl = "0";
                                 $class = "disabled";
                             } else {
-                                $sl = $color - > quantity;
+                                $sl = $color -> quantity;
                             }
-                            if ($color - > color == "Hồng") {
+                            if ($color -> color == "Hồng") {
                                 $style = "pink";
                             }
-                            elseif($color - > color == "Đen") {
+                            elseif($color -> color == "Đen") {
                                 $style = "black";
                             }
-                            elseif($color - > color == "Đỏ") {
+                            elseif($color -> color == "Đỏ") {
                                 $style = "red";
                             }
-                            elseif($color - > color == "Trắng") {
+                            elseif($color -> color == "Trắng") {
                                 $style = "black";
                             }
-                            elseif($color - > color == "Vàng") {
+                            elseif($color -> color == "Vàng") {
                                 $style = "yellow";
                             }
-                            elseif($color - > color == "Xanh") {
+                            elseif($color -> color == "Xanh") {
                                 $style = "green";
                             }
                             @endphp

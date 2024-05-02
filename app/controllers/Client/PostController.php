@@ -1,10 +1,13 @@
 <?php
+
 namespace App\controllers\Client;
+
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Settings;
 
-class PostController extends BaseController{
+class PostController extends BaseController
+{
     protected $post;
     protected $category;
     protected $setting;
@@ -26,21 +29,20 @@ class PostController extends BaseController{
     {
         $list = $this->post->listPost();
         $bGhi = 8;
-        $viTri = ($pageNumber - 1)*$bGhi ;
+        $viTri = ($pageNumber - 1) * $bGhi;
         $tong = count($list);
-        $soTrang = ceil($tong/$bGhi);
-        $listAll = $this->post->listPostPages($viTri,$bGhi);
-        return $this->renderClient("posts.list",compact('listAll','soTrang'));
+        $soTrang = ceil($tong / $bGhi);
+        $listAll = $this->post->listPostPages($viTri, $bGhi);
+        return $this->renderClient("posts.list", compact('listAll', 'soTrang'));
     }
 
 
-       function detail($id)
-       {
-           $listOne = $this->post->listOnePost($id);
-           if(!$listOne){
-               return $this->renderClient("home.404");
-           }
-           return $this->renderClient("posts.detail",compact('listOne'));
-       }
-
+    function detail($id)
+    {
+        $listOne = $this->post->listOnePost($id);
+        if (!$listOne) {
+            return $this->renderClient("home.404");
+        }
+        return $this->renderClient("posts.detail", compact('listOne'));
+    }
 }

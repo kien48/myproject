@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers\Client;
+
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\discount;
@@ -17,9 +19,9 @@ class cartController extends BaseController
 
     public function __construct()
     {
-        $this->cart= new Cart();
-        $this->discount= new discount();
-        $this->product= new Product();
+        $this->cart = new Cart();
+        $this->discount = new discount();
+        $this->product = new Product();
         $this->category = new Category();
         $this->setting = new Settings();
 
@@ -31,7 +33,7 @@ class cartController extends BaseController
         $listCT = $this->category->listCategory();
         $_SESSION['category'] = $listCT;
 
-// Khởi tạo giỏ hàng nếu chưa có
+        // Khởi tạo giỏ hàng nếu chưa có
         if (!isset($_SESSION['giohang'])) {
             $_SESSION['giohang'] = [];
         }
@@ -41,12 +43,12 @@ class cartController extends BaseController
     public function index()
     {
         $maxQuantity = $this->product->listBienThe();
-        foreach ($_SESSION['giohang'] as $key=>$value) {
-            if($_SESSION['giohang'][$key]['quantity'] == 0 ){
+        foreach ($_SESSION['giohang'] as $key => $value) {
+            if ($_SESSION['giohang'][$key]['quantity'] == 0) {
                 unset($_SESSION['giohang'][$key]);
             }
         }
-        return $this->renderClient("cart.list",compact('maxQuantity'));
+        return $this->renderClient("cart.list", compact('maxQuantity'));
     }
     public function addCart()
     {
@@ -69,12 +71,12 @@ class cartController extends BaseController
             $color_radio = $_POST['color_radio'][0];
             $variant = $this->product->listBienTheSP($id);
 
-// Kiểm tra xem size và color đã được chọn chưa
+            // Kiểm tra xem size và color đã được chọn chưa
             if (empty($size_radio) || empty($color_radio)) {
                 $errors[] = "Vui lòng chọn kích thước và màu sắc!";
             }
 
-            foreach ($variant as $key=>$item) {
+            foreach ($variant as $key => $item) {
                 if ($item->size === $size_radio && $item->color === $color_radio) {
                     if ($item->quantity < $quantity) {
                         $errors[] = "Số lượng sản phẩm vượt quá số lượng trong kho";
@@ -85,65 +87,65 @@ class cartController extends BaseController
             }
 
             if (empty($errors)) {
-                    if (count($_SESSION['giohang']) > 0) {
-                        foreach ($_SESSION['giohang'] as $cart_id => $item) {
-                            // Kiểm tra sản phẩm có trong giỏ hàng với cùng id, size và color
-                            if ($item['id'] == $id && $item['size'] == $size_radio && $item['color'] == $color_radio) {
-                                $check_sp = 1; // Đánh dấu sản phẩm đã tồn tại trong giỏ hàng
-                                $_SESSION['giohang'][$cart_id]["quantity"] += $quantity; // Tăng số lượng sản phẩm
-                                break;
-                            }
+                if (count($_SESSION['giohang']) > 0) {
+                    foreach ($_SESSION['giohang'] as $cart_id => $item) {
+                        // Kiểm tra sản phẩm có trong giỏ hàng với cùng id, size và color
+                        if ($item['id'] == $id && $item['size'] == $size_radio && $item['color'] == $color_radio) {
+                            $check_sp = 1; // Đánh dấu sản phẩm đã tồn tại trong giỏ hàng
+                            $_SESSION['giohang'][$cart_id]["quantity"] += $quantity; // Tăng số lượng sản phẩm
+                            break;
                         }
                     }
+                }
 
-                    if ($check_sp == 0) {
-                        // Không cần tạo mảng mới ở đây, chỉ cần gán trực tiếp
-                        $_SESSION['giohang'][] = [
-                            "keyID" => $keyID,
-                            "id" => $id,
-                            "name" => $name,
-                            "price" => $price,
-                            "image" => $image,
-                            "category" => $category,
-                            "quantity" => $quantity,
-                            "size" => $size_radio,
-                            "color" => $color_radio
-                        ];
-                    }
+                if ($check_sp == 0) {
+                    // Không cần tạo mảng mới ở đây, chỉ cần gán trực tiếp
+                    $_SESSION['giohang'][] = [
+                        "keyID" => $keyID,
+                        "id" => $id,
+                        "name" => $name,
+                        "price" => $price,
+                        "image" => $image,
+                        "category" => $category,
+                        "quantity" => $quantity,
+                        "size" => $size_radio,
+                        "color" => $color_radio
+                    ];
                 }
             }
-
-            if (!empty($errors)) {
-                flash('errors', $errors, 'detail/' . $id);
-            } else {
-                flash('success', "Thêm vào giỏ thành công", 'detail/' . $id);
-            }
-
-            exit();
         }
+
+        if (!empty($errors)) {
+            flash('errors', $errors, 'detail/' . $id);
+        } else {
+            flash('success', "Thêm vào giỏ thành công", 'detail/' . $id);
+        }
+
+        exit();
+    }
 
 
     public function delete()
     {
 
-        if(count($_SESSION['giohang'])){
+        if (count($_SESSION['giohang'])) {
             $_SESSION['giohang'] = [];
         }
         return $this->renderClient("cart.list");
     }
     public function order()
     {
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             return $this->renderClient("cart.order");
-        }else{
-            flash('errors','Bạn phải đăng nhập mới mua hàng được','form-login');
+        } else {
+            flash('errors', 'Bạn phải đăng nhập mới mua hàng được', 'form-login');
         }
     }
     public function addOrder()
     {
         date_default_timezone_set('Asia/Ho_Chi_Minh'); // Thiết lập múi giờ Hà Nội
 
-        if(isset($_POST['submit'])){
+        if (isset($_POST['submit'])) {
 
             $name = $_POST['name'];
             $phone = $_POST['phone'];
@@ -156,18 +158,18 @@ class cartController extends BaseController
             $percent_discount = isset($_POST['percent_discount']) ? intval($_POST['percent_discount']) : 0;
             $matchedId = isset($_POST['id_code']) ? $_POST['id_code'] : 0;
             // Xác định giá trị tổng hoàn thành dựa trên liệu có áp dụng mã giảm giá không
-            if(isset($_POST['totalCompleted'])){
+            if (isset($_POST['totalCompleted'])) {
                 $totalCompleted = $_POST['totalCompleted'];
             } else {
                 $totalCompleted = $_POST['total'];
             }
 
-            $id_order = $this->cart->order(NULL, $name, $phone, $address, $id_user, $totalCompleted, $date, $note, $ship, $payment, 0, $percent_discount,1);
+            $id_order = $this->cart->order(NULL, $name, $phone, $address, $id_user, $totalCompleted, $date, $note, $ship, $payment, 0, $percent_discount, 1);
             $this->discount->applySuccess($matchedId); // Áp dụng giảm giá chỉ khi người dùng chọn "submit"
-            if($id_order){
+            if ($id_order) {
                 foreach ($_SESSION['giohang'] as $item) {
-                    $this->cart->orderDetail(NULL, $id_order,$item['id'], $item['name'], $item['quantity'], $item['price'], $item['price'] * $item['quantity'],$item['size'],$item['color']);
-                    $this->cart->updateQuantity($item['quantity'],$item['id'],$item['color'],$item['size']);
+                    $this->cart->orderDetail(NULL, $id_order, $item['id'], $item['name'], $item['quantity'], $item['price'], $item['price'] * $item['quantity'], $item['size'], $item['color']);
+                    $this->cart->updateQuantity($item['quantity'], $item['id'], $item['color'], $item['size']);
                 }
                 unset($_SESSION['total']);
                 unset($_SESSION['giohang']);
@@ -181,7 +183,7 @@ class cartController extends BaseController
         }
 
         // Xử lý áp dụng mã giảm giá
-        if(isset($_POST['apply'])){
+        if (isset($_POST['apply'])) {
             $code = $_POST['code'];
             $checkCode = $this->discount->listDiscount();
             $status = "Áp dụng thất bại"; // Khởi tạo status mặc định
@@ -190,17 +192,17 @@ class cartController extends BaseController
             $matchedId = null; // Khai báo biến lưu trữ ID mã giảm giá khớp
 
             // Lặp qua danh sách mã giảm giá
-            foreach ($checkCode as $check){
-                if($code == $check->code){
+            foreach ($checkCode as $check) {
+                if ($code == $check->code) {
                     $matchedPercent = $check->percent; // Lưu mã giảm giá khớp
                     $matchedId = $check->id; // Lưu ID mã giảm giá khớp
-                    $status = "Áp dụng thành công mã ".$check->percent."%";
-                    $totalCompleted = ($_SESSION['total'] + 30000)  - ($_SESSION['total'] +30000)*$check->percent/100;
+                    $status = "Áp dụng thành công mã " . $check->percent . "%";
+                    $totalCompleted = ($_SESSION['total'] + 30000)  - ($_SESSION['total'] + 30000) * $check->percent / 100;
                     break; // Thoát khỏi vòng lặp sau khi tìm thấy mã giảm giá khớp
                 }
             }
 
-            return $this->renderClient("cart.order", compact('status', 'totalCompleted', 'matchedPercent','matchedId'));
+            return $this->renderClient("cart.order", compact('status', 'totalCompleted', 'matchedPercent', 'matchedId'));
         }
     }
 
@@ -222,7 +224,7 @@ class cartController extends BaseController
     {
 
         $listOrder = $this->cart->listOrder($_SESSION['user']->id);
-        return $this->renderClient("order.list",compact('listOrder'));
+        return $this->renderClient("order.list", compact('listOrder'));
     }
     public function detailOrder()
     {
@@ -242,13 +244,13 @@ class cartController extends BaseController
         $status = 0; // Khởi tạo biến status
         $maxQuantity = $this->product->listBienThe();
         // Kiểm tra xem có dữ liệu số lượng mới và key được gửi lên không
-        if(isset($_POST['quantitynew']) && isset($_POST['key'])) {
+        if (isset($_POST['quantitynew']) && isset($_POST['key'])) {
             // Lặp qua mỗi sản phẩm được gửi lên từ form
-            foreach($_POST['key'] as $index => $keyID) {
+            foreach ($_POST['key'] as $index => $keyID) {
                 // Lặp qua mỗi sản phẩm trong giỏ hàng để tìm sản phẩm cần cập nhật số lượng
-                foreach ($_SESSION['giohang'] as $cartIndex => &$cart){
+                foreach ($_SESSION['giohang'] as $cartIndex => &$cart) {
                     // Kiểm tra nếu keyID của sản phẩm trong giỏ hàng trùng với keyID gửi từ form
-                    if($cart['keyID'] == $keyID) {
+                    if ($cart['keyID'] == $keyID) {
                         // Cập nhật số lượng mới cho sản phẩm
                         $quantityNew = $_POST['quantitynew'][$index];
                         $cart['quantity'] = $quantityNew;
@@ -260,15 +262,14 @@ class cartController extends BaseController
             }
 
             // Sau khi cập nhật xong, chuyển hướng người dùng đến trang giỏ hàng hoặc trang khác
-            return $this->renderClient("cart.list",compact('status','maxQuantity'));
+            return $this->renderClient("cart.list", compact('status', 'maxQuantity'));
             exit; // Chắc chắn kết thúc chương trình sau khi chuyển hướng
         } else {
             // Nếu không có dữ liệu gửi lên hoặc thiếu dữ liệu, cập nhật biến status và chuyển hướng đến trang lỗi
             $status = 0;
-            return $this->renderClient("cart.list",compact('status','maxQuantity'));
+            return $this->renderClient("cart.list", compact('status', 'maxQuantity'));
             exit; // Chắc chắn kết thúc chương trình sau khi chuyển hướng
         }
-
     }
 
 
@@ -276,7 +277,7 @@ class cartController extends BaseController
     {
         $orderID = $this->cart->detailOrderForID($id);
         $order = $this->cart->detailOrder($id);
-        return $this->renderClient("order.detail",compact('order','orderID'));
+        return $this->renderClient("order.detail", compact('order', 'orderID'));
     }
 
     public function huy()
@@ -306,14 +307,4 @@ class cartController extends BaseController
             }
         }
     }
-
-
-
-
-
-
-
-
-
-    }
-
+}

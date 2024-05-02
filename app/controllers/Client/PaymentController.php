@@ -1,4 +1,5 @@
 <?php
+
 namespace App\controllers\Client;
 
 use http\Env\Request;
@@ -17,9 +18,9 @@ class PaymentController extends BaseController
         $vnp_OrderType = "Trung Kiên Shop"; // Loại đơn hàng
 
         // Xác định số tiền thanh toán
-        if(isset($_POST['total'])) {
+        if (isset($_POST['total'])) {
             $vnp_Amount = $_POST['total'] * 100;
-        } elseif(isset($_POST['totalCompleted'])) {
+        } elseif (isset($_POST['totalCompleted'])) {
             $vnp_Amount = $_POST['totalCompleted'] * 100;
         } else {
             // Xử lý hoặc thông báo lỗi tùy thuộc vào logic của bạn
@@ -124,6 +125,4 @@ class PaymentController extends BaseController
             echo json_encode($returnData);
         }
     }
-
-
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 class Post extends BaseModel
 {
     protected $table = "post";
@@ -9,7 +11,7 @@ class Post extends BaseModel
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
-    public function listPostPages($viTri,$bGhi)
+    public function listPostPages($viTri, $bGhi)
     {
         $sql = "SELECT * FROM $this->table where 1 ORDER BY id DESC LIMIT $viTri,$bGhi";
         $this->setQuery($sql);
@@ -21,19 +23,19 @@ class Post extends BaseModel
         $this->setQuery($sql);
         return $this->loadRow([$id]);
     }
-    public function insertPost($id,$tilte,$image,$text,$author,$date)
+    public function insertPost($id, $tilte, $image, $text, $author, $date)
     {
         $sql = "INSERT INTO $this->table VALUES (?,?,?,?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id,$tilte,$image,$text,$author,$date]);
+        return $this->execute([$id, $tilte, $image, $text, $author, $date]);
     }
 
-    public function updatePost($id,$tilte,$image,$text,$author,$date)
+    public function updatePost($id, $tilte, $image, $text, $author, $date)
     {
         $sql = "UPDATE $this->table SET `tilte`=?,
                   `image`=?,`text`=?,`author`=?,`date`=? WHERE id = ?";
         $this->setQuery($sql);
-        return $this->execute([$tilte,$image,$text,$author,$date,$id]);
+        return $this->execute([$tilte, $image, $text, $author, $date, $id]);
     }
 
     public function deletePost($id)

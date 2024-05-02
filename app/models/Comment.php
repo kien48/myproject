@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Models;
-class Comment extends BaseModel {
+
+class Comment extends BaseModel
+{
     protected $table = "comments";
 
     public function listComment($id_pro)
@@ -53,13 +56,13 @@ class Comment extends BaseModel {
 
     public function feedBack($id_comment)
     {
-        $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = ".$id_comment;
+        $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = " . $id_comment;
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
     public function checkFeedBack($id_comment)
     {
-        $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = ".$id_comment;
+        $sql = "SELECT * FROM `feedback` WHERE 1 AND id_comment = " . $id_comment;
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
@@ -89,11 +92,11 @@ WHERE c.id = ?
     }
 
 
-    public function insertFeedback($id,$id_comment,$id_user_admin,$text,$date)
+    public function insertFeedback($id, $id_comment, $id_user_admin, $text, $date)
     {
         $sql = "INSERT INTO `feedback`(`id`, `id_comment`, `id_user_admin`, `text`, `date`) VALUES (?,?,?,?,?)";
         $this->setQuery($sql);
-        return $this->loadAllRows([$id,$id_comment,$id_user_admin,$text,$date]);
+        return $this->loadAllRows([$id, $id_comment, $id_user_admin, $text, $date]);
     }
 
 
@@ -113,7 +116,4 @@ GROUP BY
         $this->setQuery($sql);
         return $this->loadAllRows();
     }
-
-
-
 }

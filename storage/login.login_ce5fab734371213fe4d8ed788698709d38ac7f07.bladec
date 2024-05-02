@@ -1,6 +1,6 @@
 <?php $_shouldextend[1]=1; ?>
 <?php $this->startSection("content"); ?>
- <style>
+<style>
  .card-body {
  padding: 20px;
  }
@@ -18,9 +18,9 @@
  margin-bottom: 10px;
  }
  }
- </style>
+</style>
 
- <div class="container mt-5">
+<div class="container mt-5">
  <div class="row justify-content-center">
  <div class="col-md-6">
  <div class="card">
@@ -116,7 +116,6 @@
  </div>
  </div>
  </div>
- </div>
+</div>
 <?php $this->stopSection(); ?>
-
 <?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

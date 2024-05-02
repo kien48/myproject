@@ -10,11 +10,11 @@
 </head>
 
 <body>
-<div class="loading-overlay">
+ <div class="loading-overlay">
  <div class="loading-spinner"></div>
-</div>
+ </div>
 
-<nav class="navbar navbar-expand-sm fixed-top shadow fw-bold" style="backdrop-filter: blur(10px);">
+ <nav class="navbar navbar-expand-sm fixed-top shadow fw-bold" style="backdrop-filter: blur(10px);">
  <div class="container">
  <a class="navbar-brand" href="<?php echo \htmlentities(route('/')??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <img src="<?php echo \htmlentities($_SESSION['listSettings'][0]->logo??'', ENT_QUOTES, 'UTF-8', false); ?>" alt="Logo" height="50px">
@@ -34,17 +34,13 @@
  <li class="nav-item">
  <a class="nav-link" href="<?php echo \htmlentities(route('post/1')??'', ENT_QUOTES, 'UTF-8', false); ?>">Bài viết</a>
  </li>
- <li class="nav-item">
- <a class="nav-link" href="<?php echo \htmlentities(route('post/1')??'', ENT_QUOTES, 'UTF-8', false); ?>">Nghe nhạc</a>
- </li>
+
  </ul>
 
  <ul class="navbar-nav ms-auto align-items-center">
  <li class="nav-item">
- <form class="d-flex align-items-center border rounded-pill shadow-sm bg-light px-3 py-2 me-2"
- action="<?php echo \htmlentities(route('search')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="get">
- <input class="form-control-plaintext border-0 me-2" name="keyword" type="text"
- placeholder="Bạn tìm gì ..." aria-label="Search">
+ <form class="d-flex align-items-center border rounded-pill shadow-sm bg-light px-3 py-2 me-2" action="<?php echo \htmlentities(route('search')??'', ENT_QUOTES, 'UTF-8', false); ?>" method="get">
+ <input class="form-control-plaintext border-0 me-2" name="keyword" type="text" placeholder="Bạn tìm gì ..." aria-label="Search">
  <button type="submit" class="btn btn-warning rounded-pill px-3">
  <i class="fa-solid fa-magnifying-glass"></i>
  </button>
@@ -54,8 +50,7 @@
  <a class="nav-link" href="<?php echo \htmlentities(route('list-cart')??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <button class="btn position-relative">
  <i class="fa-solid fa-cart-plus"></i>
- <span class="badge bg-warning rounded-pill position-absolute"
- style="top: -5px; right: -8px;">
+ <span class="badge bg-warning rounded-pill position-absolute" style="top: -5px; right: -8px;">
  <?php 
  if(isset($_SESSION['giohang'])){
  echo count($_SESSION['giohang']);
@@ -75,12 +70,12 @@
  </a>
  </li>
  <?php else: ?>
- <li class="nav-item ms-4" >
+ <li class="nav-item ms-4">
  <a class="nav-link" href="<?php echo \htmlentities(route('form-login')??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <i class="fa-regular fa-user"></i> Đăng nhập
  </a>
  </li>
- <li class="nav-item" >/</li>
+ <li class="nav-item">/</li>
  <li class="nav-item">
  <a class="nav-link" href="<?php echo \htmlentities(route('form-register')??'', ENT_QUOTES, 'UTF-8', false); ?>">Đăng ký</a>
  </li>
@@ -88,9 +83,9 @@
  </ul>
  </div>
  </div>
-</nav>
+ </nav>
 
-<main>
+ <main>
  <section class="content">
  <?php echo $this->yieldContent('content1'); ?>
  </section>
@@ -99,24 +94,20 @@
  <?php echo $this->yieldContent('content'); ?>
  </section>
  </div>
-</main>
+ </main>
 
 
-<footer>
- <div class="container-fluid border-top text-center pt-3 pb-3 mt-4 text-white"
- style="background-color: #002655;">
+ <footer>
+ <div class="container-fluid border-top text-center pt-3 pb-3 mt-4 text-white" style="background-color: #002655;">
  <div class="container mt-3">
  <div class="row">
  <div class="col-md-4 mt-5">
  <h7>“<?php echo \htmlentities($_SESSION['listSettings'][0]->sayings??'', ENT_QUOTES, 'UTF-8', false); ?>”
  </h7>
  <br>
- <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_fb??'', ENT_QUOTES, 'UTF-8', false); ?>"><i
- class="fa-brands fa-facebook"></i></a>
- <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_tiktok??'', ENT_QUOTES, 'UTF-8', false); ?>"
- class="text-white ms-3"><i class="fa-brands fa-tiktok"></i></a>
- <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_yt??'', ENT_QUOTES, 'UTF-8', false); ?>"
- class="text-danger ms-3"><i class="fa-brands fa-youtube"></i></a>
+ <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_fb??'', ENT_QUOTES, 'UTF-8', false); ?>"><i class="fa-brands fa-facebook"></i></a>
+ <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_tiktok??'', ENT_QUOTES, 'UTF-8', false); ?>" class="text-white ms-3"><i class="fa-brands fa-tiktok"></i></a>
+ <a href="<?php echo \htmlentities($_SESSION['listSettings'][0]->link_yt??'', ENT_QUOTES, 'UTF-8', false); ?>" class="text-danger ms-3"><i class="fa-brands fa-youtube"></i></a>
  </div>
  <div class="col-md-4">
  <h5>Về YODY</h5>
@@ -141,7 +132,9 @@
  <h5><i class="fa-solid fa-building"></i> <?php echo \htmlentities($_SESSION['listSettings'][0]->company_name??'', ENT_QUOTES, 'UTF-8', false); ?></h5>
  <p>
  <i class="fa-solid fa-phone-volume"></i> Số điện thoại: <?php echo \htmlentities($_SESSION['listSettings'][0]->phone??'', ENT_QUOTES, 'UTF-8', false); ?> <br>
- Địa chỉ: <?php echo \htmlentities($_SESSION['listSettings'][0]->address??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ Địa chỉ: <?php echo \htmlentities($_SESSION['listSettings'][0]->address??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ </p>
  <img src="https://cdn.dangkywebsitevoibocongthuong.com/wp-content/uploads/2018/07/logo-da-thong-bao-website-voi-bo-cong-thuong.webp" alt="" height="40px">
  </div>
  </div>
@@ -149,12 +142,11 @@
  <h7>Bản quyền thuộc về kiên</h7>
  </div>
  </div>
-</footer>
-<?php $_shouldextend[2]=1; ?>
+ </footer>
+ <?php $_shouldextend[2]=1; ?>
 
 
 </body>
 
 </html>
-
 <?php if (isset($_shouldextend[2])) { echo $this->runChild("layout.js"); } ?>

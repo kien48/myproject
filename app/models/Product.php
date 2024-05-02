@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Models;
-class Product extends BaseModel {
+
+class Product extends BaseModel
+{
     protected $table = "products";
 
     public function productNew()
@@ -37,14 +40,14 @@ class Product extends BaseModel {
 
 
 
-    public function listProductPages($vitri, $bghi, $id = null )
+    public function listProductPages($vitri, $bghi, $id = null)
     {
         $sql = "SELECT p.*, c.name AS name_ct FROM `$this->table` p
             INNER JOIN `categories` c ON p.id_ct = c.id";
 
         if ($id !== null) {
             $sql .= " WHERE p.id = $id";
-        }else{
+        } else {
             $sql .= " WHERE 1";
         }
 
@@ -66,11 +69,11 @@ class Product extends BaseModel {
         $this->setQuery($sql);
         return $this->loadRow([$id]);
     }
-    public function addProduct($id,$name,$price,$import_price,$image,$image2,$description,$id_ct,$status)
+    public function addProduct($id, $name, $price, $import_price, $image, $image2, $description, $id_ct, $status)
     {
         $sql = "INSERT INTO  $this->table VALUES (?,?,?,?,?,?,?,?,?) ";
         $this->setQuery($sql);
-        return $this->execute([$id,$name,$price,$import_price,$image,$image2,$description,$id_ct,$status]);
+        return $this->execute([$id, $name, $price, $import_price, $image, $image2, $description, $id_ct, $status]);
     }
 
     public function deleteProduct($id)
@@ -80,19 +83,19 @@ class Product extends BaseModel {
         return $this->execute([$id]);
     }
 
-    public function updateProduct($id,$name,$price,$import_price,$image,$image2,$description,$id_ct,$status)
+    public function updateProduct($id, $name, $price, $import_price, $image, $image2, $description, $id_ct, $status)
     {
         $sql = "UPDATE $this->table SET `name`=?,`price`=?,`import_price`=?,`image`=?,
                       `image2`=?,`description`=?,`id_ct`=?,`status`=? WHERE id= ?";
         $this->setQuery($sql);
-        return $this->execute([$name,$price,$import_price,$image,$image2,$description,$id_ct,$status,$id]);
+        return $this->execute([$name, $price, $import_price, $image, $image2, $description, $id_ct, $status, $id]);
     }
 
-    public function listProductCl($id_ct,$id)
+    public function listProductCl($id_ct, $id)
     {
         $sql = "SELECT * FROM {$this->table} WHERE status = 1 AND id_ct = ? AND id != ? LIMIT 0,4";
         $this->setQuery($sql);
-        return $this->loadAllRows([$id_ct,$id]);
+        return $this->loadAllRows([$id_ct, $id]);
     }
     public function listProductKids($id_ct)
     {
@@ -204,7 +207,7 @@ ORDER BY
             INNER JOIN products p ON v.idpro = p.id
             WHERE v.idpro = ? AND v.id != ?";
         $this->setQuery($sql);
-        return $this->loadAllRows([$idpro,$id]);
+        return $this->loadAllRows([$idpro, $id]);
     }
 
 
@@ -224,18 +227,18 @@ ORDER BY
     }
 
 
-    public function insertBienThe($id,$idpro,$color,$size,$quantity)
+    public function insertBienThe($id, $idpro, $color, $size, $quantity)
     {
         $sql = "INSERT INTO `variant`(`id`, `idpro`, `color`, `size`, `quantity`) VALUES (?,?,?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id,$idpro,$color,$size,$quantity]);
+        return $this->execute([$id, $idpro, $color, $size, $quantity]);
     }
 
-    public function updateBienThe($id,$idpro,$color,$size,$quantity)
+    public function updateBienThe($id, $idpro, $color, $size, $quantity)
     {
         $sql = "UPDATE `variant` SET `idpro`=?,`color`=?,`size`=?,`quantity`=? WHERE id = ?";
         $this->setQuery($sql);
-        return $this->execute([$idpro,$color,$size,$quantity,$id]);
+        return $this->execute([$idpro, $color, $size, $quantity, $id]);
     }
 
     public function updateStatusPro($id)
@@ -245,14 +248,14 @@ ORDER BY
         return $this->execute([$id]);
     }
 
-    public function huyProduct($idpro,$color,$size,$quantity)
+    public function huyProduct($idpro, $color, $size, $quantity)
     {
         $sql = "UPDATE `variant` 
                 SET `quantity` = `quantity` + ? 
                 WHERE `idpro`= ? AND `color`= ? AND `size`= ?
 ";
         $this->setQuery($sql);
-        return $this->execute([$quantity,$idpro,$color,$size]);
+        return $this->execute([$quantity, $idpro, $color, $size]);
     }
 
 

@@ -1,7 +1,7 @@
 <?php $_shouldextend[1]=1; ?>
 <?php $this->startSection("content1"); ?>
- <!-- Banner -->
- <div >
+<!-- Banner -->
+<div>
  <div id="demo" class="carousel slide overflow-hidden" data-bs-ride="carousel" style="max-height: 730px; overflow: hidden;">
  <!-- Indicators/dots -->
  <div class="carousel-indicators">
@@ -15,7 +15,7 @@
 
  <div class="carousel-inner">
  <div class="carousel-item active">
- <video  autoplay loop muted>
+ <video autoplay loop muted>
  <source src="public/img/video1.mp4" type="video/mp4">
  </video>
 
@@ -49,19 +49,19 @@
  <span class="carousel-control-next-icon"></span>
  </button>
  </div>
- </div>
+</div>
 <?php $this->stopSection(); ?>
 <?php $this->startSection("content"); ?>
 
- <!-- Sản phẩm mới nhất -->
- <div class="container mt-2">
+<!-- Sản phẩm mới nhất -->
+<div class="container mt-2">
  <div class="d-flex justify-content-center">
  <h1 class="h2 text-warning">Sản phẩm mới nhất</h1>
  </div>
  <div class="row">
  <?php $__currentLoopData = $new; $this->addLoop($__currentLoopData);$this->getFirstLoop();
  foreach($__currentLoopData as $n): $loop = $this->incrementLoopIndices();  ?>
- <div class="col-md-3 col-lg-3" >
+ <div class="col-md-3 col-lg-3">
  <div class="border mt-3 mb-3 rounded overflow-hidden  bg-light">
  <a class="nav-link" href="<?php echo \htmlentities(route('detail/'.$n->id)??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <div class="d-flex align-items-center justify-content-center" style="height: 398px;">
@@ -135,10 +135,10 @@
  </div>
  </div>
  <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
- </div>
- </div>
- <!-- Sản phẩm bán chạy -->
- <div class="container mt-4">
+</div>
+</div>
+<!-- Sản phẩm bán chạy -->
+<div class="container mt-4">
  <div class="d-flex justify-content-between">
  <h1 class="h4 text-black-50">Sản phẩm bán chạy</h1>
  <a href="<?php echo \htmlentities(route('top')??'', ENT_QUOTES, 'UTF-8', false); ?>" class="nav-link">
@@ -220,16 +220,16 @@
  </div>
  </div>
  <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
- </div>
- </div>
+</div>
+</div>
 
- <!-- Banner -->
- <div class="bg-warning d-flex align-items-center justify-content-center" style="height: 406px;">
+<!-- Banner -->
+<div class="bg-warning d-flex align-items-center justify-content-center" style="height: 406px;">
  <img src="<?php echo \htmlentities($_SESSION['listSettings'][0]->banner??'', ENT_QUOTES, 'UTF-8', false); ?>" alt="" class="mh-100 mw-100">
- </div>
+</div>
 
- <!-- Sản phẩm trẻ em -->
- <div class="container mt-4">
+<!-- Sản phẩm trẻ em -->
+<div class="container mt-4">
  <div class="d-flex justify-content-between">
  <h1 class="h4 text-black-50">Sản phẩm trẻ em</h1>
  <a href="<?php echo \htmlentities(route('menu/'."4")??'', ENT_QUOTES, 'UTF-8', false); ?>" class="nav-link">
@@ -312,10 +312,9 @@
  </div>
  </div>
  <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
- </div>
- </div>
+</div>
+</div>
 
 
 <?php $this->stopSection(); ?>
-
 <?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

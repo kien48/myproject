@@ -1,8 +1,6 @@
 @extends('layout.main')
 @section("content")
     <style>
-
-
         .container {
             padding-top: 30px;
         }
@@ -21,7 +19,6 @@
             text-decoration: none;
             color: white;
         }
-
 
     </style>
     <div class="container">

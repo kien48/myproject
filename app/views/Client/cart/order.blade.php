@@ -132,5 +132,4 @@
 
         </div>
     </div>
-@php var_dump($_SESSION['giohang']) @endphp
 @endsection

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 class User extends BaseModel
 {
     protected $table = "users";
@@ -9,11 +11,11 @@ class User extends BaseModel
         $this->setQuery($sql);
         return $this->loadRow([$email, $pass]);
     }
-    public function insertUser($id,$user,$email,$pass,$phone,$address,$role,$created_ad,$rank,$status)
+    public function insertUser($id, $user, $email, $pass, $phone, $address, $role, $created_ad, $rank, $status)
     {
         $sql = "INSERT INTO $this->table VALUES (?,?,?,?,?,?,?,?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id,$user,$email,$pass,$phone,$address,$role,$created_ad,$rank,$status]);
+        return $this->execute([$id, $user, $email, $pass, $phone, $address, $role, $created_ad, $rank, $status]);
     }
 
     public function checkLoginAdmin($user, $pass)
@@ -46,37 +48,37 @@ SET u.rank =
 
 
 
-public function listMessage($id_user_1 , $id_user_2)
-{
-    $sql = "SELECT m.id, m.conversation_id, m.sender_id, m.content, m.date,m.status,u.username
+    public function listMessage($id_user_1, $id_user_2)
+    {
+        $sql = "SELECT m.id, m.conversation_id, m.sender_id, m.content, m.date,m.status,u.username
 FROM messages m
     INNER JOIN users u ON m.sender_id = u.id
 INNER JOIN conversations c ON m.conversation_id = c.id
 WHERE (c.id_user_admin = '$id_user_1 ' AND c.id_user = '$id_user_2')
    OR (c.id_user_admin = '$id_user_2' AND c.id_user = '$id_user_1 ');
 ";
-    $this->setQuery($sql);
-    return $this->loadAllRows();
-}
+        $this->setQuery($sql);
+        return $this->loadAllRows();
+    }
 
 
-public function insertInbox($id,$id_admin,$id_user)
-{
-    $sql = "INSERT INTO `conversations`(`id`, `id_user_admin`, `id_user`) VALUES (?,?,?)
-";
-    $this->setQuery($sql);
-    return $this->execute([$id,$id_admin,$id_user]);
-}
-
-public function checkBox($id_user)
-{
-    $sql = "SELECT `id`, `id_user_admin`, `id_user` FROM `conversations` WHERE id_user = ".$id_user;
-    $this->setQuery($sql);
-    return $this->loadAllRows([]);
-}
-    public function checkBoxAdmin($id_user_admin,$id)
+    public function insertInbox($id, $id_admin, $id_user)
     {
-        $sql = "SELECT `id`, `id_user_admin`, `id_user` FROM `conversations` WHERE id_user_admin = ".$id_user_admin." AND  id = ".$id;
+        $sql = "INSERT INTO `conversations`(`id`, `id_user_admin`, `id_user`) VALUES (?,?,?)
+";
+        $this->setQuery($sql);
+        return $this->execute([$id, $id_admin, $id_user]);
+    }
+
+    public function checkBox($id_user)
+    {
+        $sql = "SELECT `id`, `id_user_admin`, `id_user` FROM `conversations` WHERE id_user = " . $id_user;
+        $this->setQuery($sql);
+        return $this->loadAllRows([]);
+    }
+    public function checkBoxAdmin($id_user_admin, $id)
+    {
+        $sql = "SELECT `id`, `id_user_admin`, `id_user` FROM `conversations` WHERE id_user_admin = " . $id_user_admin . " AND  id = " . $id;
         $this->setQuery($sql);
         return $this->loadAllRows([]);
     }
@@ -114,15 +116,15 @@ WHERE m.status = 1 AND c.id_user = $id;";
     }
 
 
-    public function send($id,$conversation_id,$sender_id,$content,$date,$status)
+    public function send($id, $conversation_id, $sender_id, $content, $date, $status)
     {
         $sql = "INSERT INTO `messages`(`id`, `conversation_id`, `sender_id`, `content`, `date`,`status`) 
                 VALUES (?,?,?,?,?,?)";
         $this->setQuery($sql);
-        return $this->execute([$id,$conversation_id,$sender_id,$content,$date,$status]);
+        return $this->execute([$id, $conversation_id, $sender_id, $content, $date, $status]);
     }
 
-    public function updateStatus($conversation_id,$id_user)
+    public function updateStatus($conversation_id, $id_user)
     {
         $sql = "UPDATE `messages` m
 JOIN `conversations` c ON m.`conversation_id` = c.`id`
@@ -130,21 +132,21 @@ SET m.`status` = 0
 WHERE ? = c.`id` AND m.sender_id = ?;
 ";
         $this->setQuery($sql);
-        return $this->execute([$conversation_id,$id_user]);
+        return $this->execute([$conversation_id, $id_user]);
     }
 
-    public function updateUser($id,$username,$email,$phone,$address)
+    public function updateUser($id, $username, $email, $phone, $address)
     {
         $sql = "UPDATE `users` SET `username`=?,`email`=?,
                    `phone`=?,`address`=? WHERE id = ?";
         $this->setQuery($sql);
-        return $this->execute([$username,$email,$phone,$address,$id]);
+        return $this->execute([$username, $email, $phone, $address, $id]);
     }
-    public function updatePassUser($id,$pass)
+    public function updatePassUser($id, $pass)
     {
         $sql = "UPDATE `users` SET `password`=? WHERE id = ?";
         $this->setQuery($sql);
-        return $this->execute([$pass,$id]);
+        return $this->execute([$pass, $id]);
     }
 
 
@@ -163,7 +165,7 @@ WHERE ? = c.`id` AND m.sender_id = ?;
         return $this->loadAllRows([$id]);
     }
 
-    public function listAllUserPages($vitri,$bghi)
+    public function listAllUserPages($vitri, $bghi)
     {
         $sql = "SELECT * FROM $this->table WHERE role = 1 ORDER BY id DESC LIMIT $vitri,$bghi";
         $this->setQuery($sql);
@@ -198,12 +200,4 @@ WHERE ? = c.`id` AND m.sender_id = ?;
         $this->setQuery($sql);
         return $this->loadRow();
     }
-
-
-
-
-
-
-
-
 }
