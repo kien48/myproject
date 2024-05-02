@@ -14,8 +14,7 @@
             </div>
         @endif
         <div class="table-responsive">
-            <table class="table table-striped" id="myTable">
-
+            <table class="table table-striped table-bordered" id="myTable">
                 <thead class="thead-light">
                 <tr>
                     <th>STT</th>
@@ -42,9 +41,9 @@
                             <td>{{$item->size}}</td>
                             <td>{{$item->color}}</td>
                         </tr>
-                @endforeach
+                    @endforeach
+                </form>
                 </tbody>
-
                 <tr>
                     <th>Người mua</th>
                     <th>Điện thoại</th>
@@ -63,14 +62,26 @@
                 </tr>
             </table>
         </div>
-
-            </form>
-            <div class="text-center mt-3">
-                <a href="{{route('admin/orde/1')}}" class="btn btn-secondary">Danh sách</a>
-                <a href="{{route('admin/order/detail/update/'.$item->id)}}" class="btn btn-warning">Cập nhật trạng thái</a>
-                <a href="" class="btn btn-info">In đơn hàng</a>
-            </div>
+        <div class="text-center mt-3">
+            <a href="{{route('admin/order/1')}}" class="btn btn-secondary">Danh sách</a>
+            <a href="{{route('admin/order/detail/update/'.$item->id)}}" class="btn btn-warning">Cập nhật trạng thái</a>
+            <button class="btn btn-success" onclick="exportToExcel()">Export to Excel</button>
+        </div>
     </div>
+
+
+
+    <script>
+        function exportToExcel() {
+            let htmltable = document.getElementById('myTable');
+            let html = htmltable.outerHTML;
+            let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+            let downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = "hoa-don-{{$item->id}}.xls";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
 @endsection
-
-

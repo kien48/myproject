@@ -57,7 +57,7 @@
                     <td>{{$pro->status}}</td>
                     <td class="text-nowrap" style="width: 1px;">
                         <a href="{{route("admin/variant/".$pro->id)}}"><button class="btn btn-outline-secondary"><i class="fa-solid fa-viruses"></i> Biến thể</button></a>
-                        <a href="{{route('admin/product/form-update/'.$pro->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
+                        <a href="{{route('admin/product/form-update/'.$pro->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Cập nhật</button></a>
                         <a onclick="return confirm('xóa nhé')" class="btn btn-outline-danger" href="{{route('admin/delete-product/'.$pro->id)}}">
                             <i class="fa-solid fa-trash"></i> Xóa
                         </a>

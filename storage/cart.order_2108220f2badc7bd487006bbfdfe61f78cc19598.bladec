@@ -133,7 +133,7 @@
 
  </div>
  </div>
-
+<?php var_dump($_SESSION['giohang'])  ?>
 <?php $this->stopSection(); ?>
 
 <?php if (isset($_shouldextend[1])) { echo $this->runChild("layout.main"); } ?>

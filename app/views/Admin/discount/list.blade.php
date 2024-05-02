@@ -44,7 +44,7 @@
                         <td>{{$value->quantity}}</td>
                         <td>{{$value->status}}</td>
                         <td class="text-nowrap" style="width: 1px;">
-                            <a href="{{route('admin/discount/form-update/'.$value->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Sửa</button></a>
+                            <a href="{{route('admin/discount/form-update/'.$value->id)}}"><button class="btn btn-outline-warning"><i class="fa-solid fa-wrench"></i> Cập nhật</button></a>
                         </td>
                     </tr>
                 @endforeach

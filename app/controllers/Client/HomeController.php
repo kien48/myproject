@@ -26,23 +26,6 @@ class homeController extends BaseController
 
         $listCT = $this->category->listCategory();
         $_SESSION['category'] = $listCT;
-// Thiết lập cookie hết hạn sau 1 phút
-        setcookie('session_expire', time() + 60, time() + 60);
-
-// Kiểm tra xem cookie đã được thiết lập chưa
-        if (isset($_COOKIE['session_expire'])) {
-            // Kiểm tra nếu thời gian hiện tại lớn hơn thời gian hết hạn của cookie
-            if (time() > $_COOKIE['session_expire']) {
-                // Xóa biến session
-                unset($_SESSION['user']);
-                // Hủy session
-                session_destroy();
-                // Hết hạn cookie
-                setcookie('session_expire', '', time() - 3600);
-            }
-        }
-
-
 
     }
 

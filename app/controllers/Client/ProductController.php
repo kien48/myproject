@@ -28,11 +28,12 @@ class ProductController extends BaseController{
     {
 
         $product = $this->product->detailProduct($id);
+
         if (!$product) {
             return $this->renderClient('home.404',"bienThe");
             exit();
         }
-
+        $bienThe2 = $this->product->listBienThe();
         $soLuong = 1; // Khởi tạo giá trị mặc định cho $soLuong
         $listComment = $this->comment->listComment($id);
         date_default_timezone_set('Asia/Ho_Chi_Minh'); // Thiết lập múi giờ Hà Nội
@@ -57,7 +58,7 @@ class ProductController extends BaseController{
         $bienThe = $this->product->bienThe($id);
         $bienThe1 = $this->product->listBienThe();
 
-        return $this->renderClient("product.detail", compact('product', 'productCL','soLuong','listComment','rating','total','feedback','bienThe','bienThe1'));
+        return $this->renderClient("product.detail", compact('product', 'productCL','soLuong','listComment','rating','total','feedback','bienThe','bienThe1','bienThe2'));
     }
 
 

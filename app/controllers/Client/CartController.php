@@ -148,7 +148,7 @@ class cartController extends BaseController
             $name = $_POST['name'];
             $phone = $_POST['phone'];
             $address = $_POST['address'];
-            $id_user = $_SESSION['user'];
+            $id_user = $_SESSION['user']->id;
             $note = $_POST['note'];
             $ship = 'Giao hàng nhanh';
             $date = date('Y-m-d H:i:s');
@@ -162,7 +162,7 @@ class cartController extends BaseController
                 $totalCompleted = $_POST['total'];
             }
 
-            $id_order = $this->cart->order(NULL, $name, $phone, $address, $id_user, $totalCompleted, $date, $note, $ship, $payment, 1, $percent_discount,0);
+            $id_order = $this->cart->order(NULL, $name, $phone, $address, $id_user, $totalCompleted, $date, $note, $ship, $payment, 0, $percent_discount,1);
             $this->discount->applySuccess($matchedId); // Áp dụng giảm giá chỉ khi người dùng chọn "submit"
             if($id_order){
                 foreach ($_SESSION['giohang'] as $item) {
